@@ -82,7 +82,7 @@ updateUserDetail = function(req, res){
                 res.json(return_data);
             }
             else{
-                return_data.error = message;
+                return_data.error = err.message;
                 res.json(return_data);
             }
         }
