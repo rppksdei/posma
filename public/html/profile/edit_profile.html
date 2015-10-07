@@ -1,0 +1,77 @@
+<div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Edit User Profile</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Edit details
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <form name="edit_profile" id="edit_profile" ng-submit="updateProfile();">
+                                	<div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input class="form-control" ng-model="profileData.username" name="username" id="username" value="">
+                                        </div>
+                                        <div class="form-group" ng-class="{'has-error': edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required }">
+                                            <label>Clinic Name</label>
+                                            <input class="form-control" autocomplete="off" ng-model="profileData.clinic_name" required name="clinic_name" id="clinic_name" value="">
+						<label class="control-label" ng-show="edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required">Clinic Name is required.</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Firstname</label>
+                                            <input class="form-control" autocomplete="off" ng-model="profileData.first_name" name="first_name" id="first_name" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Lastname</label>
+                                            <input class="form-control" autocomplete="off" ng-model="profileData.last_name" name="last_name" id="last_name" autocomplete="off" value="">
+                                        </div>
+                                        <div class="form-group" ng-class="{'has-error': edit_profile.email.$dirty && (edit_profile.email.$error.required || edit_profile.email.$error.email) }">
+                                            <label>Email</label>
+                                            <input class="form-control" autocomplete="off" ng-model="profileData.email" name="email" id="email" required type="email" value="">
+						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.required">Email is required.</label>
+						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.email">Invalid Email.</label>
+                                        </div>
+                                        <div class="form-group" ng-class="{'has-error': edit_profile.phone.$dirty && (edit_profile.phone.$error.required || edit_profile.phone.$error.number) }">
+                                            <label>Phone</label>
+                                            <input class="form-control" autocomplete="off" type="text" required ng-model="profileData.phone" name="phone" id="phone" value="">
+						<label class="control-label" ng-show="edit_profile.phone.$dirty && edit_profile.phone.$error.required">Phone is required.</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mobile</label>
+                                            <input class="form-control" autocomplete="off" type="text" ng-model="profileData.mobile" name="mobile" id="mobile" value="">
+                                        </div>
+                                        <div class="form-group" ng-class="{'has-error': edit_profile.address1.$dirty && edit_profile.address1.$error.required }">
+                                            <label>Address 1</label>
+                                            <input class="form-control" autocomplete="off" ng-model="profileData.address1" name="address1" required id="address1" value="">
+						<label class="control-label" ng-show="edit_profile.address1.$dirty && edit_profile.address1.$error.required">Address is required.</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Address 2</label>
+                                            <input class="form-control" autocomplete="off" ng-model="profileData.address2" name="address2" id="address2" value="">
+                                        </div>
+                                	</div>
+	                                
+	                                <div class="col-lg-12" style="text-align:left">
+						<input type="submit" class="btn btn-success" ng-disabled="edit_profile.$invalid" value="Update">
+                                	</div>
+                                	<!-- /.col-lg-6 (nested) -->
+                                </form>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
