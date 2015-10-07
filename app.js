@@ -17,6 +17,7 @@ var app = express();
 // New routes for an application
 
 
+
 // Database Connection
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/healthcare');
