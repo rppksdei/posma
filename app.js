@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 // code for Passport Login
 var expressSession = require('express-session');
 var passport = require('passport');
-
 var LocalStrategy = require('passport-local').Strategy;
 //End of code for Passport Login
 
