@@ -15,5 +15,9 @@ module.exports = function(app,express){
     });
     //End of code to get one Admin/Clinic detail
     
+    router.post('/change_password', function(req, res){
+        profileObj.changePassword(req,res);
+    });
+    
     app.use('/profile',router);
 }

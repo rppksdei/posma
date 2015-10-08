@@ -20,6 +20,40 @@ getUserDetail = function(req, res){
         }  
     });  
 }
+changePassword = function(req, res){
+    var check_user = {};
+    check_user._id = req.user._id;
+    check_user.password = req.body.current_password;
+    
+    adminModel.getAdmin(check_user, function(err, data){
+        var return_val = {};
+        if (err) {
+            return_val.error = err;
+            res.json(err);
+        }
+        else{
+            if (data == null) {
+                return_val.error = "Please Enter Correct Current Password";
+                res.json(return_val);
+            }
+            else{
+                var search_criteria = {_id:req.user._id};
+                var update_data = {'password':req.body.new_password};
+                adminModel.updateAdmin(search_criteria, update_data, function(err, data){
+                    if (err) {
+                        //code
+                        res.json(err);
+                    }
+                    else{
+                        return_val.success = "Password Changed Successfully";
+                        res.json(return_val);
+                    }
+                });
+            }
+        }
+    });
+
+}
 
 updateUserDetail = function(req, res){
 
@@ -75,6 +109,7 @@ updateUserDetail = function(req, res){
         if (err) {
             if (err.errors) {
                 var error_detail = [];
+                //var error = [];
                 for (var errName in err.errors) {
                     error_detail.push(err.errors[errName].message);
                 }
@@ -82,12 +117,13 @@ updateUserDetail = function(req, res){
                 res.json(return_data);
             }
             else{
-                return_data.error = message;
+                return_data.error = err;
                 res.json(return_data);
             }
         }
         else{
-            return_data.success = "Clinic updated Successfully";
+            console.log(data);
+            return_data.success = "Profile updated Successfully";
             res.json(return_data);
         }
     });
@@ -99,5 +135,8 @@ updateUserDetail = function(req, res){
 module.exports = function(){
     this.getUserDetail = getUserDetail;
     this.updateUserDetail = updateUserDetail;
+    this.changePassword = changePassword;
+    
 }
+
 

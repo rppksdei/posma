@@ -25,6 +25,13 @@ myapp.config(['$routeProvider',
             .when('/edit_profile',{
                 templateUrl:'/html/profile/edit_profile.html',
                 controller:'profileCtrl',
+                flag:'edit_profile',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/change_password',{
+                templateUrl:'/html/profile/change_password.html',
+                controller:'profileCtrl',
+                flag:'change_password',
                 resolve:{'logged_in':checkloggedIn}
             })
             .when('/logout',{

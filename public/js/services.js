@@ -17,6 +17,9 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.updateProfile = function(){
             return $resource('/profile/update');
         }
+        serviceObj.changePassword = function(){
+            return $resource('/profile/change_password');
+        }
         return serviceObj;
     });
 
