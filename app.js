@@ -47,6 +47,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 //End of code for Passport Session
 
+
+//Function to check session and user type
+isLoggedIn = function (req, res, next) {
+  if(!req.isAuthenticated()){
+    res.status(200).json( { 'code':401, 'error':'Unauthorized'} );
+  }
+  else {
+    next();
+  }
+}
+//End of functions to check session and user type 
+
 // Route Path
 require('./routes/login')(app,express);
 require('./routes/profile')(app,express);
@@ -65,7 +77,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
 // error handlers
 
 // development error handler
