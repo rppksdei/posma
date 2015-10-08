@@ -37,5 +37,16 @@ angular.module('PosmaService', ['ngResource'])
             return $resource('/profile/change_password');
         }
         return serviceObj;
+    })
+    .factory('Questions', function($resource){
+        var serviceObj = {};
+
+        serviceObj.getList = function(){
+            return $resource('/question/');  
+        }
+        serviceObj.addQuestion = function(){
+            return $resource('/question/add');  
+        }
+        return serviceObj;
     });
 

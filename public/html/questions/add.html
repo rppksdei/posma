@@ -1,0 +1,107 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Add Question Answers</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Add Question
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <form role="form">
+                        	<div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Question</label>
+                                    <input class="form-control" ng-model="question.name">
+                                    <!--p class="help-block">Example block-level help text here.</p-->
+                                </div>
+                                <div class="form-group">
+                                    <label>Question for</label>
+                                    <div class="radio-inline">
+                                            <input type="radio" ng-model="question.gender" name="optionsRadios" id="optionsRadios1" value="b" checked> Both
+                                    </div>
+                                    <div class="radio-inline">
+                                            <input type="radio" ng-model="question.gender" name="optionsRadios" id="optionsRadios2" value="m"> Male
+                                    </div>
+                                    <div class="radio-inline">
+                                            <input type="radio" ng-model="question.gender" name="optionsRadios" id="optionsRadios3" value="f"> Female
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Answer type</label>
+                                    <select ng-model="question.answer_type" class="form-control">
+                                        <option value = "rb" selected="selected">Radio Buttons</option>
+                                        <option value = "number">Number</option>
+                                        <option value = "cb">Checkboxes</option>
+                                        <option value = "dd">Dropdown</option>
+                                        <option value = "text">Text</option>
+                                    </select>
+                                </div>
+                        	</div>
+                            <!-- /.col-lg-6 (nested) -->
+                            <div class="col-lg-6" ng-if="question.answer_type == 'rb' || question.answer_type == 'cb' || question.answer_type == 'dd' || question.answer_type == 'number' || question.answer_type == 'text'">
+                                <h4>Answer Values</h4>
+                                <div id="number" ng-if="question.answer_type == 'number'">
+                                	<div class="form-group col-lg-6">
+                                        <label>Min range</label>
+                                        <input class="form-control" value="20" ng-model="question.min_range">
+                                    </div>
+                                	<div class="form-group col-lg-6">
+                                        <label>Max range</label>
+                                        <input class="form-control" value="200" ng-model="question.max_range">
+                                     </div>
+                                </div>
+                                <div id="text" ng-if="question.answer_type == 'text'">
+                                	<div class="form-group col-lg-12">
+                                        <label>Max length</label>
+                                        <input class="form-control" value="500" ng-model="question.max_length">
+                                    </div>
+                                </div>
+                                <div id="text" ng-if="question.answer_type == 'rb' || question.answer_type == 'cb' || question.answer_type == 'dd'">
+                                	<!--IMPORTANT http://www.shanidkv.com/blog/angularjs-adding-form-fields-dynamically -->
+                                	<div class="col-lg-12" >
+                                        <div class="form-group ">
+                                            <label>Answer Options</label> 
+                                            <button class="btn btn-info" type="button" ng-click="addNewChoice()">Add More</button>
+                                        </div>
+                                        <!--label>Max length</label-->
+                                        <div data-ng-repeat="answer_opt in answer_opts">
+                                            <div class="form-group col-lg-6">
+	                                            <input class="form-control" ng-model="answer_opt.name" placeholder="Answer option">
+      										</div>
+                                            <div class="form-group col-lg-4">
+	                                            <div class="checkbox">
+	                                                <label>
+	                                                    <input ng-model="answer_opt.out_of_range" type="checkbox" value="">Out of range
+	                                                </label>
+                                    			</div>
+                                    		</div>
+                                            <div class="form-group col-lg-2">
+                                                <button class="btn btn-danger btn-circle" ng-show="$last" ng-click="removeChoice()" type="button"><i class="fa fa-remove"></i></button>
+      										</div>
+      									</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" style="text-align:center">
+                        		<button class="btn btn-success" type="button" ng-click="add();">Submit</button>
+                        	</div>
+                        	<!-- /.col-lg-6 (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>

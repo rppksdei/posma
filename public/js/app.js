@@ -39,6 +39,18 @@ myapp.config(['$routeProvider',
                 controller:'loginCtrl',
                 logout : true,
             })
+            .when('/questions',{
+                templateUrl:'/html/questions/index.html',
+                controller:'questionsCtrl',
+                flag:'list',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/questions/add',{
+                templateUrl:'/html/questions/add.html',
+                controller:'questionsCtrl',
+                flag:'add',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .when('/surgeries',{
                 templateUrl:'/html/surgery/surgeries.html',
                 controller:'surgeryCtrl',
