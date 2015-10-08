@@ -14,5 +14,11 @@ module.exports = function(app,express){
     router.get('/loggedout',  function(req, res, next) {
         loginController.loggedout(req, res, next);
     });
+    
+    router.post('/cookieLogin',  function(req, res, next) {
+        loginController.userCookieLogin(req, res, next);
+    });
+    
+    
     app.use('/login',router);
 }
