@@ -49,19 +49,32 @@ app.use(passport.session());
 
 
 //Function to check session and user type
-isLoggedIn = function (req, res, next) {
+checksession = function(req, res, callback){
   if(!req.isAuthenticated()){
-    res.status(200).json( { 'code':401, 'error':'Unauthorized'} );
+    callback(false);
   }
-  else {
-    next();
-  }
+  else{
+    callback(true);
+  } 
 }
+
+isLoggedIn = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      next();
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+
 //End of functions to check session and user type 
 
 // Route Path
 require('./routes/login')(app,express);
-require('./routes/profile')(app,express);
+require('./routes/profile')(app,express, isLoggedIn);
 require('./routes/admin')(app,express);
 require('./routes/surgery')(app,express);
 require('./routes/question')(app,express);

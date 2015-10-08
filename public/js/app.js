@@ -1,5 +1,5 @@
 //angular.module('MyAppService', ['ngResource']);
-var myapp = angular.module("posma", ['ngRoute', 'PosmaService']);
+var myapp = angular.module("posma", ['ngRoute', 'PosmaService', 'ngCookies']);
 function checkloggedIn($rootScope, $http, $location) {
     $http.get('/login/checkloggedin').success(function(data) {
         if (data.error) {

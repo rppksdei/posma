@@ -7,6 +7,9 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.logout = function(){
             return $resource('/login/loggedout');
         }
+        serviceObj.cookieLogin = function(){
+            return $resource('/login/cookieLogin');
+        }
         return serviceObj;
     })
     .factory('Profile', function($resource){
