@@ -18,11 +18,34 @@ exports.userlogin = function(req, res, next){
             }
             else{
                 console.log(user);
-                res.json({ 'code':0, 'success':true, 'type':user.user_type});
+                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id});
             }
             return; 
         });
     })(req, res, next);
+}
+
+exports.userCookieLogin = function(req, res, next){
+    var user_id = req.body.cookie_id;
+    adminModel.getAdmin({'_id':user_id}, function(err, user) {
+        if (err) {
+            //code
+            res.json( { 'code':401, 'error':'Unauthorized', 'message':"Please log in" } );
+        }
+        else{
+            req.logIn(user, { session: true },function (err){
+            // Should not cause any errors
+            if (err){
+                next(err);
+            }
+            else{
+                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id});
+            }
+            return; 
+        });
+            
+        }
+    });
 }
 
 exports.checkloggedin = function(req, res, next){
