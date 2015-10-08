@@ -39,6 +39,12 @@ myapp.config(['$routeProvider',
                 controller:'loginCtrl',
                 logout : true,
             })
+            .when('/surgeries',{
+                templateUrl:'/html/surgery/surgeries.html',
+                controller:'surgeryCtrl',
+                flag:'get_surgery',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .otherwise({
                 templateUrl:'/html/login.html',
                 controller:'loginCtrl',

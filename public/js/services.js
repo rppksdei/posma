@@ -9,6 +9,19 @@ angular.module('PosmaService', ['ngResource'])
         }
         return serviceObj;
     })
+    .factory('Surgery', function($resource){
+        var serviceObj = {};
+        serviceObj.getDetail = function(){
+            return $resource('/surgery');  
+        }
+        // serviceObj.updateProfile = function(){
+        //     return $resource('/profile/update');
+        // }
+        // serviceObj.changePassword = function(){
+        //     return $resource('/profile/change_password');
+        // }
+        return serviceObj;
+    })
     .factory('Profile', function($resource){
         var serviceObj = {};
         serviceObj.getDetail = function(){
