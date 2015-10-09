@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var answerSchema = new Schema({
     name:{type:String, required:"Option is required"},
-    out_of_range:{type:String, default:0}, // 0=in range, 1=out of range
+    out_of_range:{type:String, default:false}, // 0=in range, 1=out of range
     is_deleted:{type:Number, default:0},
     created:{type:Number},
     modified:{type:Number}
@@ -11,8 +11,8 @@ var answerSchema = new Schema({
 
 
 var questionSchema = new Schema({
-    name:{type:String, required:"Question name is required"},
-    answer_type:{type:Number, default:0}, //0=Text, 1=Number
+    name:{type:String, required:"Question name is required. "},
+    answer_type:{type:String, default:'text'}, //0=Text, 1=Number
     min_range:{type:Number},
     max_range:{type:Number},
     max_length:{type:Number, default:0},

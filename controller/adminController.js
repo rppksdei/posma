@@ -2,6 +2,12 @@ var adminModel = require("./../model/adminModel");
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
+    if (req.user.user_type == "1") {
+        search.user_type = 0;
+    }
+    else if (req.user.user_type == "0"){
+        search.user_type = 2;
+    }
     adminModel.getAllAdmin(search, function(err, adminDetail){
         if(err){
             res.json(err);
@@ -68,22 +74,24 @@ addAdmin = function(req, res, next){
                 //add Admin cum clinic
                 var adminDetail = req.body;
                 adminDetail.created = Date.now();
+                if (req.user.user_type == "1") {
+                    adminDetail.user_type = 0;
+                }
+                else if (req.user.user_type == "0"){
+                    adminDetail.user_type = 2;
+                    adminDetail.clinic_name = "";
+                }
                 adminModel.addAdmin(adminDetail, function(err, data){
-                    var return_val = {};
+                    var return_data = {};
                     if (err) {
-                        var error_detail = [];
-                        // go through all the errors...
-                        for (var errName in err.errors) {
-                            error_detail.push(err.errors[errName].message);
-                        }
-                        return_val.error = error_detail;
-                        res.json(return_val);
+                        return_data.error = err;
+                        res.json(return_data);
                     }
                     else{
-                        return_val.success = "Clinic added Successfully";
-                        res.json(return_val);
+                        return_data.success = true;
+                        res.json(return_data);
                     }
-                  //  res.json(return_val);
+                    
                 });
             }
             else{

@@ -14,12 +14,12 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <form role="form">
+                        <form role="form" name="questionFrm" id="questionFrm" >
                         	<div class="col-lg-6">
-                                <div class="form-group">
+                                <div class="form-group" ng-class="{'has-error': questionFrm.qname.$dirty && questionFrm.qname.$error.required }">
                                     <label>Question</label>
-                                    <input class="form-control" ng-model="question.name">
-                                    <!--p class="help-block">Example block-level help text here.</p-->
+                                    <input class="form-control" ng-model="question.name" ng-required="true" id="name" name="qname">
+                                    <label class="control-label" ng-show="questionFrm.qname.$dirty && questionFrm.qname.$error.required">Question is required.</label>
                                 </div>
                                 <div class="form-group">
                                     <label>Question for</label>

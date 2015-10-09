@@ -41,7 +41,6 @@ changePassword = function(req, res){
                 var update_data = {'password':req.body.new_password};
                 adminModel.updateAdmin(search_criteria, update_data, function(err, data){
                     if (err) {
-                        //code
                         res.json(err);
                     }
                     else{
