@@ -57,6 +57,12 @@ myapp.config(['$routeProvider',
                 flag:'get_surgery',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/surgeries/add',{
+                templateUrl:'/html/surgery/add.html',
+                controller:'surgeryCtrl',
+                flag:'add',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .otherwise({
                 templateUrl:'/html/login.html',
                 controller:'loginCtrl',

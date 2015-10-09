@@ -5,7 +5,7 @@ module.exports = function(app,express){
     
     /* GET Surgery listing. */
     router.get('/',  function(req, res, next) {
-        surgeryObj.getlisting(req, res, next);
+       surgeryObj.getlisting(req, res, next);
     });
     
     /* add Surgery listing. */
