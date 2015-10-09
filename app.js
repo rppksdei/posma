@@ -129,7 +129,7 @@ require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
 require('./routes/admin')(app,express);
 require('./routes/surgery')(app,express);
-require('./routes/question')(app,express);
+require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
 require('./routes/pathway')(app,express);
 require('./routes/patient')(app,express);

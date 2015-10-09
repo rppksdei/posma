@@ -1,6 +1,7 @@
-myapp.controller('questionsCtrl', function($scope, $route, Questions, $location, $rootScope){
+myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTableParams, $location, $rootScope){
     $scope.questionList = "";
     $scope.question = "";
+    $scope.errors = [];
     var flag = '';
     
     if (typeof $route.current.$$route.flag !== 'undefined') {
@@ -8,9 +9,39 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions, $location,
     }
 
     $scope.list = function(){
-        Questions.getList().query({}, function(data){
-            $scope.profileData = data;
-        });
+
+        /*Questions.getList().query({}, function(data){
+            //var self = this;
+            //console.log(data);
+            //var questions_data = data;
+            var datadsdsd1 = [{name: "Moroni", age: 50},
+                {name: "Jacob", age: 27},
+                {name: "Nephi", age: 29},
+                {name: "Christian", age: 34},
+                {name: "Tiancum", age: 43},
+                {name: "Jacob", age: 27}
+            ];
+            
+            $scope.tableParams = new NgTableParams({count: 5}, { counts: [5, 10, 25], data: datadsdsd1});
+           
+        });*/
+        
+            /*var datadsdsd1 = [{name: "Moroni", age: 50},
+                {name: "Jacob", age: 27},
+                {name: "Nephi", age: 29},
+                {name: "Christian", age: 34},
+                {name: "Tiancum", age: 43},
+                {name: "Jacob", age: 27}
+            ];*/
+
+            Questions.getList().query({}, function(data) {
+
+                $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:data});
+            });
+
+        
+            
+        
     }
 
     $scope.add = function(){
@@ -28,11 +59,11 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions, $location,
 
         console.log(questiondata);
         Questions.addQuestion().save(questiondata, function(data){
+            console.log(data);
             if (data.success) {
-                //$rootScope.user = $scope.profileData;
-                //$scope.success_message = data.success;
+                $location.path('/questions');
             } else{
-                //$scope.error[data.error.path] = data.error.message;
+                console.log(data.error.errors);
                 //console.log($scope.error);
             }
         });
@@ -52,8 +83,6 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions, $location,
     };
     
     if (flag == "list") {
-        $scope.getList();
-    } else if (flag == "add") {
-        $scope.add();
-    }
+        $scope.list();
+    } 
 });
