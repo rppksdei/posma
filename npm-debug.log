@@ -1,28 +1,40 @@
-0 info it worked if it ends with ok
-1 verbose cli [ '/root/.nvm/v0.10.40/bin/node',
-1 verbose cli   '/root/.nvm/v0.10.40/bin/npm',
-1 verbose cli   'start' ]
-2 info using npm@1.4.28
-3 info using node@v0.10.40
-4 verbose run-script [ 'prestart', 'start', 'poststart' ]
-5 info prestart healthcare@0.0.0
-6 info start healthcare@0.0.0
-7 verbose unsafe-perm in lifecycle true
-8 info healthcare@0.0.0 Failed to exec start script
-9 error healthcare@0.0.0 start: `node ./bin/www`
-9 error Exit status 1
-10 error Failed at the healthcare@0.0.0 start script.
-10 error This is most likely a problem with the healthcare package,
-10 error not with npm itself.
-10 error Tell the author that this fails on your system:
-10 error     node ./bin/www
-10 error You can get their info via:
-10 error     npm owner ls healthcare
-10 error There is likely additional logging output above.
-11 error System Linux 3.13.0-32-generic
-12 error command "/root/.nvm/v0.10.40/bin/node" "/root/.nvm/v0.10.40/bin/npm" "start"
-13 error cwd /home/ramanpreetk/Ramanpreet/Official/projects/posma/posma
-14 error node -v v0.10.40
-15 error npm -v 1.4.28
-16 error code ELIFECYCLE
-17 verbose exit [ 1, true ]
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/bin/npm', 'start' ]
+info using npm@1.1.4
+info using node@v0.6.12
+verbose config file /home/hiteshj/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/share/npm/npmrc
+verbose caching /home/hiteshj/Project/git/posma/package.json
+verbose loadDefaults healthcare@0.0.0
+verbose run-script [ 'prestart', 'start', 'poststart' ]
+info prestart healthcare@0.0.0
+info start healthcare@0.0.0
+verbose unsafe-perm in lifecycle true
+silly exec sh "-c" "node ./bin/www"
+silly spawning [ 'sh',
+silly spawning   [ '-c', 'node ./bin/www' ],
+silly spawning   '/home/hiteshj/Project/git/posma' ]
+info healthcare@0.0.0 Failed to exec start script
+ERR! healthcare@0.0.0 start: `node ./bin/www`
+ERR! `sh "-c" "node ./bin/www"` failed with 1
+ERR! 
+ERR! Failed at the healthcare@0.0.0 start script.
+ERR! This is most likely a problem with the healthcare package,
+ERR! not with npm itself.
+ERR! Tell the author that this fails on your system:
+ERR!     node ./bin/www
+ERR! You can get their info via:
+ERR!     npm owner ls healthcare
+ERR! There is likely additional logging output above.
+ERR! 
+ERR! System Linux 3.13.0-32-generic
+ERR! command "node" "/usr/bin/npm" "start"
+ERR! cwd /home/hiteshj/Project/git/posma
+ERR! node -v v0.6.12
+ERR! npm -v 1.1.4
+ERR! code ELIFECYCLE
+ERR! message healthcare@0.0.0 start: `node ./bin/www`
+ERR! message `sh "-c" "node ./bin/www"` failed with 1
+ERR! errno {}
+verbose exit [ 1, true ]

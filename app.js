@@ -70,6 +70,57 @@ isLoggedIn = function (req, res, next) {
   });
 }
 
+isSuperAdmin = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 1) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+isClinicAdmin = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 0) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+isSurgeon = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 2) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
 
 //End of functions to check session and user type 
 

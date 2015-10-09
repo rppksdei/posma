@@ -11,7 +11,7 @@ getUserDetail = function(req, res){
         }
         else{
             if (data == null) {
-                return_val.error = "admin doesn't exists";
+                return_val.error = "Admin doesn't exist.";
                 res.json(return_val);
             }
             else{
@@ -33,7 +33,7 @@ changePassword = function(req, res){
         }
         else{
             if (data == null) {
-                return_val.error = "Please Enter Correct Current Password";
+                return_val.error = "Enter correct current password.";
                 res.json(return_val);
             }
             else{
@@ -45,7 +45,7 @@ changePassword = function(req, res){
                         res.json(err);
                     }
                     else{
-                        return_val.success = "Password Changed Successfully";
+                        return_val.success = "Password has been changed successfully.";
                         res.json(return_val);
                     }
                 });
