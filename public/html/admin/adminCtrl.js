@@ -1,5 +1,4 @@
-myapp.controller('adminCtrl', function($scope, $route, Admin, $location, $rootScope){
-    $scope.profileData = "";
+myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, ngTableParams, $rootScope){
     $scope.success = "";
     $scope.listAdmin = "";
     $scope.errordetail = [];
@@ -11,8 +10,8 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location, $rootSc
     $scope.add = function(){
         Admin.add().save($scope.admin, function(data){
            if (data.success) {
-                $rootScope.user = $scope.profileData;
-                $scope.success_message = data.success;
+                Flash.create('success', 'Clinic saved successfully', 'alert alert-success');
+                $location.path('/listadmin');
             }
             else{
                 if (data.error.errors){
@@ -27,7 +26,7 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location, $rootSc
     
     $scope.listAdmin = function(){
         Admin.list().query({}, function(data){
-            $scope.listAdmin = data;
+            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:data});
         });
     }
     
