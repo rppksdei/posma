@@ -46,12 +46,14 @@ getQuestionDetail = function(req, res){
 */
 addQuestion = function(req, res, next){
     var questionDetail = req.body;
+    console.log(questionDetail);
     questionDetail.created = Date.now();
     questionModel.addQuestion(questionDetail, function(err, data){
         var return_val = {};
         if (err) {
             var error_detail = [];
             // go through all the errors...
+            console.log(err);
             for (var errName in err.errors) {
                 error_detail.push(err.errors[errName].message);
             }
@@ -59,7 +61,7 @@ addQuestion = function(req, res, next){
             res.json(return_val);
         }
         else{
-            return_val.success = "Question added Successfully";
+            return_val.success = "Question has been added successfully.";
             res.json(return_val);
         }
       //  res.json(return_val);

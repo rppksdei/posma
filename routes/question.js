@@ -1,16 +1,16 @@
-module.exports = function(app,express){
+module.exports = function(app,express,isClinicAdmin){
     var router = express.Router();
     var questionController = require("./../controller/questionController");
     var questionObj = new questionController();
     
     /* GET Surgery listing. */
-    router.get('/',  function(req, res, next) {
+    router.get('/',isClinicAdmin,  function(req, res, next) {
         console.log("Get list of Question");
         questionObj.getlisting(req, res, next);
     });
     
     /* add Surgery listing. */
-    router.post('/add',  function(req, res, next) {
+    router.post('/add',isClinicAdmin,  function(req, res, next) {
         questionObj.addQuestion(req, res, next);
     });
     
@@ -21,7 +21,7 @@ module.exports = function(app,express){
     //End of code to get one Surgery detail
     
     // Get One Surgery Detail
-    router.post('/update', function(req, res){
+    router.post('/update',isClinicAdmin, function(req, res){
         questionObj.updateQuestionDetail(req, res);
     });
     //End of code to get one Surgery detail

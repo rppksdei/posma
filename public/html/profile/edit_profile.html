@@ -26,8 +26,8 @@
                                         </div>
                                         <div class="form-group" ng-show='user.user_type == 0' ng-class="{'has-error': edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required }">
                                             <label>Clinic Name</label>
-                                            <input class="form-control" autocomplete="off" ng-model="profileData.clinic_name" ng-required='user.user_type == 0' required name="clinic_name" id="clinic_name" value="">
-						<label class="control-label" ng-show="edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required">Clinic Name is required.</label>
+                                            <input class="form-control" autocomplete="off" ng-model="profileData.clinic_name" ng-required='user.user_type == 0' name="clinic_name" id="clinic_name" value="">
+                                            <label class="control-label" ng-show="edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required">Clinic Name is required.</label>
                                         </div>
                                         <div class="form-group">
                                             <label>Firstname</label>
@@ -40,8 +40,8 @@
                                         <div class="form-group" ng-class="{'has-error': edit_profile.email.$dirty && (edit_profile.email.$error.required || edit_profile.email.$error.email) }">
                                             <label>Email</label>
                                             <input class="form-control" autocomplete="off" ng-model="profileData.email" name="email" id="email" required type="email" value="">
-						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.required">Email is required.</label>
-						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.email">Invalid Email.</label>
+                    						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.required">Email is required.</label>
+                    						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.email">Invalid Email.</label>
                                         </div>
                                         <div class="form-group" ng-class="{'has-error': (edit_profile.phone.$dirty && (edit_profile.phone.$error.required || edit_profile.phone.$error.number)) || error['phone'] }">
                                             <label>Phone</label>
