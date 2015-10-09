@@ -9,39 +9,9 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
     }
 
     $scope.list = function(){
-
-        /*Questions.getList().query({}, function(data){
-            //var self = this;
-            //console.log(data);
-            //var questions_data = data;
-            var datadsdsd1 = [{name: "Moroni", age: 50},
-                {name: "Jacob", age: 27},
-                {name: "Nephi", age: 29},
-                {name: "Christian", age: 34},
-                {name: "Tiancum", age: 43},
-                {name: "Jacob", age: 27}
-            ];
-            
-            $scope.tableParams = new NgTableParams({count: 5}, { counts: [5, 10, 25], data: datadsdsd1});
-           
-        });*/
-        
-            /*var datadsdsd1 = [{name: "Moroni", age: 50},
-                {name: "Jacob", age: 27},
-                {name: "Nephi", age: 29},
-                {name: "Christian", age: 34},
-                {name: "Tiancum", age: 43},
-                {name: "Jacob", age: 27}
-            ];*/
-
-            Questions.getList().query({}, function(data) {
-
-                $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:data});
-            });
-
-        
-            
-        
+        Questions.getList().query({}, function(data) {
+            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:data});
+        });
     }
 
     $scope.add = function(){

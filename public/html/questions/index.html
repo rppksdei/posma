@@ -19,10 +19,10 @@
                 <div class="panel-body">
                     <div class="dataTable_wrapper">
 
-                        <table ng-table="tableParams" class="table">
-                            <tr ng-repeat="question in $data"  ng-class="{even: $even, odd: $odd}">
-                                <td data-title="'Question'">{{question.name}}</td>
-                                <td data-title="'Answer Type'">
+                        <table ng-table="tableParams" class="table" show-filter="true">
+                            <tr ng-repeat="question in $data" ng-class="{even: $even, odd: $odd}" >
+                                <td data-title="'Question'"sortable="'name'" filter="{ name: 'text'}">{{question.name}}</td>
+                                <td data-title="'Answer Type'" sortable="'answer_type'" filter="{ name: 'select'}">
                                     <span ng-if="question.answer_type == 'rb'">
                                         Radio Buttons
                                     </span>
@@ -35,7 +35,7 @@
                                     <span ng-if="question.answer_type == 'text' || question.answer_type == 'number'">
                                         {{question.answer_type}}
                                     </span></td>
-                                <td data-title="'Min. Range'">
+                                <td data-title="'Min. Range'" sortable="'min_range'" filter="{min_range: 'text'}">
                                     <span ng-if="!question.min_range">
                                         -
                                     </span>
@@ -43,9 +43,9 @@
                                         {{question.min_range}} 
                                     </span>
                                 </td>
-                                <td data-title="'Max. Range'"><span ng-bind="question.max_range?question.max_range:'-'"></span></td>
-                                <td data-title="'Answer Length (Characters)'"><span ng-bind="question.max_length?question.max_length:'-'"></span></td>
-                                <td data-title="'Question for'"><span ng-if="question.gender == 'b'">
+                                <td data-title="'Max. Range'" sortable="'max_range'" filter="{max_range: 'text'}"><span ng-bind="question.max_range?question.max_range:'-'"></span></td>
+                                <td data-title="'Answer Length (Characters)'" sortable="'max_length'" filter="{max_length: 'text'}"><span ng-bind="question.max_length?question.max_length:'-'"></span></td>
+                                <td data-title="'Question for'" sortable="'gender'"><span ng-if="question.gender == 'b'">
                                         Male, Female
                                     </span>
                                     <span ng-if="question.gender == 'm'">
