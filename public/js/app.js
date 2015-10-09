@@ -34,6 +34,18 @@ myapp.config(['$routeProvider',
                 flag:'change_password',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/add_admin',{
+                templateUrl:'/html/admin/add.html',
+                controller:'adminCtrl',
+                flag:'add_admin',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/listadmin',{
+                templateUrl:'/html/admin/list.html',
+                controller:'adminCtrl',
+                flag:'list',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .when('/logout',{
                 templateUrl:'/html/authenticate/login.html',
                 controller:'loginCtrl',

@@ -1,0 +1,48 @@
+<div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Clinics</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!--div class="panel-heading">
+                            DataTables Advanced Tables
+                        </div-->
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Contact Number</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                     <tr ng-repeat="users in listAdmin|filter:filtname|orderBy:sortKey:reverse">
+                                                <td nowrap="nowrap">{{users.first_name+' '+users.last_name}}</td>
+                                                <td nowrap="nowrap">{{users.username}}</td>
+                                                <td nowrap="nowrap">{{users.phone}}</td>
+                                                <td nowrap="nowrap">{{users.is_active}}</td>
+                                                <td nowrap="nowrap">
+                                                    <a href="javascript:void(0);" ng-click='editUser(user.username);'>Edit</a> |
+                                                    <a href="javascript:void(0);" ng-click='deleteUser(user.username);'>Delete</a></td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+        </div>

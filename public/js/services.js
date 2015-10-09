@@ -38,6 +38,22 @@ angular.module('PosmaService', ['ngResource'])
         }
         return serviceObj;
     })
+    .factory('Admin', function($resource){
+        var serviceObj = {};
+        serviceObj.getDetail = function(){
+            return $resource('/manage_admin/detail');  
+        }
+        serviceObj.add = function(){
+            return $resource('/manage_admin/add');
+        }
+        serviceObj.update = function(){
+            return $resource('/manage_admin/update');
+        }
+        serviceObj.list = function(){
+            return $resource('/manage_admin/');
+        }
+        return serviceObj;
+    })
     .factory('Questions', function($resource){
         var serviceObj = {};
 
