@@ -17,6 +17,9 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.getDetail = function(){
             return $resource('/surgery');  
         }
+        serviceObj.addSurgery = function(){
+            return $resource('/surgery/add');
+        }
         // serviceObj.updateProfile = function(){
         //     return $resource('/profile/update');
         // }
@@ -35,6 +38,22 @@ angular.module('PosmaService', ['ngResource'])
         }
         serviceObj.changePassword = function(){
             return $resource('/profile/change_password');
+        }
+        return serviceObj;
+    })
+    .factory('Admin', function($resource){
+        var serviceObj = {};
+        serviceObj.getDetail = function(){
+            return $resource('/manage_admin/detail');  
+        }
+        serviceObj.add = function(){
+            return $resource('/manage_admin/add');
+        }
+        serviceObj.update = function(){
+            return $resource('/manage_admin/update');
+        }
+        serviceObj.list = function(){
+            return $resource('/manage_admin/');
         }
         return serviceObj;
     })

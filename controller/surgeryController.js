@@ -2,6 +2,7 @@ var surgeryModel = require("./../model/surgeryModel");
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
+    console.log('ddddd');
     surgeryModel.getAllSurgery(search, function(err, userDetail){
         if(err){
             res.json(err);
@@ -15,7 +16,6 @@ getlisting = function(req, res, next){
 getSurgeryDetail = function(req, res){
     var surgery_id = req.params.id;
     var search_surgery = {_id:surgery_id};
-    console.log(search_surgery);
     surgeryModel.getSurgery(search_surgery, function(err, data){
         var return_val = {};
         if (err){
@@ -35,8 +35,10 @@ getSurgeryDetail = function(req, res){
 }
 
 addSurgery = function(req, res){
+    console.log(req);
     var surgeryDetail = req.body;
-    surgeryDetail.created = Date.now();
+    surgeryDetail.created   = Date.now();
+    surgeryDetail.clinic    = req.user._id;
     surgeryModel.addSurgery(surgeryDetail, function(err, data){
         var return_val = {};
         if (err) {

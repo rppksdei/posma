@@ -1,4 +1,4 @@
-module.exports = function(app,express){
+module.exports = function(app,express, isSuperAdmin){
     var router = express.Router();
     var adminController = require("./../controller/adminController");
     var adminObj = new adminController();
@@ -9,7 +9,7 @@ module.exports = function(app,express){
     });
     
     /* add Admin/Clinic listing. */
-    router.post('/add',  function(req, res, next) {
+    router.post('/add', isSuperAdmin, function(req, res, next) {
         adminObj.addAdmin(req, res, next);
     });
     
