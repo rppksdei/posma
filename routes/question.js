@@ -15,7 +15,8 @@ module.exports = function(app,express,isClinicAdmin){
     });
     
     // Get One Surgery Detail
-    router.get('/:id', function(req, res){
+    router.post('/getDetail', function(req, res){
+       
         questionObj.getQuestionDetail(req, res);
     });
     //End of code to get one Surgery detail

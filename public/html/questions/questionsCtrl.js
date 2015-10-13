@@ -1,4 +1,5 @@
-myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTableParams, $location, $rootScope){
+myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTableParams,
+                                myService,SweetAlert, $http, $location, $rootScope,$routeParams){
     $scope.questionList = "";
     $scope.question = "";
     $scope.errors = [];
@@ -8,9 +9,20 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         flag = $route.current.$$route.flag;
     }
 
+
+
     $scope.list = function(){
         Questions.getList().query({}, function(data) {
             $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:data});
+        });
+    }
+
+    $scope.edit = function(){
+        console.log($routeParams.id);
+        Questions.getDetail().save({'_id':$routeParams.id}, function(data) {
+            console.log(data);
+            $scope.question = data;
+            //$scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:data});
         });
     }
 
@@ -52,7 +64,46 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         $scope.answer_opts.splice(lastItem);
     };
     
+    $scope.callFoo = function() {
+        console.log('here');
+        myService.foo();
+    }
+
+    $scope.getTopMatch = function(title,message,type,confirmButText,cancelButText,confirmAction,recId) {
+        SweetAlert.swal({
+        title: (typeof title != 'undefined')?title:"Are you sure?",
+        text: (typeof message != 'undefined')?message:"Your will not be able to recover this imaginary file!",
+        type: (typeof type != 'undefined')?type:"warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: (typeof confirmButText != 'undefined')?confirmButText:"Yes, delete it!",
+        cancelButtonText: (typeof cancelButText != 'undefined')?cancelButText:"No, cancel plx!",
+        closeOnConfirm: false}, 
+        function(){ 
+            (typeof confirmAction != 'undefined')?confirmAction:"callFoo",
+           $scope.confirmAction();
+        });
+        /*SweetAlert.swal({
+           title: "Are you sure?",
+           text: "Your will not be able to recover this imaginary file!",
+           type: "warning",
+           showCancelButton: true,
+           confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, delete it!",
+           cancelButtonText: "No, cancel plx!",
+           closeOnConfirm: false,
+           closeOnCancel: false }, 
+        function(isConfirm){ 
+           if (isConfirm) {
+              SweetAlert.swal("Deleted!", "Your imaginary file has been deleted.", "success");
+           } else {
+              SweetAlert.swal("Cancelled", "Your imaginary file is safe :)", "error");
+           }
+        });*/
+    };
+
     if (flag == "list") {
         $scope.list();
+    } else if (flag == "edit") {
+        $scope.edit();
     } 
 });

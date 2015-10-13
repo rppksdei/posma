@@ -32,6 +32,7 @@ exports.getAllQuestion = function(search_criteria, next){
 }
 
 exports.getQuestion = function(search_criteria, next){
+    console.log(search_criteria);
     Question.findOne(search_criteria, next);
 }
 
