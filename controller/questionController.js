@@ -13,7 +13,7 @@ getlisting = function(req, res, next){
 }
 
 getQuestionDetail = function(req, res){
-    var question_id = req.params.id;
+    var question_id = req.body._id;
     var search_question = {_id:question_id};
     questionModel.getQuestion(search_question, function(err, data){
         var return_val = {};
@@ -23,7 +23,7 @@ getQuestionDetail = function(req, res){
         }
         else{
             if (data == null) {
-                return_val.error = "question doesn't exists";
+                return_val.error = "Question doesn't exist.";
                 res.json(return_val);
             }
             else{

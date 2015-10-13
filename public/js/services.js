@@ -66,6 +66,44 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.addQuestion = function(){
             return $resource('/question/add');  
         }
+        serviceObj.getDetail = function(){
+            return $resource('/question/getDetail');  
+        }
         return serviceObj;
+    })
+    .factory('myService', function() {
+        return {
+            foo: function() {
+                alert("I'm foo!");
+            }
+        };
+    })
+    .factory('SweetAlert', [ function ( ) {
+        var swal = window.swal;
+        //public methods
+        var self = {
+
+            swal: function ( arg1, arg2, arg3 ) {
+                swal( arg1, arg2, arg3 );
+            },
+            success: function(title, message) {
+                swal( title, message, 'success' );
+            },
+            error: function(title, message) {
+                swal( title, message, 'error' );
+            },
+            warning: function(title, message) {
+                swal( title, message, 'warning' );
+            },
+            info: function(title, message) {    
+                swal( title, message, 'info' );
+            }
+        };
+        return self;
+    }])
+    .service("NameService", function($http, $filter){
+        function filterData(data, filter){
+            return $filter('filter')(data, filter)
+        }
     });
 
