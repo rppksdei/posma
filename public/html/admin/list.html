@@ -1,7 +1,22 @@
+<script type="text/javascript">
+            function ccc(){
+                        SweetAlert.swal({
+                    title: "Are you sure?",
+                    text: "Your will not be able to recover this imaginary file!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false}, 
+                 function(){ 
+                    SweetAlert.swal("Booyah!");
+                 });
+            }
+</script>
 <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Clinics</h1>
+                    <h1 class="page-header">Institutes</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -12,9 +27,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                              <h4 style="float: left;width:85%" >
-                        Manage Clinic
+                        Manage institute
                     </h4>
-                            <a href="#add_admin" class="btn btn-primary right">Add clinic</a>
+                            <a href="#add_institute" class="btn btn-primary right">Add Institute</a>
                         </div>
                         <!--div class="panel-heading">
                             DataTables Advanced Tables
@@ -25,59 +40,23 @@
                             <div class="dataTable_wrapper">
                                     <table ng-table="tableParams" class="table">
                                     <tr ng-repeat="admins in $data"  ng-class="{even: $even, odd: $odd}">
-                                                <td data-title="'Clinic name'" sortable="admins.clinic_name">{{admins.clinic_name}}</td>
+                                                <td data-title="'Institute name'" sortable="admins.clinic_name">{{admins.clinic_name}}</td>
                                                 <td data-title="'Username'">{{admins.username}}</td>
                                                 <td data-title="'Phone'">{{admins.phone}}</td>
                                                 <td data-title="'Status'">
+                                                          <a href="javascript:void(0);" ng-click="ccc();" >
                                                             <button class="btn btn-circle btn-sm btn" ng-class="{'btn-danger':admins.is_active == 1, 'btn-success':admins.is_active == 0}" type="button"><i class="fa" ng-class="{'fa-times':admins.is_active == 1, 'fa-check':admins.is_active == 0}"></i></button>
+                                                            </a>  
                                                 </td>
                                                 
-                                <td data-title="'Action'"><a ng-if="question.answer_type == 'rb' || question.answer_type == 'dd' || question.answer_type == 'cb'" id="opener" data-toggle="modal" title="View Answers" data-target="#ans{{question._id}}"><i class="fa fa-files-o fa-fw"></i></a>
-                                    <a href="add_edit.html" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
-                                    <a href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
-                                    <div ng-if="question.answer_type !== 'text' || question.answer_type !== 'number'" id ="ans{{question._id}}" class="modal fade" role="dialog" title="Basic dialog">
-                                        <div class="modal-dialog">
-                                            
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Aviable Answers</h4>
-                                                </div>
-                                                <div class="modessage cal-body">
-                                                    <div ng-repeat="ans in question.answer" >
-                                                        a) {{ans.name}} {{ans.out_of_range}}
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div></td>
+                                <td data-title="'Action'">
+                                    <a href="#edit_institute/{{admins._id}}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
+                                    <a href="javascript:void(0);" ng-click="confirmClick('Are you sure to delete ?', 'Delete confirmation') && deleteClinic($index);" confirm-click title="Delete"><i class="fa fa-trash-o"></i></a>
+                                    
+                                    </td>
                             </tr>
                                     </table>
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="display:none;">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Username</th>
-                                            <th>Contact Number</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                     <tr ng-repeat="users in listAdmin|filter:filtname|orderBy:sortKey:reverse">
-                                                <td nowrap="nowrap">{{users.first_name+' '+users.last_name}}</td>
-                                                <td nowrap="nowrap">{{users.username}}</td>
-                                                <td nowrap="nowrap">{{users.phone}}</td>
-                                                <td nowrap="nowrap">{{users.is_active}}</td>
-                                                <td nowrap="nowrap">
-                                                    <a href="javascript:void(0);" ng-click='editUser(user.username);'>Edit</a> |
-                                                    <a href="javascript:void(0);" ng-click='deleteUser(user.username);'>Delete</a></td>
-                                            </tr>
-                                    </tbody>
-                                </table>
+                                   
                             </div>
                         </div>
                         <!-- /.panel-body -->
@@ -87,3 +66,24 @@
                 <!-- /.col-lg-12 -->
             </div>
         </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modelconfirm" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="showconfirm($rootscope);" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    
+  </div>
+</div>

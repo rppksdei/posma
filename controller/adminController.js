@@ -19,7 +19,7 @@ getlisting = function(req, res, next){
 }
 
 getAdminDetail = function(req, res){
-    var admin_id = req.params.id;
+    var admin_id = req.body.id;
     var search_admin = {_id:admin_id};
     adminModel.getAdmin(search_admin, function(err, data){
         var return_val = {};
@@ -39,7 +39,7 @@ getAdminDetail = function(req, res){
     });  
 }
 
-isUsernameExists = function(username, callback){
+isAdminExists = function(username, callback){
     var search_criteria = {};
     search_criteria.username = username;
     adminModel.getAdmin(search_criteria, function(err, data){
@@ -55,8 +55,10 @@ isUsernameExists = function(username, callback){
             }
             else{
                 var return_val = {};
-                return_val.error = "Username already exists";
-                callback(false, return_val);
+                return_val.error = {};
+                return_val.error.path = "username";
+                return_val.error.message = "Username already exists";
+                callback(return_val, false);
             }
         }  
     });  
@@ -65,7 +67,9 @@ isUsernameExists = function(username, callback){
 
 addAdmin = function(req, res, next){
     var username = req.body.username;
-    isUsernameExists(username, function(err, data){
+    console.log("Add admin");
+    console.log(username);
+    isAdminExists(username, function(err, data){
         if (err) {
             res.json(err);
         }
@@ -149,27 +153,17 @@ updateAdminDetail = function(req, res){
     //End of code to create object data
     
     // Code to update clinic Details
-    if(typeof req.body.admin_id != "undefined"){
-        var search_criteria = {_id:req.body.admin_id};
+    if(typeof req.body._id != "undefined"){
+        var search_criteria = {_id:req.body._id};
         adminModel.updateAdmin(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
             if (err) {
-                if (err.errors) {
-                    var error_detail = [];
-                    for (var errName in err.errors) {
-                        error_detail.push(err.errors[errName].message);
-                    }
-                    return_data.error = error_detail;
-                    res.json(return_data);
-                }
-                else{
-                    return_data.error = message;
-                    res.json(return_data);
-                }
+                return_data.error = err;
+                res.json(return_data);
             }
             else{
-                return_data.success = "Clinic updated Successfully";
+                return_data.success = true;
                 res.json(return_data);
             }
         });

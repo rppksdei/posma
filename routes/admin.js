@@ -14,7 +14,7 @@ module.exports = function(app,express, isSuperAdmin){
     });
     
     // Get One Admin/Clinic Detail
-    router.get('/:id', function(req, res){
+    router.post('/detail', function(req, res){
         adminObj.getAdminDetail(req, res);
     });
     //End of code to get one Admin/Clinic detail
