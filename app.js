@@ -120,6 +120,39 @@ isSurgeon = function (req, res, next) {
     }
   });
 }
+isClinicOrSurgeon = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 2 || req.user.user_type == 0) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+isClinicOrAdmin = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 1 || req.user.user_type == 0) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
 
 
 //End of functions to check session and user type 
@@ -127,8 +160,8 @@ isSurgeon = function (req, res, next) {
 // Route Path
 require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
-require('./routes/admin')(app,express, isSuperAdmin);
-require('./routes/surgery')(app,express);
+require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin);
+require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
 require('./routes/pathway')(app,express);

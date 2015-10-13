@@ -83,6 +83,7 @@ addAdmin = function(req, res, next){
                 }
                 else if (req.user.user_type == "0"){
                     adminDetail.user_type = 2;
+                    adminDetail.parent_id = req.user._id;
                     adminDetail.clinic_name = "";
                 }
                 adminModel.addAdmin(adminDetail, function(err, data){
@@ -145,6 +146,9 @@ updateAdminDetail = function(req, res){
     }
     if(typeof req.body.is_deleted != "undefined"){
         update_data.is_deleted = req.body.is_deleted;
+    }
+    if(typeof req.body.surgery != "undefined"){
+        update_data.surgery = req.body.surgery;
     }
     if(typeof req.body.is_active != "undefined"){
         update_data.is_active = req.body.is_active;
