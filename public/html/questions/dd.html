@@ -14,7 +14,7 @@
             <angular-accordion>
                 <pane ng-repeat = "que in questions">
                     <pane-header>
-                        {{que.name}} <a href="javascript:void(0);" ng-click="selectQuestion($index);"><i class="fa fa-forward"></i>d</a>
+                        {{que.name}} <a href="javascript:void(0);" ng-click="selectQuestion($index);"><i class="fa fa-forward"></i></a>
                     </pane-header>
                     <pane-content ng-if="que.ans">
                        {{que.ans}}
@@ -27,7 +27,7 @@
             <angular-accordion>
                 <pane ng-repeat = "selected_question in selected_questions">
                     <pane-header>
-                        {{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);">a
+                        {{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);"><i class="fa fa-backward"></i>
                         </a>
                     </pane-header>
                     <pane-content ng-if="selected_question.ans">

@@ -17,49 +17,14 @@
     <!-- Custom CSS -->
     <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
     <!-- Custom Fonts -->
-
-    <style type="text/css">
-        .has-error label.control-label{
-            font-weight: normal;
-        }
-    </style>
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-resource.js"></script>
-    <script src="js/angular-route.js"></script>
-    <script src="js/angular-cookies.js"></script>
-    <script src="flash/angular-flash.js"></script>
-    <script src="js/checklist-model.js"></script>
-    <script src="js/angular-confirm.js"></script>
-    <script src="js/services.js"></script>
-
-    
-    <script src="js/angular-accordion.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/ng-table.min.js"></script>
-    <script src="js/sweet-alert.min.js"></script>
-
-    <link rel="stylesheet" href="css/sweet-alert.css">
-    <link rel="stylesheet" href="css/ng-table.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/angular-accordion.css">
-
+    <script src="js/sweet-alert.min.js"></script>
+    <link rel="stylesheet" href="/css/sweet-alert.css">
+    <link rel="stylesheet" href="/css/ng-table.min.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="flash/angular-flash.css" type="text/css">
 
-    <!-- All Controllers -->
-    <script src="html/authenticate/loginCtrl.js"></script>
-    <script src="html/dashboard/dashboardCtrl.js"></script>
-    <script src="html/profile/profileCtrl.js"></script>
-    <script src="html/questions/questionsCtrl.js"></script>
-    <script src="html/surgery/surgeryCtrl.js"></script>
-    <script src="html/admin/adminCtrl.js"></script>
-    <script src="html/surgeon/surgeonCtrl.js"></script>
-
-
-    
-    <!-- End of Controllers-->
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -67,11 +32,10 @@
 </head>
 <body>
     <!-- If not session -->
-    
-    <div class="container"  ng-if="user.user_type==='undefined'">
+     <div class="container"  ng-if="user.user_type==='undefined'">
         <div ng-view></div>
     </div>
-    <!-- else --->
+    <!--else-->
     <div id="wrapper" ng-if="user.user_type !=='undefined'">
     
         <div ng-show="user.user_type == 0" ng-include="'/html/elements/clinic_admin.html'"></div>
@@ -80,25 +44,32 @@
         <!--- end of else -->
         <div ng-view>
     </div>
-    
-    
-    
-    
-                
-                
-
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-resource.js"></script>
+    <script src="js/angular-route.js"></script>
+    <script src="js/angular-cookies.js"></script>
+    <script src="flash/angular-flash.js"></script>
+    <script src="js/checklist-model.js"></script>
+    <script src="js/angular-confirm.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/app.js"></script>
+    <script src="/js/ng-table.min.js"></script>
+    <script src="html/authenticate/loginCtrl.js"></script>
+    <script src="html/dashboard/dashboardCtrl.js"></script>
+    <script src="html/profile/profileCtrl.js"></script>
+    <script src="html/questions/questionsCtrl.js"></script>
+    <script src="html/surgery/surgeryCtrl.js"></script>
+    <script src="html/admin/adminCtrl.js"></script>
+    <script src="html/surgeon/surgeonCtrl.js"></script>
+    <script src="html/questionnaire/questionnaireCtrl.js"></script>  
+    <script src="js/angular-accordion.js"></script>
     <!-- jQuery -->
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
     <!-- Metis Menu Plugin JavaScript -->
     <script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
     <!-- Custom Theme JavaScript -->
     <script src="/dist/js/sb-admin-2.js"></script>
-
 </body>
-
 </html>
