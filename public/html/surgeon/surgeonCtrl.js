@@ -1,21 +1,35 @@
-myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, ngTableParams, $rootScope, $routeParams, SweetAlert){
+myapp.controller('surgeonCtrl', function($scope, $route, Admin, Surgery, $location,Flash, ngTableParams, $rootScope, $routeParams, SweetAlert){
     $scope.success = "";
     $scope.listAdmin = "";
     $scope.errordetail = [];
-    $scope.form_heading = 'Add Institute';
+    $scope.form_heading = 'Add Surgeon';
     $scope.whole_data = [];
+    $scope.surgeries = [];
+    
+    // Initialize variable
+    $scope.admin = {};
+    //End of code to initialize variable
     var flag = '';
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
+    
+    // get surgery list
+    if (flag == "add_surgeon" || flag == "edit_surgeon") {
+        Surgery.getDetail().query({}, function(data){
+            $scope.surgeries = data;
+        });    
+    }
+    //End of code to get surgery list
+    
     
     $scope.add = function(){
         if ($scope.admin._id) {
             Admin.update().save($scope.admin, function(data){
                 $scope.errordetail = {};
                if (data.success) {
-                    Flash.create('success', 'Institute has been updated successfully.', 'alert alert-success');
-                    $location.path('/listinstitute');
+                    Flash.create('success', 'Surgeon has been updated successfully.', 'alert alert-success');
+                    $location.path('/surgeons');
                 }
                 else{
                     if (data.error.errors){
@@ -34,8 +48,8 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, n
         else{
             Admin.add().save($scope.admin, function(data){
                if (data.success) {
-                    Flash.create('success', 'Institute has been saved successfully.', 'alert alert-success');
-                    $location.path('/listinstitute');
+                    Flash.create('success', 'Surgeon has been saved successfully.', 'alert alert-success');
+                    $location.path('/surgeons');
                 }
                 else{
                     if (data.error.errors){
@@ -46,7 +60,6 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, n
                     }
                     else{
                        $scope.errordetail[data.error.path] = data.error.message;
-                        console.log($scope.error);
                     }
                 }
             });
@@ -54,7 +67,7 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, n
     }
     
     $scope.editAdmin = function(){
-        $scope.form_heading = 'Update Institute';
+        $scope.form_heading = 'Update Surgeon';
         $scope.editProfileId = $routeParams.id;
         $scope.admin = {};
         Admin.getDetail().save({'id':$scope.editProfileId}, function(data){
@@ -83,7 +96,7 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, n
             Admin.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;
-                    Flash.create('success', 'Institute status has been updated successfully.', 'alert alert-success');
+                    Flash.create('success', 'Surgeon status has been updated successfully.', 'alert alert-success');
                 }
             });
         });
@@ -93,7 +106,7 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, n
         
         SweetAlert.swal({
         title: "Are you sure?",
-        text: "Your will not be able to recover institute !",
+        text: "Your will not be able to recover surgeon !",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -113,7 +126,7 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, n
                     }
                     $scope.whole_data.splice(del_index, 1);
                     $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.whole_data});
-                    Flash.create('success', 'Institute has been deleted successfully.', 'alert alert-success');
+                    Flash.create('success', 'Surgeon has been deleted successfully.', 'alert alert-success');
                 }
             }); 
         });
@@ -130,7 +143,7 @@ myapp.controller('adminCtrl', function($scope, $route, Admin, $location,Flash, n
     if (flag == "list") {
         $scope.listAdmin();
     }
-    else if (flag == "edit_admin") {
+    else if (flag == "edit_surgeon") {
         $scope.editAdmin();
     }
 });

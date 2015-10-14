@@ -1,5 +1,5 @@
 //angular.module('MyAppService', ['ngResource']);
-var myapp = angular.module("posma", ['ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies']);
+var myapp = angular.module("posma", ['ui.bootstrap','ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model"]);
 function checkloggedIn($rootScope, $http, $location) {
     $http.get('/login/checkloggedin').success(function(data) {
         if (data.error) {
@@ -34,16 +34,40 @@ myapp.config(['$routeProvider',
                 flag:'change_password',
                 resolve:{'logged_in':checkloggedIn}
             })
-            .when('/add_admin',{
+            .when('/add_institute',{
                 templateUrl:'/html/admin/add.html',
                 controller:'adminCtrl',
                 flag:'add_admin',
                 resolve:{'logged_in':checkloggedIn}
             })
-            .when('/listadmin',{
+            .when('/edit_institute/:id',{
+                templateUrl:'/html/admin/add.html',
+                controller:'adminCtrl',
+                flag:'edit_admin',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/listinstitute',{
                 templateUrl:'/html/admin/list.html',
                 controller:'adminCtrl',
                 flag:'list',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/surgeons',{
+                templateUrl:'/html/surgeon/list.html',
+                controller:'surgeonCtrl',
+                flag:'list',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/edit_surgeon/:id',{
+                templateUrl:'/html/surgeon/add.html',
+                controller:'surgeonCtrl',
+                flag:'edit_surgeon',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/add_surgeon',{
+                templateUrl:'/html/surgeon/add.html',
+                controller:'surgeonCtrl',
+                flag:'add_surgeon',
                 resolve:{'logged_in':checkloggedIn}
             })
             .when('/logout',{
