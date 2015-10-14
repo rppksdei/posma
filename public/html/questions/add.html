@@ -1,7 +1,8 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Add Question Answers</h1>
+            <h1 ng-if="!question._id" class="page-header">Add Question Answers</h1>
+            <h1 ng-if="question._id" class="page-header">Update Question Answers</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -9,8 +10,11 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div ng-if="!question._id" class="panel-heading">
                     Add Question
+                </div>
+                <div ng-if="question._id" class="panel-heading">
+                    Update Question
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -72,13 +76,15 @@
                                         </div>
                                         <!--label>Max length</label-->
                                         <div data-ng-repeat="answer_opt in answer_opts">
+                                            <!--input ng-model="answer_opt._id" type="text" value=""-->
                                             <div class="form-group col-lg-6">
 	                                            <input class="form-control" ng-model="answer_opt.name" placeholder="Answer option">
       										</div>
                                             <div class="form-group col-lg-4">
 	                                            <div class="checkbox">
 	                                                <label>
-	                                                    <input ng-model="answer_opt.out_of_range" type="checkbox" value="">Out of range
+	                                                    <input ng-checked="answer_opt.out_of_range == 'true'" ng-model="answer_opt.out_of_range" type="checkbox" value="">
+                                                        Out of range
 	                                                </label>
                                     			</div>
                                     		</div>
@@ -90,7 +96,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-12" style="text-align:center">
-                        		<button class="btn btn-success" type="button" ng-click="add();">Submit</button>
+                        		<button ng-if="!question._id" class="btn btn-success" type="button" ng-click="add();">Add Question</button>
+                                <button ng-if="question._id" class="btn btn-success" type="button" ng-click="edit();">Update Now</button>
                         	</div>
                         	<!-- /.col-lg-6 (nested) -->
                         </form>
