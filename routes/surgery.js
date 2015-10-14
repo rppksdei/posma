@@ -25,11 +25,10 @@ module.exports = function(app,express,isClinicOrSurgeon, isClinicAdmin){
     //End of code to get one Surgery detail
 
     router.post('/detail', isClinicOrSurgeon, function(req, res){
-    // Get One Surgery Detail
         surgeryObj.getSurgeryDetail(req, res);
     });
     
-    // Get One Surgery Detail
+    // Update Surgery
     router.post('/update', isClinicAdmin, function(req, res){
         surgeryObj.updateSurgeryDetail(req, res);
     });

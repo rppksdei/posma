@@ -71,6 +71,12 @@ updateSurgeryDetail = function(req, res){
     if(typeof req.body.description != "undefined"){
         update_data.description = req.body.description;
     }
+    if(typeof req.body.is_deleted != "undefined"){
+        update_data.is_deleted = req.body.is_deleted;
+    }
+    if(typeof req.body.is_active != "undefined"){
+        update_data.is_active = req.body.is_active;
+    }
     update_data.modified = Date.now();
     //End of code to create object data
     
