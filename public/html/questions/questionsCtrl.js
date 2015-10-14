@@ -3,7 +3,10 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
     $scope.questionList = "";
     $scope.question = "";
     $scope.errors = [];
+    $scope.questions = [];
+    $scope.selected_questions = [];
     var flag = '';
+    var enabled = false;
     
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
@@ -16,6 +19,67 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
             $scope.tableParams = new ngTableParams({count:10}, {counts:{}, data:data});
         });
     }
+
+    $scope.dd = function(){
+        var accordionPane = 'header-1';
+
+        if(typeof($routeParams.accordionPane) !== 'undefined') {
+            accordionPane = $routeParams.accordionPane;
+        }
+
+        $rootScope.$broadcast('expand', accordionPane);
+
+        $rootScope.$on('angular-accordion-expand', function(event, eventArguments) {
+            $location.path(eventArguments);
+        });   
+
+
+        $scope.questions = [
+            {
+                'id':'1',
+                'name':'Ques1',
+                'ans':[
+                    {'name':'A1','out_of_range':'0'},
+                    {'name':'A2','out_of_range':'0'},
+                    {'name':'A3','out_of_range':'1'}
+                ]
+            },
+            {
+                'id':'2',
+                'name':'Ques2',
+                'ans':[
+                    {'name':'A11','out_of_range':'0'},
+                    {'name':'A12','out_of_range':'0'},
+                    {'name':'A13','out_of_range':'1'}
+                ]
+            },
+            {
+                'id':'3',
+                'name':'Ques3',
+                'ans':[]
+            }
+        ];
+
+        $scope.selected_questions = [];
+
+    }
+
+    $scope.selectQuestion = function(qindex){
+        $scope.selected_questions.push($scope.questions[qindex]);
+        $scope.questions.splice(qindex,1);
+    };
+    $scope.unselectQuestion = function(qindex){
+        $scope.questions.push($scope.selected_questions[qindex]);
+        $scope.selected_questions.splice(qindex,1); 
+    };
+
+    /*$scope.paneEnabled = function() {
+        return enabled;
+    };
+
+    $scope.enablePane = function() {
+        enabled = !enabled;
+    }*/
 
     $scope.answer_opts = [{id: 'ansopt1'}];
 
@@ -125,5 +189,7 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         $scope.list();
     } else if (flag == "edit") {
         $scope.edit();
+    }  else if (flag == "dd") {
+        $scope.dd();
     } 
 });

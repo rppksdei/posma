@@ -1,26 +1,61 @@
-<angular-accordion>
-    <pane>
-        <pane-header>
-            Header 1
-        </pane-header>
-        <pane-content>
-            Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 Content 1 
-        </pane-content>
-    </pane>
-    <pane>
-        <pane-header>
-            Header 2
-        </pane-header>
-        <pane-content>
-            Content 2
-        </pane-content>
-    </pane>
-    <pane>
-        <pane-header disabled="{{ paneEnabled() }}">
-            Header 3
-        </pane-header>
-        <pane-content>
-            Content 3
-        </pane-content>
-    </pane>
-</angular-accordion>
+<div id="page-wrapper" ng-controller="questionsCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Manage Questions</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-6">
+            <!--div style="height: 10%; width: 100%;">
+                <a href ng-click="enablePane()">Togged Pane Disabled</a>
+            </div-->
+            <angular-accordion>
+                <pane ng-repeat = "que in questions">
+                    <pane-header>
+                        {{que.name}} <a href="javascript:void(0);" ng-click="selectQuestion($index);"><i class="fa fa-forward"></i>d</a>
+                    </pane-header>
+                    <pane-content ng-if="que.ans">
+                       {{que.ans}}
+                    </pane-content>
+                </pane>
+             </angular-accordion>
+        </div>
+        <div class="col-lg-6">
+        
+            <angular-accordion>
+                <pane ng-repeat = "selected_question in selected_questions">
+                    <pane-header>
+                        {{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);">a
+                        </a>
+                    </pane-header>
+                    <pane-content ng-if="selected_question.ans">
+                       {{selected_question.ans}}
+                    </pane-content>
+                </pane>
+            </angular-accordion>
+        </div>
+
+        <div ng-model="kanbanBoard" id="board" ng-controller="KanbanController">
+            <div id="columns" class="row">
+                <div class="col-sm-{{12/kanbanBoard.numberOfColumns}} col-xs-{{12/kanbanBoard.numberOfColumns}}"
+                     ng-repeat="column in kanbanBoard.columns"
+                     data-columnindex="{{$index}}" id="column{{$index}}">
+                    <div class="column">
+                        <div class="columnHeader">
+                            <a title="Add card to column" ng-click="addNewCard(column)"><i
+                                    class="glyphicon glyphicon-plus addNewCard"></i></a>
+                            <span>{{column.name}} ({{column.cards.length}})</span>
+                        </div>
+                        <ul class="cards card-list" as-sortable="kanbanSortOptions" ng-model="column.cards">
+                            <li class="card" ng-repeat="card in column.cards" as-sortable-item ng-include="'views/partials/card.html'">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
