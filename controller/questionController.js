@@ -13,7 +13,7 @@ getlisting = function(req, res, next){
 }
 
 getQuestionDetail = function(req, res){
-    var question_id = req.params.id;
+    var question_id = req.body._id;
     var search_question = {_id:question_id};
     questionModel.getQuestion(search_question, function(err, data){
         var return_val = {};
@@ -23,7 +23,7 @@ getQuestionDetail = function(req, res){
         }
         else{
             if (data == null) {
-                return_val.error = "question doesn't exists";
+                return_val.error = "Question doesn't exist.";
                 res.json(return_val);
             }
             else{
@@ -69,7 +69,7 @@ addQuestion = function(req, res, next){
 }
 
 updateQuestionDetail = function(req, res){
-
+    console.log(req);
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.name != "undefined"){
@@ -100,9 +100,9 @@ updateQuestionDetail = function(req, res){
     //End of code to create object data
     
     // Code to update clinic Details
-    if(typeof req.body.question_id != "undefined"){
+    if(typeof req.body._id != "undefined"){
         var search_criteria = {};
-        var search_criteria = {_id:req.body.question_id};
+        var search_criteria = {_id:req.body._id};
         //code
         questionModel.updateQuestion(search_criteria, update_data, function(err, data){
             var return_data = {};
@@ -122,14 +122,13 @@ updateQuestionDetail = function(req, res){
                 }
             }
             else{
-                return_data.success = "Question updated Successfully";
+                return_data.success = "Question has been updated successfully.";
                 res.json(return_data);
             }
         });
-    }
-    else{
+    } else{
         var return_data = {};
-        return_data.error = "Please enter object id to update";
+        return_data.error = "Please enter object id to update.";
         res.json(return_data);
     }
     //End of code to update clinic detail

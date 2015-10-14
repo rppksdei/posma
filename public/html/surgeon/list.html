@@ -16,7 +16,7 @@
 <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Institutes</h1>
+                    <h1 class="page-header">Surgeons</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -27,20 +27,16 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                              <h4 style="float: left;width:85%" >
-                        Manage institute
+                        Manage surgeon
                     </h4>
-                            <a href="#add_institute" class="btn btn-primary right">Add Institute</a>
+                            <a href="#add_surgeon" class="btn btn-primary right">Add Surgeon</a>
                         </div>
-                        <!--div class="panel-heading">
-                            DataTables Advanced Tables
-                        </div-->
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                                     <div flash-message="5000" ></div>
                             <div class="dataTable_wrapper">
                                     <table ng-table="tableParams" class="table">
                                     <tr ng-repeat="admins in $data"  ng-class="{even: $even, odd: $odd}">
-                                                <td data-title="'Institute name'" sortable="admins.clinic_name">{{admins.clinic_name}}</td>
                                                 <td data-title="'Username'">{{admins.username}}</td>
                                                 <td data-title="'Phone'">{{admins.phone}}</td>
                                                 <td data-title="'Status'">
@@ -50,7 +46,7 @@
                                                 </td>
                                                 
                                 <td data-title="'Action'">
-                                    <a href="#edit_institute/{{admins._id}}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
+                                    <a href="#edit_surgeon/{{admins._id}}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
                                     <a href="javascript:void(0);" ng-click="deleteClinic(admins._id);" title="Delete"><i class="fa fa-trash-o"></i></a>
                                     
                                     </td>
@@ -66,24 +62,3 @@
                 <!-- /.col-lg-12 -->
             </div>
         </div>
-
-<!-- Modal -->
-<div class="modal fade" id="modelconfirm" role="dialog">
-  <div class="modal-dialog">
-  
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" onclick="showconfirm($rootscope);" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-    
-  </div>
-</div>

@@ -1,8 +1,14 @@
 var surgeryModel = require("./../model/surgeryModel");
 
 getlisting = function(req, res, next){
-    var search = {is_deleted:0, is_active:0, clinic : req.user._id};
-    surgeryModel.getAllSurgery(search, function(err, userDetail){
+    var search_surgery = {is_deleted:0};
+    if (req.user.user_type == "2") {
+        search_surgery.clinic = req.user.parent_id;
+    }
+    else if (req.user.user_type == "0"){
+        search_surgery.clinic = req.user._id;
+    }
+    surgeryModel.getAllSurgery(search_surgery, function(err, userDetail){
         if(err){
             res.json(err);
         }
