@@ -20,6 +20,12 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.addSurgery = function(){
             return $resource('/surgery/add');
         }
+        serviceObj.editSurgery = function(){
+            return $resource('/surgery/edit');
+        }
+        serviceObj.getDetailId = function(){
+            return $resource('/surgery/getdetail/');
+       }
         // serviceObj.updateProfile = function(){
         //     return $resource('/profile/update');
         // }

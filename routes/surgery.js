@@ -10,17 +10,26 @@ module.exports = function(app,express){
     
     /* add Surgery listing. */
     router.post('/add',  function(req, res, next) {
-        surgeryObj.addSurgery(req, res, next);
+        if(typeof req.body._id != "undefined"){
+            surgeryObj.updateSurgeryDetail(req, res, next);
+        }else{
+            surgeryObj.addSurgery(req, res, next);
+        }
     });
     
     // Get One Surgery Detail
-    router.get('/:id', function(req, res){
+    // router.post('/:id', function(req, res){
+    //     //console.log('fgdfg');
+    //     surgeryObj.getSurgeryDetail(req, res);
+    // });
+    //End of code to get one Surgery detail
+
+    router.post('/getdetail', function(req, res){
         surgeryObj.getSurgeryDetail(req, res);
     });
-    //End of code to get one Surgery detail
     
     // Get One Surgery Detail
-    router.post('/update', function(req, res){
+    router.post('/edit', function(req, res){
         surgeryObj.updateSurgeryDetail(req, res);
     });
     //End of code to get one Surgery detail

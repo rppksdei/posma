@@ -1,11 +1,8 @@
-myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, $rootScope){
+myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, $routeParams, $rootScope){
     $scope.surgeries = "";
     $scope.success = "";
     $scope.surgery = "";
-    // $scope.ch_pass = "";
-    // $scope.ch_pass.current_password = "";
-    // $scope.ch_pass.confirm_password = "";
-    // $scope.ch_pass.new_password = "";
+    $scope.errordetail = [];
     
     var flag = '';
     if (typeof $route.current.$$route.flag !== 'undefined') {
@@ -16,37 +13,59 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, $ro
             $scope.surgeries = data;
         });    
     }
+
     $scope.add = function(){
         var surgeryData = $scope.surgery;
-        console.log(surgeryData);
         Surgery.addSurgery().save(surgeryData, function(data){
             if(data.success){
-                $scope.success_message = data.success;
-            }
-            else{
-                // $scope.error[data.error.path] = data.error.message;
-                // console.log($scope.error);
+                //$scope.success_message = data.success;
+                $location.path('/surgeries');
+            }else{
+                if (data.error.errors){
+                     $scope.errordetail = [];
+                    for (var errName in data.error.errors) {
+                        $scope.errordetail[errName] = data.error.errors[errName].message
+                    }
+                     console.log($scope.errordetail);
+                }
+                else{
+                    //console.log(data.error.errors);
+                    $scope.errordetail[data.error.path] = data.error.message;
+                    console.log($scope.errordetail);
+                }
             }
         });
     }
-    // $scope.updateProfile = function(){
-    //     $scope.error = [];
-    //     Profile.updateProfile().save($scope.profileData, function(data){
-    //         if (data.success) {
-    //             $rootScope.user = $scope.profileData;
-    //             $scope.success_message = data.success;
-    //         }
-    //         else{
-    //             $scope.error[data.error.path] = data.error.message;
-    //             console.log($scope.error);
-    //         }
-    //     });
-    // }
+
+    $scope.edit = function(){
+        $scope.error = [];
+        var surgeryId = $routeParams.id;
+        Surgery.getDetailId().save({'id': surgeryId}, function(data){
+            if(data){
+                //console.log(data);
+                $scope.surgery = data;
+                $scope.surgery.clinic_name = $rootScope.user.clinic_name;
+            }
+        });
+
+        // Surgery.editSurgery().save({'id': surgeryId}, function(data){
+        //     if (data.success) {
+        //        // $rootScope.user = $scope.profileData;
+        //         $scope.success_message = data.success;
+        //     }else{
+        //         $scope.error[data.error.path] = data.error.message;
+        //         console.log($scope.error);
+        //     }
+        // });
+    }
     
     
     if (flag == "get_surgery") {
         $scope.getSurgery();
-    } /* else if (flag == "add") {
+    }else if (flag == "edit") {
+        $scope.edit();
+    }
+    /* else if (flag == "add") {
         $scope.add();
     } */
     ;
