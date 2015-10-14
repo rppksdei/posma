@@ -13,7 +13,7 @@
                     <h4 style="float: left;width:85%" >
                         Question Answers
                     </h4>
-                    <a href="add_edit.html" class="btn btn-primary right">Add Question</a>
+                    <a href="/#/questions/add" class="btn btn-primary right">Add Question</a>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -80,7 +80,7 @@
                                                 <div class="modessage modal-body">
                                                     <ol>
                                                         <li ng-repeat="ans in question.answer">
-                                                            <b>{{ans.name}}</b> <span ng-if="ans.out_of_range != '0'">Unexpected answer - send alert to institute owner</span>
+                                                            <b>{{ans.name}}</b> <span ng-if="ans.out_of_range == 'true'">Unexpected answer - send alert to institute owner</span>
                                                         </li>
                                                     </ol>
                                                 </div>

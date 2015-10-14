@@ -66,6 +66,9 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.addQuestion = function(){
             return $resource('/question/add');  
         }
+        serviceObj.updateQuestion = function(){
+            return $resource('/question/update');  
+        }
         serviceObj.getDetail = function(){
             return $resource('/question/getDetail');  
         }
@@ -82,7 +85,6 @@ angular.module('PosmaService', ['ngResource'])
         var swal = window.swal;
         //public methods
         var self = {
-
             swal: function ( arg1, arg2, arg3 ) {
                 swal( arg1, arg2, arg3 );
             },
