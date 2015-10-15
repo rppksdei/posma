@@ -3,14 +3,9 @@
         <div class="col-lg-12">
             <h1 class="page-header">Manage Questions</h1>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
     <div class="row">
         <div class="col-lg-6">
-            <!--div style="height: 10%; width: 100%;">
-                <a href ng-click="enablePane()">Togged Pane Disabled</a>
-            </div-->
             <angular-accordion>
                 <pane ng-repeat = "que in questions">
                     <pane-header>
@@ -20,7 +15,7 @@
                        {{que.ans}}
                     </pane-content>
                 </pane>
-             </angular-accordion>
+            </angular-accordion>
         </div>
         <div class="col-lg-6">
         
@@ -36,26 +31,188 @@
                 </pane>
             </angular-accordion>
         </div>
-
-        <div ng-model="kanbanBoard" id="board" ng-controller="KanbanController">
-            <div id="columns" class="row">
-                <div class="col-sm-{{12/kanbanBoard.numberOfColumns}} col-xs-{{12/kanbanBoard.numberOfColumns}}"
-                     ng-repeat="column in kanbanBoard.columns"
-                     data-columnindex="{{$index}}" id="column{{$index}}">
-                    <div class="column">
-                        <div class="columnHeader">
-                            <a title="Add card to column" ng-click="addNewCard(column)"><i
-                                    class="glyphicon glyphicon-plus addNewCard"></i></a>
-                            <span>{{column.name}} ({{column.cards.length}})</span>
-                        </div>
-                        <ul class="cards card-list" as-sortable="kanbanSortOptions" ng-model="column.cards">
-                            <li class="card" ng-repeat="card in column.cards" as-sortable-item ng-include="'views/partials/card.html'">
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <table style="width:auto;" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>title</th>
+                        </tr>
+                    </thead>
+                    <tbody ui:sortable ng:model="list">
+                        <tr ng:repeat="selected_question in selected_questions" class="item" style="cursor: move;">
+                            <td>{{selected_question.name}}</td>
+                        </tr>
+                    </tbody>
+                    <hr>
             </div>
         </div>
-
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>Demo</h3>
+            <div>Add following files :
+                <ol>
+                    <li>http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js</li>
+                    <li>js/angularjs-dropdown-multiselect.js</li>
+                    <li> Add 'angularjs-dropdown-multiselect' in app.js like folloeing:<br> angular.module('applicateion name',['angularjs-dropdown-multiselect'])
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-6">
+            Basic example
+            <div ng-dropdown-multiselect="" options="example1data" selected-model="example1model"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example1model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>In dropdown display property is id</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example2data" selected-model="example2model" extra-settings="example2settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example2model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>In dropdown display property is label and id is label </div>
+        <div class="col-lg-6">
+            
+            <div ng-dropdown-multiselect options="example3data" selected-model="example3model" extra-settings="example3settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example3model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>In dropdown display property is label and id is label + myCustomPropertyForTheObject</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example4data" selected-model="example4model" extra-settings="example4settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example4model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>hange select button title</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example5data" selected-model="example5model" extra-settings="example5settings" translation-texts="example5customTexts"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example5model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>Default selected options</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example6data" selected-model="example6model" extra-settings="example6settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example6model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>externalIdProp</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example7data" selected-model="example7model" extra-settings="example7settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example7model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>With checkboxes</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example8data" selected-model="example8model" checkboxes="true"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example8model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>With search</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect="" options="example9data" selected-model="example9model" extra-settings="example9settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example9model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>With selection limit 1</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example10data" selected-model="example10model" extra-settings="example10settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example10model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>With grouping</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example11data" selected-model="example11model" extra-settings="example11settings" group-by="gender"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example11model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>With selection limit 2</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example12data" selected-model="example12model" extra-settings="example12settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example12model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>With smart button, after selection selection items will be displayed on  button</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example13data" selected-model="example13model" extra-settings="example13settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example13model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>With scroll bar</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect options="example14data" selected-model="example14model" extra-settings="example14settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example14model|json}}</pre>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div>Search text box with pre defined character</div>
+        <div class="col-lg-6">
+            <div ng-dropdown-multiselect search-filter="customFilter" options="example15data" selected-model="example15model" extra-settings="example15settings"></div>
+        </div>
+        <div class="col-lg-6">
+            <pre>{{example15model|json}}</pre>
+        </div>
+    </div>
+
 </div>
