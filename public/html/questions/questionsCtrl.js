@@ -1,10 +1,11 @@
 myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTableParams,
-                                myService,SweetAlert, $http, $location, $rootScope,$routeParams){
+                                myService,orderByFilter,SweetAlert, $http, $location, $rootScope,$routeParams){
     $scope.questionList = "";
     $scope.question = "";
     $scope.errors = [];
     $scope.questions = [];
     $scope.selected_questions = [];
+    $scope.Sorted = [];
     var flag = '';
     var enabled = false;
     
@@ -60,6 +61,13 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
             }
         ];
         $scope.selected_questions = [];
+        $scope.queOrder = [];
+        for(var i=0; i< $scope.questions.length; i++){
+            $scope.questions[i].order = i;
+            $scope.queOrder[i] = i;
+        }
+        //$scope.queOrder = $scope.questions;
+        //console.log($scope.queOrder);
 
         //$scope.arrVal = ['one','two','three','four','five','six'];
         //$scope.arrVal = $scope.arrVal.sort();
@@ -229,6 +237,10 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
     };
     $scope.unselectQuestion = function(qindex){
         $scope.questions.push($scope.selected_questions[qindex]);
+        $scope.Sorted = orderByFilter($scope.questions, function(item) {
+            return $scope.queOrder.indexOf(item.order);
+        });
+        $scope.questions = $scope.Sorted;
         $scope.selected_questions.splice(qindex,1); 
     };
 
