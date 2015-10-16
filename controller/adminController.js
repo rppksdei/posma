@@ -1,4 +1,5 @@
 var adminModel = require("./../model/adminModel");
+var common = require('./../common.js');
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
@@ -33,6 +34,8 @@ getAdminDetail = function(req, res){
                 res.json(return_val);
             }
             else{
+                console.log(data.password);
+                data.password = common.decrypt(data.password);
                 res.json(data);
             }
         }  
@@ -67,8 +70,6 @@ isAdminExists = function(username, callback){
 
 addAdmin = function(req, res, next){
     var username = req.body.username;
-    console.log("Add admin");
-    console.log(username);
     isAdminExists(username, function(err, data){
         if (err) {
             res.json(err);
@@ -86,6 +87,7 @@ addAdmin = function(req, res, next){
                     adminDetail.parent_id = req.user._id;
                     adminDetail.clinic_name = "";
                 }
+                adminDetail.password = common.encrypt(adminDetail.password);
                 adminModel.addAdmin(adminDetail, function(err, data){
                     var return_data = {};
                     if (err) {
@@ -115,7 +117,7 @@ updateAdminDetail = function(req, res){
         update_data.username = req.body.username;
     }
     if(typeof req.body.password != "undefined"){
-        update_data.password = req.body.password;
+        update_data.password = common.encrypt(req.body.password);
     }
     if(typeof req.body.clinic_name != "undefined"){
         update_data.clinic_name = req.body.clinic_name;

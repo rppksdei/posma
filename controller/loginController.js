@@ -1,5 +1,6 @@
 var adminModel = require('./../model/adminModel');
 var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
+var common = require('./../common.js');
 
 exports.userlogin = function(req, res, next){
     passport.authenticate('local', function(err, user, info){
@@ -64,6 +65,7 @@ exports.loggedout = function(req, res, next){
 
 passport.use('local', new LocalStrategy(
     function(username, password, done) {
+        password = common.encrypt(password);
         var userDetail = {'username':username, 'password':password};
         adminModel.getAdmin(userDetail, function(err, user){
             if (err) {

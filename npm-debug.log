@@ -1,28 +1,152 @@
-0 info it worked if it ends with ok
-1 verbose cli [ '/root/.nvm/v0.10.40/bin/node',
-1 verbose cli   '/root/.nvm/v0.10.40/bin/npm',
-1 verbose cli   'start' ]
-2 info using npm@1.4.28
-3 info using node@v0.10.40
-4 verbose run-script [ 'prestart', 'start', 'poststart' ]
-5 info prestart healthcare@0.0.0
-6 info start healthcare@0.0.0
-7 verbose unsafe-perm in lifecycle true
-8 info healthcare@0.0.0 Failed to exec start script
-9 error healthcare@0.0.0 start: `node ./bin/www`
-9 error Exit status 8
-10 error Failed at the healthcare@0.0.0 start script.
-10 error This is most likely a problem with the healthcare package,
-10 error not with npm itself.
-10 error Tell the author that this fails on your system:
-10 error     node ./bin/www
-10 error You can get their info via:
-10 error     npm owner ls healthcare
-10 error There is likely additional logging output above.
-11 error System Linux 3.13.0-32-generic
-12 error command "/root/.nvm/v0.10.40/bin/node" "/root/.nvm/v0.10.40/bin/npm" "start"
-13 error cwd /home/hiteshj/Project/git/posma
-14 error node -v v0.10.40
-15 error npm -v 1.4.28
-16 error code ELIFECYCLE
-17 verbose exit [ 1, true ]
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/bin/npm', 'install' ]
+info using npm@1.1.4
+info using node@v0.6.12
+verbose config file /home/hiteshj/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/share/npm/npmrc
+verbose caching /home/hiteshj/Project/git1/posma/package.json
+verbose loadDefaults healthcare@0.0.0
+verbose readDependencies: using package.json deps
+verbose where, deps [ '/home/hiteshj/Project/git1/posma',
+verbose where, deps   [ 'bcryptjs',
+verbose where, deps     'body-parser',
+verbose where, deps     'cookie-parser',
+verbose where, deps     'crypto',
+verbose where, deps     'debug',
+verbose where, deps     'express',
+verbose where, deps     'express-session',
+verbose where, deps     'jade',
+verbose where, deps     'morgan',
+verbose where, deps     'passport',
+verbose where, deps     'passport-local',
+verbose where, deps     'serve-favicon' ] ]
+verbose from cache /home/hiteshj/Project/git1/posma/package.json
+info preinstall healthcare@0.0.0
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/cookie-parser/package.json
+verbose loadDefaults cookie-parser@1.3.5
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/express/package.json
+verbose loadDefaults express@4.13.3
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/crypto/package.json
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/express-session/package.json
+verbose loadDefaults express-session@1.11.3
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/passport-local/package.json
+verbose loadDefaults passport-local@1.0.0
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/jade/package.json
+verbose loadDefaults jade@1.11.0
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/passport/package.json
+verbose loadDefaults passport@0.3.0
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/debug/package.json
+verbose loadDefaults debug@2.2.0
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/morgan/package.json
+verbose loadDefaults morgan@1.6.1
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/serve-favicon/package.json
+verbose loadDefaults serve-favicon@2.3.0
+verbose caching /home/hiteshj/Project/git1/posma/node_modules/body-parser/package.json
+verbose loadDefaults body-parser@1.13.3
+verbose from cache /home/hiteshj/Project/git1/posma/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/cookie-parser/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/express/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/crypto/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/express-session/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/passport-local/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/jade/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/passport/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/debug/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/morgan/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/serve-favicon/package.json
+verbose from cache /home/hiteshj/Project/git1/posma/node_modules/body-parser/package.json
+verbose already installed in /home/hiteshj/Project/git1/posma skipping cookie-parser@~1.3.5
+verbose already installed in /home/hiteshj/Project/git1/posma skipping crypto@0.0.3
+verbose already installed in /home/hiteshj/Project/git1/posma skipping debug@~2.2.0
+verbose already installed in /home/hiteshj/Project/git1/posma skipping express@~4.13.1
+verbose cache add [ 'express-session@^1.11.3', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'express-session@^1.11.3',
+silly cache add: name, spec, args   [ 'express-session@^1.11.3', null ] ]
+verbose parsed url { pathname: 'express-session@^1.11.3',
+verbose parsed url   path: 'express-session@^1.11.3',
+verbose parsed url   href: 'express-session@^1.11.3' }
+silly cache add: name, spec, args [ 'express-session',
+silly cache add: name, spec, args   '^1.11.3',
+silly cache add: name, spec, args   [ 'express-session', '^1.11.3' ] ]
+verbose parsed url { pathname: '^1.11.3', path: '^1.11.3', href: '^1.11.3' }
+verbose addNamed [ 'express-session', '^1.11.3' ]
+verbose addNamed [ null, null ]
+info addNameTag [ 'express-session', '^1.11.3' ]
+verbose raw, before any munging express-session
+verbose url resolving [ 'https://registry.npmjs.org/', './express-session' ]
+verbose url resolved https://registry.npmjs.org/express-session
+http GET https://registry.npmjs.org/express-session
+verbose already installed in /home/hiteshj/Project/git1/posma skipping jade@~1.11.0
+verbose already installed in /home/hiteshj/Project/git1/posma skipping morgan@~1.6.1
+verbose cache add [ 'passport@^0.3.0', null ]
+silly cache add: name, spec, args [ undefined, 'passport@^0.3.0', [ 'passport@^0.3.0', null ] ]
+verbose parsed url { pathname: 'passport@^0.3.0',
+verbose parsed url   path: 'passport@^0.3.0',
+verbose parsed url   href: 'passport@^0.3.0' }
+silly cache add: name, spec, args [ 'passport', '^0.3.0', [ 'passport', '^0.3.0' ] ]
+verbose parsed url { pathname: '^0.3.0', path: '^0.3.0', href: '^0.3.0' }
+verbose addNamed [ 'passport', '^0.3.0' ]
+verbose addNamed [ null, null ]
+info addNameTag [ 'passport', '^0.3.0' ]
+verbose cache add [ 'passport-local@^1.0.0', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'passport-local@^1.0.0',
+silly cache add: name, spec, args   [ 'passport-local@^1.0.0', null ] ]
+verbose parsed url { pathname: 'passport-local@^1.0.0',
+verbose parsed url   path: 'passport-local@^1.0.0',
+verbose parsed url   href: 'passport-local@^1.0.0' }
+silly cache add: name, spec, args [ 'passport-local', '^1.0.0', [ 'passport-local', '^1.0.0' ] ]
+verbose parsed url { pathname: '^1.0.0', path: '^1.0.0', href: '^1.0.0' }
+verbose addNamed [ 'passport-local', '^1.0.0' ]
+verbose addNamed [ null, null ]
+info addNameTag [ 'passport-local', '^1.0.0' ]
+verbose already installed in /home/hiteshj/Project/git1/posma skipping serve-favicon@~2.3.0
+verbose cache add [ 'bcryptjs@^2.3.0', null ]
+silly cache add: name, spec, args [ undefined, 'bcryptjs@^2.3.0', [ 'bcryptjs@^2.3.0', null ] ]
+verbose parsed url { pathname: 'bcryptjs@^2.3.0',
+verbose parsed url   path: 'bcryptjs@^2.3.0',
+verbose parsed url   href: 'bcryptjs@^2.3.0' }
+silly cache add: name, spec, args [ 'bcryptjs', '^2.3.0', [ 'bcryptjs', '^2.3.0' ] ]
+verbose parsed url { pathname: '^2.3.0', path: '^2.3.0', href: '^2.3.0' }
+verbose addNamed [ 'bcryptjs', '^2.3.0' ]
+verbose addNamed [ null, null ]
+info addNameTag [ 'bcryptjs', '^2.3.0' ]
+verbose already installed in /home/hiteshj/Project/git1/posma skipping body-parser@~1.13.2
+verbose raw, before any munging passport
+verbose url resolving [ 'https://registry.npmjs.org/', './passport' ]
+verbose url resolved https://registry.npmjs.org/passport
+http GET https://registry.npmjs.org/passport
+verbose raw, before any munging passport-local
+verbose url resolving [ 'https://registry.npmjs.org/', './passport-local' ]
+verbose url resolved https://registry.npmjs.org/passport-local
+http GET https://registry.npmjs.org/passport-local
+verbose raw, before any munging bcryptjs
+verbose url resolving [ 'https://registry.npmjs.org/', './bcryptjs' ]
+verbose url resolved https://registry.npmjs.org/bcryptjs
+http GET https://registry.npmjs.org/bcryptjs
+ERR! Error: failed to fetch from registry: passport
+ERR!     at /usr/share/npm/lib/utils/npm-registry-client/get.js:139:12
+ERR!     at cb (/usr/share/npm/lib/utils/npm-registry-client/request.js:31:9)
+ERR!     at Request._callback (/usr/share/npm/lib/utils/npm-registry-client/request.js:136:18)
+ERR!     at Request.callback (/usr/lib/nodejs/request/main.js:119:22)
+ERR!     at Request.<anonymous> (/usr/lib/nodejs/request/main.js:212:58)
+ERR!     at Request.emit (events.js:88:20)
+ERR!     at ClientRequest.<anonymous> (/usr/lib/nodejs/request/main.js:412:12)
+ERR!     at ClientRequest.emit (events.js:67:17)
+ERR!     at HTTPParser.onIncoming (http.js:1261:11)
+ERR!     at HTTPParser.onHeadersComplete (http.js:102:31)
+ERR! You may report this log at:
+ERR!     <http://bugs.debian.org/npm>
+ERR! or use
+ERR!     reportbug --attach /home/hiteshj/Project/git1/posma/npm-debug.log npm
+ERR! 
+ERR! System Linux 3.13.0-32-generic
+ERR! command "node" "/usr/bin/npm" "install"
+ERR! cwd /home/hiteshj/Project/git1/posma
+ERR! node -v v0.6.12
+ERR! npm -v 1.1.4
+ERR! message failed to fetch from registry: passport
+verbose exit [ 1, true ]

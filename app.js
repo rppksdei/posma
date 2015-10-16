@@ -153,9 +153,7 @@ isClinicOrAdmin = function (req, res, next) {
     }
   });
 }
-
-
-//End of functions to check session and user type 
+//End of functions to check session and user type
 
 // Route Path
 require('./routes/login')(app,express);
