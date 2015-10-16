@@ -1,5 +1,5 @@
 //angular.module('MyAppService', ['ngResource']);
-var myapp = angular.module("posma", ['ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model"]);
+var myapp = angular.module("posma", ['ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model", '720kb.datepicker']);
 function checkloggedIn($rootScope, $http, $location) {
     $http.get('/login/checkloggedin').success(function(data) {
         if (data.error) {
@@ -108,6 +108,24 @@ myapp.config(['$routeProvider',
             .when('/surgeries/edit/:id',{
                 templateUrl:'/html/surgery/add.html',
                 controller:'surgeryCtrl',
+                flag:'edit',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/patients',{
+                templateUrl:'/html/patients/list.html',
+                controller:'patientCtrl',
+                flag:'list',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/patients/add',{
+                templateUrl:'/html/patients/add.html',
+                controller:'patientCtrl',
+                flag:'add',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/patients/edit/:id',{
+                templateUrl:'/html/patients/add.html',
+                controller:'patientCtrl',
                 flag:'edit',
                 resolve:{'logged_in':checkloggedIn}
             })
