@@ -1,11 +1,11 @@
-myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTableParams,
-                                myService,orderByFilter,SweetAlert, $http, $location, $rootScope,$routeParams){
+myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTableParams, myService,orderByFilter,SweetAlert, $http, $location, $rootScope,$routeParams){
     $scope.questionList = "";
     $scope.question = "";
     $scope.errors = [];
     $scope.questions = [];
     $scope.selected_questions = [];
     $scope.Sorted = [];
+    $scope.question.answer_type = 'rb';
     var flag = '';
     var enabled = false;
     
@@ -13,28 +13,33 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         flag = $route.current.$$route.flag;
     }
 
+    $scope.applyGlobalSearch = applyGlobalSearch;
 
+    function applyGlobalSearch(){
+          var term = $scope.globalSearchTerm;
+          if ($scope.isInvertedSearch){
+            term = "!" + term;
+          }
+          $scope.tableParams.filter({ $: term });
+    }
 
     $scope.list = function(){
-        Questions.getList().query({}, function(data) {
+        $scope.applyGlobalSearch = applyGlobalSearch;
+        
+        Questions.getList().query({'is_deleted':0}, function(data) {
             $scope.tableParams = new ngTableParams({count:10}, {counts:{}, data:data});
         });
     }
 
     $scope.dd = function(){
         var accordionPane = 'header-1';
-
         if(typeof($routeParams.accordionPane) !== 'undefined') {
             accordionPane = $routeParams.accordionPane;
         }
-
         $rootScope.$broadcast('expand', accordionPane);
-
         $rootScope.$on('angular-accordion-expand', function(event, eventArguments) {
             $location.path(eventArguments);
-        });   
-
-
+        });
         $scope.questions = [
             {
                 'id':'1',
@@ -68,26 +73,20 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         }
         //$scope.queOrder = $scope.questions;
         //console.log($scope.queOrder);
-
         //$scope.arrVal = ['one','two','three','four','five','six'];
         //$scope.arrVal = $scope.arrVal.sort();
         //console.log($scope.questions);
-
-
-
         $scope.example1model = [];
         $scope.example1data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
-
         $scope.example2model = [];
         $scope.example2data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
         $scope.example2settings = {displayProp: 'id'};
-
         $scope.example3model = [];
         $scope.example3data = [
             {id: 1, label: "David"},
@@ -95,16 +94,12 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
             {id: 3, label: "Danny"},
             {id: 4, label: "Danny"}];
         $scope.example3settings = {displayProp: 'label', idProp: 'label'};
-
-
         $scope.example4model = [];
         $scope.example4data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
         $scope.example4settings = {displayProp: 'label', idProp: 'id', externalIdProp: 'myCustomPropertyForTheObject'};
-
-
         $scope.example5model = [];
         $scope.example5data = [
             {id: 1, label: "David"},
@@ -112,46 +107,35 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
             {id: 3, label: "Danny"}];
         $scope.example5settings = {};
         $scope.example5customTexts = {buttonDefaultText: 'Select Users'};
-
-
         $scope.example6model = [{id: 1}, {id: 3}];
         $scope.example6data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
         $scope.example6settings = {};
-
-
         $scope.example7model = [];
         $scope.example7data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
         $scope.example7settings = {externalIdProp: ''};
-
-
         $scope.example8model = [];
         $scope.example8data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
-
-
         $scope.example9model = [];
         $scope.example9data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
         $scope.example9settings = {enableSearch: true};
-
         $scope.example10model = [];
         $scope.example10data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
         $scope.example10settings = {selectionLimit: 2};
-
-
         $scope.example11model = [];
         $scope.example11data = [
             {id: 1, label: "David", gender: 'M'},
@@ -172,15 +156,12 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
                 }
             }
         };
-
-
         $scope.example12model = {};
         $scope.example12data = [
             {id: 1, label: "David"},
             {id: 2, label: "Jhon"},
             {id: 3, label: "Danny"}];
         $scope.example12settings = {selectionLimit: 1};
-
         $scope.example13model = [];
         $scope.example13data = [
             {id: 1, label: "David"},
@@ -197,7 +178,6 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
                 return itemText;
             }
         };
-
         $scope.example14model = [];
         $scope.example14data = [
             {id: 1, label: "David"},
@@ -214,7 +194,6 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
             scrollableHeight: '100px',
             scrollable: true
         };
-
         $scope.example15model = [];
         $scope.example15data = [
             {id: 1, label: "David"},
@@ -222,13 +201,10 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
             {id: 3, label: "Lisa"},
             {id: 4, label: "Nicole"},
             {id: 5, label: "Danny"}];
-
         $scope.example15settings = {
             enableSearch: true
         };
-
         $scope.customFilter = 'a';
-
     }
 
     $scope.selectQuestion = function(qindex){
@@ -258,19 +234,15 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         if(!$scope.question){
             Questions.getDetail().save({'_id':$routeParams.id}, function(data) {
                 $scope.question = data;
-                //if($scope.question.answer){
-                console.log($scope.question.answer);
                 if(!($scope.question.answer_type == "text" || $scope.question.answer_type == 'number')){
                     $scope.answer_opts = $scope.question.answer;
                 } else {
 
                 }
-                //}
             });
         } else {
             var questiondata = $scope.question;
             var answer = [];
-            console.log(questiondata.answer_opts);
             if (!($scope.question.answer_type == "text" || $scope.question.answer_type == 'number')){
                 var answers = [];
                 var i = 0;
@@ -278,7 +250,6 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
                     answer[i] = $scope.answer_opts[i];
                 }
                 questiondata.answer = answer;
-
                 questiondata.min_range = '';
                 questiondata.max_range = '';
                 questiondata.max_length = '';
@@ -289,10 +260,10 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
             console.log(questiondata.answer);
             Questions.updateQuestion().save(questiondata, function(data){
                 if (data.success) {
+                    Flash.create('success', 'Question has been updated successfully.', 'alert alert-success');
                     $location.path('/questions');
                 } else{
                     console.log(data.error.errors);
-                    //console.log($scope.error);
                 }
             });
         }
@@ -301,6 +272,7 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
     $scope.add = function(){
         var questiondata = $scope.question;
         var answer = [];
+        console.log($scope.question);
         if (!($scope.question.answer_type == "text" || $scope.question.answer_type == 'number')){
             var answers = [];
             var i = 0;
@@ -311,6 +283,7 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         }
         Questions.addQuestion().save(questiondata, function(data){
             if (data.success) {
+                Flash.create('success', 'Question has been added successfully.', 'alert alert-success');
                 $location.path('/questions');
             } else{
                 console.log(data.error.errors);
@@ -335,25 +308,66 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         myService.foo();
     }
 
-    $scope.getTopMatch = function(title,message,type,confirmButText,cancelButText,confirmAction,recId) {
+    $scope.changeStatus = function(index, existingStatus) {
+        var newStatus = 'Inactivate';
+        if(existingStatus == 0){
+            newStatus = 'Activate';
+        }
+        var object_detail = $scope.tableParams.data[index];
         SweetAlert.swal({
-        title: (typeof title != 'undefined')?title:"Are you sure?",
-        text: (typeof message != 'undefined')?message:"Your will not be able to recover this imaginary file!",
-        type: (typeof type != 'undefined')?type:"warning",
+        title: "Confirmation",
+        text: "Are you sure you want to "+newStatus+" "+object_detail.name+"?",
+        type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: (typeof confirmButText != 'undefined')?confirmButText:"Yes, delete it!",
-        cancelButtonText: (typeof cancelButText != 'undefined')?cancelButText:"No, cancel plx!",
-        closeOnConfirm: false}, 
-        function(){
-            if(confirmAction == 'delete'){
-                $scope.removeChoice();
-            } else if(confirmAction == 'status'){
-                $scope.changeStatus();
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: true}, 
+        function(){ 
+            var status = 0;
+            if (object_detail.is_active == 0) {
+                status = 1;
             }
-           // (typeof confirmAction != 'undefined')?confirmAction:"callFoo",
-           //$scope.confirmAction();
+            var update_object = {'_id':object_detail._id, 'is_active':status};
+            console.log(update_object);
+            Questions.updateQuestion().save(update_object, function(data){
+                if (data.success) {
+                    $scope.tableParams.data[index].is_active = status;
+                    Flash.create('success', 'Question status has been updated successfully.', 'alert alert-success');
+                }
+            });
         });
+    };
+
+    $scope.deleteQuestion = function(id,qname) {
+        SweetAlert.swal({
+        title: "Confirmation",
+        text: "Are you sure you want to delete "+qname+"?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No!",
+        closeOnConfirm: true}, 
+        function(){ 
+            var update_object = {'_id':id, 'is_deleted':1};
+            Questions.updateQuestion().save(update_object, function(data){
+                console.log(data);
+                if (data.success) {
+                    var del_index = 0;
+                    for(i=0;(i < $scope.questions.length); i++){
+                        if($scope.questions[i]._id == id){
+                            del_index = i;
+                            break;
+                        }
+                    }
+                    $scope.questions.splice(del_index, 1);
+                    $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.questions});
+                    Flash.create('success', 'Question has been deleted successfully.', 'alert alert-success');
+                }
+            }); 
+        });
+        
     };
 
     if (flag == "list") {
@@ -364,3 +378,43 @@ myapp.controller('questionsCtrl', function($scope, $route, Questions,ngTablePara
         $scope.dd();
     } 
 });
+/*
+myapp.controller("demoController", demoController);
+demoController.$inject = ["NgTableParams", "ngTableSimpleMediumList", "ngTableDemoCountries"];
+function demoController(NgTableParams, simpleList, countries) {
+    var self = this;
+    self.countries = [{ id: '', title: ''}].concat(countries);
+    self.tableParams = new NgTableParams({ 
+        filter: {
+        age: 52
+        }
+    }, { dataset: simpleList});
+    
+    self.changeFilter = changeFilter;
+    self.applyGlobalSearch = applyGlobalSearch;
+
+    function applyGlobalSearch(){
+        var term = self.globalSearchTerm;
+        if (self.isInvertedSearch){
+            term = "!" + term;
+        }
+        self.tableParams.filter({ $: term });
+    }
+
+    function changeFilter(field, value){
+        var filter = {};
+        filter[field] = value;
+        angular.extend(self.tableParams.filter(), filter);
+    }
+}
+
+(function() {
+    "use strict";
+        myapp.run(setRunPhaseDefaults);
+        setRunPhaseDefaults.$inject = ["ngTableDefaults"];
+
+    function setRunPhaseDefaults(ngTableDefaults) {
+    ngTableDefaults.params.count = 5;
+    ngTableDefaults.settings.counts = [];
+    }
+})();*/

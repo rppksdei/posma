@@ -69,7 +69,6 @@ addQuestion = function(req, res, next){
 }
 
 updateQuestionDetail = function(req, res){
-    console.log(req);
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.name != "undefined"){
@@ -95,6 +94,9 @@ updateQuestionDetail = function(req, res){
     }
     if(typeof req.body.is_deleted != "undefined"){
         update_data.is_deleted = req.body.is_deleted;
+    }
+    if(typeof req.body.is_active != "undefined"){
+        update_data.is_active = req.body.is_active;
     }
     update_data.modified = Date.now();
     //End of code to create object data
@@ -134,12 +136,9 @@ updateQuestionDetail = function(req, res){
     //End of code to update clinic detail
 }
 
-
-
 module.exports = function(){
     this.getlisting = getlisting;
     this.getQuestionDetail = getQuestionDetail;
     this.addQuestion = addQuestion;
     this.updateQuestionDetail = updateQuestionDetail;
 }
-

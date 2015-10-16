@@ -19,6 +19,7 @@ var questionSchema = new Schema({
     gender:{type:String, default:"b"}, //m=Male, f=Female, b=Both
     clinic:{type:Schema.Types.ObjectId, ref:'Clinic'},
     answer:[answerSchema],
+    is_active:{type:Number, default:1},
     is_deleted:{type:Number, default:0},
     created:{type:Number},
     modified:{type:Number} 
