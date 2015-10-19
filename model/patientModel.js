@@ -6,7 +6,7 @@ var patientSchema = ({
     password:{type:String, required:"Password is required"},
     first_name:{type:String, required:"First Name is Required"},
     last_name:{type:String},
-    email:{type:String},
+    email:{type:String, required:"Email is required"},
     date_of_birth:{type:Number, required:"Date of Birth is required"},
     gender:{type:String, required:"Gender is required"},
     address1:{type:String, required:"Address is Required"},

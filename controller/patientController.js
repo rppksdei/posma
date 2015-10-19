@@ -1,12 +1,19 @@
 var patientModel = require("./../model/patientModel");
 
 getlisting = function(req, res, next){
-    var search = {is_deleted:0};
-    patientModel.getAllPatient(search, function(err, patientDetail){
+    var search_patient = {is_deleted:0};
+    if (req.user.user_type == "2") {
+        search_patient.clinic = req.user.parent_id;
+    }
+    else if (req.user.user_type == "0"){
+        search_patient.clinic = req.user._id;
+    }
+    patientModel.getAllPatient(search_patient, function(err, patientDetail){
         if(err){
             res.json(err);
         }
         else{
+            console.log(patientDetail);
             res.json(patientDetail);
         }
     });
@@ -68,22 +75,23 @@ addPatient = function(req, res, next){
                 //add Admin cum clinic
                 var patientDetail = req.body;
                 patientDetail.created = Date.now();
+                patientDetail.clinic  = req.user._id;
+                patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
+                patientDetail.dos               = dateToTimeStamp(req.body.dos);
+                patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
+                patientDetail.surgery           = req.user._id;
+                patientDetail.pathway           = req.user._id;
+                //console.log(patientDetail);
                 patientModel.addPatient(patientDetail, function(err, data){
                     var return_val = {};
                     if (err) {
-                        var error_detail = [];
-                        // go through all the errors...
-                        for (var errName in err.errors) {
-                            error_detail.push(err.errors[errName].message);
-                        }
-                        return_val.error = error_detail;
+                        return_val.error = err;
                         res.json(return_val);
                     }
                     else{
                         return_val.success = "Patient added Successfully";
                         res.json(return_val);
                     }
-                  //  res.json(return_val);
                 });
             }
             else{
@@ -92,6 +100,13 @@ addPatient = function(req, res, next){
             }
         }
     });
+}
+
+dateToTimeStamp = function(myDate){
+    myDate = myDate.split("/");
+    var newDate = myDate[0]+"/"+myDate[1]+"/"+myDate[2];
+    var dateTimeStamp = new Date(newDate).getTime();
+    return dateTimeStamp;
 }
 
 updatePatientDetail = function(req, res){

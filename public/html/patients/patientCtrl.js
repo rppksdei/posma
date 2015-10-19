@@ -1,30 +1,36 @@
-myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
-    $scope.surgeries = [];
+myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
+    $scope.patients = [];
     $scope.success = "";
-    $scope.surgery = "";
+    $scope.patient = "";
     $scope.errordetail = [];
+
+    /* 720kb date picker settings */
+        $scope.pattern = 'MM/dd/yyyy';
+        $scope.date_min = '01/01/1900';
+        $scope.dob_date_max = new Date();
+        $scope.default_date = new Date();
     
     var flag = '';
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
-    $scope.getSurgery = function(){
-        Surgery.getDetail().query({}, function(data){
-            $scope.surgeries = data;
-            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.surgeries});
+    $scope.list = function(){
+        Patient.getList().query({}, function(data){
+            $scope.patients = data;
+            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
         });    
     }
 
     $scope.add = function(){
-        var surgeryData = $scope.surgery;
-        Surgery.addSurgery().save(surgeryData, function(data){
+        var patientData = $scope.patient;
+        Patient.addPatient().save(patientData, function(data){
             if(data.success){
-                if($scope.surgery._id){
-                    Flash.create('success', 'Surgery has been updated successfully.', 'alert alert-success');
+                if($scope.patient._id){
+                    Flash.create('success', 'Patient has been updated successfully.', 'alert alert-success');
                 }else{
-                    Flash.create('success', 'Surgery has been added successfully.', 'alert alert-success');
+                    Flash.create('success', 'Patient has been added successfully.', 'alert alert-success');
                 }
-                $location.path('/surgeries');
+                $location.path('/patients');
             }else{
                 if (data.error.errors){
                      $scope.errordetail = [];
@@ -34,18 +40,18 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
                      console.log($scope.errordetail);
                 }
                 else{
-                    //console.log(data.error.errors);
                     $scope.errordetail[data.error.path] = data.error.message;
                     console.log($scope.errordetail);
                 }
             }
         });
+        
     }
 
     $scope.edit = function(){
         $scope.error = [];
         var surgeryId = $routeParams.id;
-        Surgery.getDetailId().save({'id': surgeryId}, function(data){
+        Patient.getDetailId().save({'id': surgeryId}, function(data){
             if(data){
                 //console.log(data);
                 $scope.surgery = data;
@@ -76,18 +82,18 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
         closeOnConfirm: true}, 
         function(){
             var update_object = {'_id':id, 'is_deleted':1};
-            Surgery.update().save(update_object, function(data){
+            Patient.update().save(update_object, function(data){
                 if (data.success) {
                     var del_index = 0;
-                    for(i=0;(i < $scope.surgeries.length); i++){
-                        if($scope.surgeries[i]._id == id){
+                    for(i=0;(i < $scope.patients.length); i++){
+                        if($scope.patients[i]._id == id){
                             del_index = i;
                             break;
                         }
                     }
-                    $scope.surgeries.splice(del_index, 1);
-                    $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.surgeries});
-                    Flash.create('success', 'Surgery has been deleted successfully.', 'alert alert-success');
+                    $scope.patients.splice(del_index, 1);
+                    $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
+                    Flash.create('success', 'Patient has been deleted successfully.', 'alert alert-success');
                 }
             }); 
         });
@@ -111,22 +117,18 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
             }
             var update_object = {'_id':object_detail._id, 'is_active':status};
             //console.log(update_object);
-            Surgery.update().save(update_object, function(data){
+            Patient.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;
-                    Flash.create('success', 'Surgery status has been updated successfully.', 'alert alert-success');
+                    Flash.create('success', 'Patient status has been updated successfully.', 'alert alert-success');
                 }
             });
         });
     };
     
-    if (flag == "get_surgery") {
-        $scope.getSurgery();
+    if (flag == "list") {
+        $scope.list();
     }else if (flag == "edit") {
         $scope.edit();
-    }
-    /* else if (flag == "add") {
-        $scope.add();
-    } */
-    ;
+    };
 });

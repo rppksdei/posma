@@ -20,24 +20,11 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.addSurgery = function(){
             return $resource('/surgery/add');
         }
-        // serviceObj.updateProfile = function(){
-        //     return $resource('/profile/update');
-        // }
-        // serviceObj.changePassword = function(){
-        //     return $resource('/profile/change_password');
-        // }
-        return serviceObj;
-    })
-    .factory('Profile', function($resource){
-        var serviceObj = {};
-        serviceObj.getDetail = function(){
-            return $resource('/profile/detail');  
+        serviceObj.update = function(){
+            return $resource('/surgery/update');
         }
-        serviceObj.updateProfile = function(){
-            return $resource('/profile/update');
-        }
-        serviceObj.changePassword = function(){
-            return $resource('/profile/change_password');
+        serviceObj.getDetailId = function(){
+            return $resource('/surgery/detail/');
         }
         return serviceObj;
     })
@@ -54,6 +41,35 @@ angular.module('PosmaService', ['ngResource'])
         }
         serviceObj.list = function(){
             return $resource('/manage_admin/');
+        }
+        return serviceObj;
+    })
+    .factory('Profile', function($resource){
+        var serviceObj = {};
+        serviceObj.getDetail = function(){
+            return $resource('/profile/detail');  
+        }
+        serviceObj.updateProfile = function(){
+            return $resource('/profile/update');
+        }
+        serviceObj.changePassword = function(){
+            return $resource('/profile/change_password');
+        }
+        return serviceObj;
+    })
+    .factory('Patient', function($resource){
+        var serviceObj = {};
+        serviceObj.getList = function(){
+            return $resource('/patient/');
+        }
+        serviceObj.addPatient = function(){
+            return $resource('/patient/add');
+        }
+        serviceObj.update = function(){
+            return $resource('/patient/update');
+        }
+        serviceObj.list = function(){
+            return $resource('/patient/');
         }
         return serviceObj;
     })

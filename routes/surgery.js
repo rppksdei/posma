@@ -9,17 +9,26 @@ module.exports = function(app,express,isClinicOrSurgeon, isClinicAdmin){
     });
     
     /* add Surgery listing. */
-    router.post('/add', isClinicAdmin,  function(req, res, next) {
-        surgeryObj.addSurgery(req, res, next);
+    router.post('/add', isClinicAdmin, function(req, res, next) {
+        if(typeof req.body._id != "undefined"){
+            surgeryObj.updateSurgeryDetail(req, res, next);
+        }else{
+            surgeryObj.addSurgery(req, res, next);
+        }
     });
     
     // Get One Surgery Detail
-    router.get('/detail', isClinicOrSurgeon, function(req, res){
+    // router.post('/:id', function(req, res){
+    //     //console.log('fgdfg');
+    //     surgeryObj.getSurgeryDetail(req, res);
+    // });
+    //End of code to get one Surgery detail
+
+    router.post('/detail', isClinicOrSurgeon, function(req, res){
         surgeryObj.getSurgeryDetail(req, res);
     });
-    //End of code to get one Surgery detail
     
-    // Get One Surgery Detail
+    // Update Surgery
     router.post('/update', isClinicAdmin, function(req, res){
         surgeryObj.updateSurgeryDetail(req, res);
     });

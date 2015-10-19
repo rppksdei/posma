@@ -116,6 +116,30 @@ myapp.config(['$routeProvider',
                 flag:'add',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/surgeries/edit/:id',{
+                templateUrl:'/html/surgery/add.html',
+                controller:'surgeryCtrl',
+                flag:'edit',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/patients',{
+                templateUrl:'/html/patients/list.html',
+                controller:'patientCtrl',
+                flag:'list',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/patients/add',{
+                templateUrl:'/html/patients/add.html',
+                controller:'patientCtrl',
+                flag:'add',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/patients/edit/:id',{
+                templateUrl:'/html/patients/add.html',
+                controller:'patientCtrl',
+                flag:'edit',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .otherwise({
                 templateUrl:'/html/login.html',
                 controller:'loginCtrl',
