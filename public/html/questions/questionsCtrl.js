@@ -285,7 +285,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
             if (data.success) {
                 Flash.create('success', 'Question has been added successfully.', 'alert alert-success');
                 $location.path('/questions');
-            } else{
+            } else {
                 console.log(data.error.errors);
                 //console.log($scope.error);
             }
