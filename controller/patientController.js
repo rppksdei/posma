@@ -19,6 +19,25 @@ getlisting = function(req, res, next){
     });
 }
 
+getAddDetail = function(req, res){
+    var search_criteria = {is_deleted:0};
+    if (req.user.user_type == "2") {
+        search_criteria.clinic = req.user.parent_id;
+    }
+    else if (req.user.user_type == "0"){
+        search_criteria.clinic = req.user._id;
+    }
+    patientModel.getAllPatient(search_patient, function(err, patientDetail){
+        if(err){
+            res.json(err);
+        }
+        else{
+            console.log(patientDetail);
+            res.json(patientDetail);
+        }
+    });
+}
+
 getPatientDetail = function(req, res){
     var patient_id = req.params.id;
     var search_patient = {_id:patient_id};

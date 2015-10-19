@@ -21,6 +21,16 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
         });    
     }
 
+    /* function to get surgeries & pathways on add form */
+    $scope.getAdd = function(){
+        Patient.getAddDetails.save({}, function(data){
+            if(data){
+                console.log(data);
+            }
+        });
+    }
+
+    /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
         Patient.addPatient().save(patientData, function(data){
@@ -130,5 +140,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
         $scope.list();
     }else if (flag == "edit") {
         $scope.edit();
+    }else if (flag == "add") {
+        $scope.getAdd();
     };
 });

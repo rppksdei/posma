@@ -24,6 +24,12 @@ module.exports = function(app,express){
         patientObj.updatePatientDetail(req, res);
     });
     //End of code to get one clinic detail
+
+    // Get Surgery & Pathway Detail while adding
+    router.get('/getAddDetails', function(req, res){
+        patientObj.getAddDetail(req, res);
+    });
+    //End of code to get Surgery & Pathway Detail
     
     app.use('/patient',router);
 }

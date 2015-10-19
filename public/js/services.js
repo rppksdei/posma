@@ -68,8 +68,8 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.update = function(){
             return $resource('/patient/update');
         }
-        serviceObj.list = function(){
-            return $resource('/patient/');
+        serviceObj.getAddDetails = function(){
+            return $resource('/patient/getAddDetails');
         }
         return serviceObj;
     })
