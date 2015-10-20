@@ -2,6 +2,14 @@ var pathwayModel = require("./../model/pathwayModel");
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
+    if (req.user.user_type == "2") {
+        search.clinic = req.user.parent_id;
+    }else if (req.user.user_type == "0"){
+        search.clinic = req.user._id;
+    }
+    if(req.query.surgery!=''){
+        search.surgery = req.query.surgery;
+    }
     pathwayModel.getAllPathway(search, function(err, pathwayDetail){
         if(err){
             res.json(err);

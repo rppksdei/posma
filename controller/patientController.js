@@ -13,26 +13,7 @@ getlisting = function(req, res, next){
             res.json(err);
         }
         else{
-            console.log(patientDetail);
-            res.json(patientDetail);
-        }
-    });
-}
-
-getAddDetail = function(req, res){
-    var search_criteria = {is_deleted:0};
-    if (req.user.user_type == "2") {
-        search_criteria.clinic = req.user.parent_id;
-    }
-    else if (req.user.user_type == "0"){
-        search_criteria.clinic = req.user._id;
-    }
-    patientModel.getAllPatient(search_patient, function(err, patientDetail){
-        if(err){
-            res.json(err);
-        }
-        else{
-            console.log(patientDetail);
+            //console.log(patientDetail);
             res.json(patientDetail);
         }
     });
@@ -98,9 +79,7 @@ addPatient = function(req, res, next){
                 patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
                 patientDetail.dos               = dateToTimeStamp(req.body.dos);
                 patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
-                patientDetail.surgery           = req.user._id;
-                patientDetail.pathway           = req.user._id;
-                //console.log(patientDetail);
+                console.log(patientDetail);
                 patientModel.addPatient(patientDetail, function(err, data){
                     var return_val = {};
                     if (err) {
@@ -170,6 +149,12 @@ updatePatientDetail = function(req, res){
     }
     if(typeof req.body.pathway != "undefined"){
         update_data.pathway = req.body.pathway;
+    }
+    if(typeof req.body.is_deleted != "undefined"){
+        update_data.is_deleted = req.body.is_deleted;
+    }
+    if(typeof req.body.is_active != "undefined"){
+        update_data.is_active = req.body.is_active;
     }
     
     update_data.modified = Date.now();

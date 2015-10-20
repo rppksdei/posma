@@ -106,7 +106,25 @@ updateSurgeryDetail = function(req, res){
     //End of code to update clinic detail
 }
 
-
+/*
+getSurgeryByClinic = function(req, res){
+    var search_criteria = {is_deleted:0};
+    if (req.user.user_type == "2") {
+        search_criteria.clinic = req.user.parent_id;
+    }else if (req.user.user_type == "0"){
+        search_criteria.clinic = req.user._id;
+    }
+    surgeryModel.getSurgeryByClinic(search_criteria, function(err, surgeryDetail){
+        if(err){
+            res.json(err);
+        }
+        else{
+            console.log(patientDetail);
+            res.json(surgeryDetail);
+        }
+    });
+}
+*/
 
 module.exports = function(){
     this.getlisting = getlisting;

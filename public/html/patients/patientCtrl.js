@@ -1,4 +1,4 @@
-myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
+myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
     $scope.patients = [];
     $scope.success = "";
     $scope.patient = "";
@@ -23,16 +23,23 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
 
     /* function to get surgeries & pathways on add form */
     $scope.getAdd = function(){
-        Patient.getAddDetails.save({}, function(data){
-            if(data){
-                console.log(data);
-            }
+        Surgery.getDetail().query({}, function(data){
+            $scope.patient.gender = 'M';
+            $scope.surgeries = data;
+        });
+    }
+
+    $scope.getPathways = function(){
+        var surgery_id = $scope.patient.surgery;
+        Patient.getDetail().query({'surgery': surgery_id}, function(data){
+            $scope.pathways = data;
         });
     }
 
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
+        //console.log(patientData);
         Patient.addPatient().save(patientData, function(data){
             if(data.success){
                 if($scope.patient._id){
@@ -60,12 +67,12 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
 
     $scope.edit = function(){
         $scope.error = [];
-        var surgeryId = $routeParams.id;
-        Patient.getDetailId().save({'id': surgeryId}, function(data){
+        var patientId = $routeParams.id;
+        Patient.getDetailId().save({'id': patientId}, function(data){
             if(data){
                 //console.log(data);
-                $scope.surgery = data;
-                $scope.surgery.clinic_name = $rootScope.user.clinic_name;
+                $scope.patient = data;
+                //$scope.surgery.clinic_name = $rootScope.user.clinic_name;
             }
         });
 
@@ -80,10 +87,10 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
         // });
     }
     
-    $scope.deleteSurgery = function(id) {
+    $scope.deletePatient = function(id) {
         SweetAlert.swal({
         title: "Are you sure?",
-        text: "You will not be able to recover surgery!",
+        text: "You will not be able to recover patient!",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -91,7 +98,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
         cancelButtonText: "No, cancel it!",
         closeOnConfirm: true}, 
         function(){
-            var update_object = {'_id':id, 'is_deleted':1};
+            var update_object = {'patient_id':id, 'is_deleted':1};
             Patient.update().save(update_object, function(data){
                 if (data.success) {
                     var del_index = 0;
@@ -109,11 +116,12 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
         });
     };
 
-    $scope.changeSurgeryStatus = function(index) {
+    $scope.changePatientStatus = function(index) {
         var object_detail = $scope.tableParams.data[index];
+        //console.log(object_detail);
         SweetAlert.swal({
         title: "Are you sure?",
-        text: "you want to change status of "+object_detail.name+" ",
+        text: "you want to change status of "+object_detail.username+" ",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -125,8 +133,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
             if (object_detail.is_active == 0) {
                 status = 1;
             }
-            var update_object = {'_id':object_detail._id, 'is_active':status};
-            //console.log(update_object);
+            var update_object = {'patient_id':object_detail._id, 'is_active':status};
             Patient.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;

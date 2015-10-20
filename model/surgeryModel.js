@@ -29,3 +29,7 @@ exports.addSurgery = function(surgeryDetail, next){
     var add_surgery = new Surgery(surgeryDetail);
     add_surgery.save(next);
 }
+
+// exports.getSurgeryByClinic = function(search_criteria, next){
+//     Surgery.find(search_criteria, next);
+// }

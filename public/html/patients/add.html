@@ -53,7 +53,7 @@
                                 <div class="form-group">
                                     <label>Gender</label>
                                     <select ng-model="patient.gender" class="form-control">
-                                        <option value = "M" selected="selected">Male</option>
+                                        <option value = "M"  ng-selected="true">Male</option>
                                         <option value = "F">Female</option>
                                     </select>
                                 </div>
@@ -148,22 +148,24 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Surgery</label>
-                                    <select ng-model="patient.surgery" class="form-control">
-                                        <option value = "1" selected="selected">Surgery 1</option>
-                                        <option value = "2">Surgery 2</option>
+                                    <select ng-model="patient.surgery" class="form-control" ng-change="getPathways()">
+                                        <option value="">--Select a surgery--</option>
+                                        <option ng-repeat="surgery in surgeries" value ="{{surgery._id}}" ng-selected="$index < 0">{{surgery.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group" ng-if="patient.surgery > 0">
+                                <div class="form-group" ng-show="patient.surgery != ''">
                                     <label>Pathway</label><br/>
-                                    <div class="radio-inline">
-                                        <input type="radio" ng-model="patient.pathway" name="optionsRadios" id="optionsRadios1" value="p1" checked> Pathway 1
+                                    <div class="radio-inline" ng-repeat="pw in pathways">
+                                        <input type="radio" ng-model="patient.pathway" name="optionsRadios" id="optionsRadios{{ $index }}" value="{{ pw._id }}" checked> {{ pw.name }}
                                     </div>
+                                    <!--
                                     <div class="radio-inline">
                                         <input type="radio" ng-model="patient.pathway" name="optionsRadios" id="optionsRadios2" value="p2"> Pathway 2
                                     </div>
                                     <div class="radio-inline">
                                         <input type="radio" ng-model="patient.pathway" name="optionsRadios" id="optionsRadios3" value="p3"> Pathway 3
                                     </div>
+                                    -->
                                 </div>
                                 <!-- <datepicker date-format="{{pattern}}" date-min-limit="{{date_min}}" date-max-limit="{{date_max}}" date-set="{{default_date | date:'MM/dd/yyyy'}}">
                                   <input ng-model="date" type="text"/>
