@@ -75,9 +75,9 @@ myapp.config(['$routeProvider',
                 controller:'loginCtrl',
                 logout : true,
             })
-            .when('/questions',{
-                templateUrl:'/html/questions/index.html',
-                controller:'questionsCtrl',
+            .when('/questionnaire',{
+                templateUrl:'/html/questionnaire/index.html',
+                controller:'questionnaireCtrl',
                 flag:'list',
                 resolve:{'logged_in':checkloggedIn}
             })
@@ -102,6 +102,24 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/questions/add.html',
                 controller:'questionsCtrl',
                 flag:'edit',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/questions/add/:id',{
+                templateUrl:'/html/questions/add.html',
+                controller:'questionsCtrl',
+                flag:'edit',
+                resolve:{'logged_in':checkloggedIn}
+            })
+             .when('/questionnaires',{
+                templateUrl:'/html/questionnaire/list.html',
+                controller:'questionnaireCtrl',
+                flag:'get_questionnaire',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/add_questionnaire',{
+                templateUrl:'/html/questionnaire/add.html',
+                controller:'questionnaireCtrl',
+                flag:'add_questionnaire',
                 resolve:{'logged_in':checkloggedIn}
             })
             .when('/surgeries',{
