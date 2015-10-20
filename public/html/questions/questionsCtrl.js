@@ -7,29 +7,68 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
     $scope.Sorted = [];
     $scope.question.answer_type = 'rb';
     var flag = '';
+
     var enabled = false;
-    
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
 
     $scope.applyGlobalSearch = applyGlobalSearch;
-
     function applyGlobalSearch(){
-          var term = $scope.globalSearchTerm;
-          if ($scope.isInvertedSearch){
+        var term = $scope.globalSearchTerm;
+        if ($scope.isInvertedSearch){
             term = "!" + term;
-          }
-          $scope.tableParams.filter({ $: term });
+        }
+        $scope.tableParams.filter({ $: term });
     }
 
     $scope.list = function(){
         $scope.applyGlobalSearch = applyGlobalSearch;
-        
         Questions.getList().query({'is_deleted':0}, function(data) {
             $scope.tableParams = new ngTableParams({count:10}, {counts:{}, data:data});
         });
     }
+
+    $scope.selectQuestion = function(qindex){
+        $scope.selected_questions.push($scope.questions[qindex]);
+        $scope.questions.splice(qindex,1);
+    };
+    $scope.unselectQuestion = function(qindex){
+        $scope.questions.push($scope.selected_questions[qindex]);
+        $scope.Sorted = orderByFilter($scope.questions, function(item) {
+            return $scope.queOrder.indexOf(item.order);
+        });
+        $scope.questions = $scope.Sorted;
+        $scope.selected_questions.splice(qindex,1); 
+    };
+
+    $scope.onDrop = function($event,$data,index){
+        var current_position;
+        for(var sq = 0; sq < $scope.selected_questions.length; sq++){
+            if($scope.selected_questions[sq].id == $data.id){
+                current_position = sq;
+            }
+        }
+        console.log(current_position);
+        if(current_position < index){
+          for (var i = current_position; i <= index; i++){
+            if(i == index){
+              $scope.selected_questions[i] = $data;
+            } else {
+              $scope.selected_questions[i] = $scope.selected_questions[i+1]; 
+            }
+          }
+        }
+        if(current_position > index){
+          for (var i = current_position; i >= index ; i--){
+            if(i == index){
+              $scope.selected_questions[i] = $data;
+            } else {
+              $scope.selected_questions[i] = $scope.selected_questions[i-1]; 
+            }
+          }
+        }
+    };
 
     $scope.dd = function(){
         var accordionPane = 'header-1';
@@ -146,12 +185,9 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
         $scope.example11settings = {
             groupByTextProvider: function(groupValue)
             {
-                if (groupValue === 'M')
-                {
+                if (groupValue === 'M') {
                     return 'Male';
-                }
-                else
-                {
+                } else {
                     return 'Female';
                 }
             }
@@ -206,30 +242,13 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
         };
         $scope.customFilter = 'a';
     }
-
-    $scope.selectQuestion = function(qindex){
-        $scope.selected_questions.push($scope.questions[qindex]);
-        $scope.questions.splice(qindex,1);
-    };
-    $scope.unselectQuestion = function(qindex){
-        $scope.questions.push($scope.selected_questions[qindex]);
-        $scope.Sorted = orderByFilter($scope.questions, function(item) {
-            return $scope.queOrder.indexOf(item.order);
-        });
-        $scope.questions = $scope.Sorted;
-        $scope.selected_questions.splice(qindex,1); 
-    };
-
     /*$scope.paneEnabled = function() {
         return enabled;
     };
-
     $scope.enablePane = function() {
         enabled = !enabled;
     }*/
-
     $scope.answer_opts = [{id: 'ansopt1'}];
-
     $scope.edit = function(){
         if(!$scope.question){
             Questions.getDetail().save({'_id':$routeParams.id}, function(data) {
@@ -237,13 +256,12 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
                 if(!($scope.question.answer_type == "text" || $scope.question.answer_type == 'number')){
                     $scope.answer_opts = $scope.question.answer;
                 } else {
-
                 }
             });
         } else {
             var questiondata = $scope.question;
             var answer = [];
-            if (!($scope.question.answer_type == "text" || $scope.question.answer_type == 'number')){
+            if ( !($scope.question.answer_type == "text" || $scope.question.answer_type == 'number') ) {
                 var answers = [];
                 var i = 0;
                 for(i; i < $scope.answer_opts.length; i++){
@@ -268,7 +286,6 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
             });
         }
     }
-
     $scope.add = function(){
         var questiondata = $scope.question;
         var answer = [];
@@ -290,24 +307,19 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
                 //console.log($scope.error);
             }
         });
-
     }
-
     $scope.addNewChoice = function() {
         var newItemNo = $scope.answer_opts.length+1;
         $scope.answer_opts.push({'id':'ansopt'+newItemNo});
-    };
-        
+    };  
     $scope.removeChoice = function() {
         var lastItem = $scope.answer_opts.length-1;
         $scope.answer_opts.splice(lastItem);
     };
-    
     $scope.callFoo = function() {
         console.log('here');
         myService.foo();
     }
-
     $scope.changeStatus = function(index, existingStatus) {
         var newStatus = 'Inactivate';
         if(existingStatus == 0){
@@ -338,7 +350,6 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
             });
         });
     };
-
     $scope.deleteQuestion = function(id,qname) {
         SweetAlert.swal({
         title: "Confirmation",
@@ -367,9 +378,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
                 }
             }); 
         });
-        
     };
-
     if (flag == "list") {
         $scope.list();
     } else if (flag == "edit") {
@@ -389,10 +398,8 @@ function demoController(NgTableParams, simpleList, countries) {
         age: 52
         }
     }, { dataset: simpleList});
-    
     self.changeFilter = changeFilter;
     self.applyGlobalSearch = applyGlobalSearch;
-
     function applyGlobalSearch(){
         var term = self.globalSearchTerm;
         if (self.isInvertedSearch){
@@ -400,7 +407,6 @@ function demoController(NgTableParams, simpleList, countries) {
         }
         self.tableParams.filter({ $: term });
     }
-
     function changeFilter(field, value){
         var filter = {};
         filter[field] = value;
@@ -412,7 +418,6 @@ function demoController(NgTableParams, simpleList, countries) {
     "use strict";
         myapp.run(setRunPhaseDefaults);
         setRunPhaseDefaults.$inject = ["ngTableDefaults"];
-
     function setRunPhaseDefaults(ngTableDefaults) {
     ngTableDefaults.params.count = 5;
     ngTableDefaults.settings.counts = [];

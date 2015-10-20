@@ -9,7 +9,7 @@
             <angular-accordion>
                 <pane ng-repeat = "que in questions">
                     <pane-header>
-                        {{que.name}} <a href="javascript:void(0);" ng-click="selectQuestion($index);"><i class="fa fa-forward"></i></a>
+                        {{que.id}}{{que.name}} <a href="javascript:void(0);" ng-click="selectQuestion($index);"><i class="fa fa-forward"></i></a>
                     </pane-header>
                     <pane-content ng-if="que.ans">
                        {{que.ans}}
@@ -19,10 +19,10 @@
         </div>
         <div class="col-lg-6">
             <angular-accordion>
-                <pane ng-repeat = "selected_question in selected_questions">
-                    <pane-header>
-                        {{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);"><i class="fa fa-backward"></i>
-                        </a>
+                <pane  ui-draggable="true" drag="selected_question" drag-channel="selques" drag-hover-class="bg-info"
+                        ui-on-Drop="onDrop($event,$data,$index)" drop-channel="selques"
+                        ng-repeat = "selected_question in selected_questions" >
+                    <pane-header>{{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);"><i class="fa fa-backward"></i></a>
                     </pane-header>
                     <pane-content ng-if="selected_question.ans">
                        {{selected_question.ans}}
