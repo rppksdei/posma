@@ -39,7 +39,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
-        //console.log(patientData);
         Patient.addPatient().save(patientData, function(data){
             if(data.success){
                 if($scope.patient._id){
@@ -52,9 +51,9 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                 if (data.error.errors){
                      $scope.errordetail = [];
                     for (var errName in data.error.errors) {
-                        $scope.errordetail[errName] = data.error.errors[errName].message
+                        $scope.errordetail[errName] = data.error.errors[errName].message;
                     }
-                     console.log($scope.errordetail);
+                    console.log($scope.errordetail);
                 }
                 else{
                     $scope.errordetail[data.error.path] = data.error.message;
@@ -70,21 +69,28 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         var patientId = $routeParams.id;
         Patient.getDetailId().save({'id': patientId}, function(data){
             if(data){
-                //console.log(data);
+                Surgery.getDetail().query({}, function(sdata){
+                    $scope.surgeries = sdata;
+                    var surgery_id = $scope.patient.surgery._id;
+                    Patient.getDetail().query({'surgery': surgery_id}, function(pdata){
+                        $scope.pathways = pdata;
+                    });
+                });
+
                 $scope.patient = data;
-                //$scope.surgery.clinic_name = $rootScope.user.clinic_name;
+                $scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
+                $scope.patient.dos              = $scope.timeStampToDate(data.dos);
+                $scope.patient.dohd             = $scope.timeStampToDate(data.dohd);
+                $scope.patient.surgery = $scope.patient.surgery._id;
+            //console.log($scope.pathways);
             }
         });
+    }
 
-        // Surgery.editSurgery().save({'id': surgeryId}, function(data){
-        //     if (data.success) {
-        //        // $rootScope.user = $scope.profileData;
-        //         $scope.success_message = data.success;
-        //     }else{
-        //         $scope.error[data.error.path] = data.error.message;
-        //         console.log($scope.error);
-        //     }
-        // });
+    $scope.timeStampToDate = function(timeStamp){
+        var date = new Date(timeStamp);
+        var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
+        return dateString;
     }
     
     $scope.deletePatient = function(id) {
@@ -98,7 +104,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         cancelButtonText: "No, cancel it!",
         closeOnConfirm: true}, 
         function(){
-            var update_object = {'patient_id':id, 'is_deleted':1};
+            var update_object = {'_id':id, 'is_deleted':1};
             Patient.update().save(update_object, function(data){
                 if (data.success) {
                     var del_index = 0;
@@ -133,7 +139,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             if (object_detail.is_active == 0) {
                 status = 1;
             }
-            var update_object = {'patient_id':object_detail._id, 'is_active':status};
+            var update_object = {'_id':object_detail._id, 'is_active':status};
             Patient.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;

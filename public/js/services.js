@@ -71,6 +71,9 @@ angular.module('PosmaService', ['ngResource'])
         serviceObj.getDetail = function(){
             return $resource('/pathway/');
         }
+        serviceObj.getDetailId = function(){
+            return $resource('/patient/detail/');
+        }
         // serviceObj.getAddDetails = function(){            
         //     return $resource('/surgery');
         // }
