@@ -9,7 +9,7 @@ var questionnaireSchema = ({
     recur_type:{type:String}, // d=daily, w=weekly, m=monthly
     
     // if recur_type=d
-    daily_recurrence:{type:Number, default:1}, // 1 means once in a day
+    //daily_recurrence:{type:Number, default:1}, // 1 means once in a day
 
     time_slots:[{type:Number}],
 
