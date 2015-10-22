@@ -1,28 +1,36 @@
 var surgeryModel = require("./../model/surgeryModel");
 
 getlisting = function(req, res, next){
-    var search = {is_deleted:0};
-    surgeryModel.getAllSurgery(search, function(err, userDetail){
+    var search_surgery = {is_deleted:0};
+    if (req.user.user_type == "2") {
+        search_surgery.clinic = req.user.parent_id;
+    }
+    else if (req.user.user_type == "0"){
+        search_surgery.clinic = req.user._id;
+    }
+    surgeryModel.getAllSurgery(search_surgery, function(err, userDetail){
         if(err){
             res.json(err);
         }
         else{
+            //console.log(req.user);
+            
             res.json(userDetail);
         }
     });
 }
 
 getSurgeryDetail = function(req, res){
-    var surgery_id = req.params.id;
+    var surgery_id = req.body.id;
     var search_surgery = {_id:surgery_id};
-    console.log(search_surgery);
     surgeryModel.getSurgery(search_surgery, function(err, data){
         var return_val = {};
+        //console.log(err);
+        // console.log(data);
         if (err){
             return_val.error = err;
             res.json(return_val);
-        }
-        else{
+        }else{
             if (data == null) {
                 return_val.error = "surgery doesn't exists";
                 res.json(return_val);
@@ -30,34 +38,28 @@ getSurgeryDetail = function(req, res){
             else{
                 res.json(data);
             }
-        }  
+        }
     });  
 }
 
 addSurgery = function(req, res){
     var surgeryDetail = req.body;
-    surgeryDetail.created = Date.now();
+    surgeryDetail.created   = Date.now();
+    surgeryDetail.clinic    = req.user._id;
     surgeryModel.addSurgery(surgeryDetail, function(err, data){
         var return_val = {};
         if (err) {
-            var error_detail = [];
-            // go through all the errors...
-            for (var errName in err.errors) {
-                error_detail.push(err.errors[errName].message);
-            }
-            return_val.error = error_detail;
+            return_val.error = err;
             res.json(return_val);
         }
         else{
             return_val.success = "Surgery added Successfully";
             res.json(return_val);
         }
-      //  res.json(return_val);
     });
 }
 
 updateSurgeryDetail = function(req, res){
-
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.clinic_id != "undefined"){
@@ -69,30 +71,26 @@ updateSurgeryDetail = function(req, res){
     if(typeof req.body.description != "undefined"){
         update_data.description = req.body.description;
     }
+    if(typeof req.body.is_deleted != "undefined"){
+        update_data.is_deleted = req.body.is_deleted;
+    }
+    if(typeof req.body.is_active != "undefined"){
+        update_data.is_active = req.body.is_active;
+    }
     update_data.modified = Date.now();
     //End of code to create object data
     
     // Code to update clinic Details
-    if(typeof req.body.surgery_id != "undefined"){
+    if(typeof req.body._id != "undefined"){
         var search_criteria = {};
-        var search_criteria = {_id:req.body.surgery_id};
+        var search_criteria = {_id:req.body._id};
         //code
         surgeryModel.updateSurgery(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
             if (err) {
-                if (err.errors) {
-                    var error_detail = [];
-                    for (var errName in err.errors) {
-                        error_detail.push(err.errors[errName].message);
-                    }
-                    return_data.error = error_detail;
-                    res.json(return_data);
-                }
-                else{
-                    return_data.error = message;
-                    res.json(return_data);
-                }
+                return_val.error = err;
+                res.json(return_val);
             }
             else{
                 return_data.success = "Surgery updated Successfully";

@@ -1,0 +1,120 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 ng-if="!question._id" class="page-header">Add Question Answers</h1>
+            <h1 ng-if="question._id" class="page-header">Update Question Answers</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div ng-if="!question._id" class="panel-heading">
+                    Add Question
+                </div>
+                <div ng-if="question._id" class="panel-heading">
+                    Update Question
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <form role="form" name="questionFrm" id="questionFrm" >
+                        	<div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error': questionFrm.qname.$dirty && (questionFrm.qname.$error.required)}">
+                                    <label>Question <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="question.name" required id="name" name="qname">
+                                    <label class="control-label" ng-show="questionFrm.qname.$dirty && questionFrm.qname.$error.required">Question is required.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Question for <span class="required">*</span></label>
+                                    <div class="radio-inline">
+                                            <input type="radio" required ng-model="question.gender" name="optionsRadios" id="optionsRadios1" value="b" checked> Both
+                                    </div>
+                                    <div class="radio-inline">
+                                            <input type="radio" required ng-model="question.gender" name="optionsRadios" id="optionsRadios2" value="m"> Male
+                                    </div>
+                                    <div class="radio-inline">
+                                            <input type="radio" required ng-model="question.gender" name="optionsRadios" id="optionsRadios3" value="f"> Female
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-init="question.answer_type='rb'" ng-class="{'has-error': questionFrm.answer_type.$dirty && (questionFrm.answer_type.$error.required  || errordetail['answer_type'])}">
+                                    <label>Answer type</label>
+                                    <select ng-model="question.answer_type" name="answer_type" id="answer_type" class="form-control">
+                                        <option value = "rb">Radio Buttons</option>
+                                        <option value = "number">Number</option>
+                                        <option value = "cb">Checkboxes</option>
+                                        <option value = "dd">Dropdown</option>
+                                        <option value = "text">Text</option>
+                                    </select>
+                                </div>
+                        	</div>
+                            <!-- /.col-lg-6 (nested) -->
+                            <div class="col-lg-6" ng-if="question.answer_type == 'rb' || question.answer_type == 'cb' || question.answer_type == 'dd' || question.answer_type == 'number' || question.answer_type == 'text'">
+                                <h4>Answer Values</h4>
+                                <div id="number" ng-if="question.answer_type == 'number'">
+                                	<div class="form-group col-lg-6" ng-class="{'has-error':(questionFrm.min_range.$dirty && (questionFrm.min_range.$error.required || questionFrm.min_range.$error.number))}">
+                                        <label>Min range</label>
+                                        <input class="form-control" type="number" required value="20" name="min_range" ng-model="question.min_range">
+                                         <label class="control-label" ng-show="questionFrm.min_range.$dirty && questionFrm.min_range.$error.required">Min range is required</label>
+                                        <label class="control-label" ng-show="questionFrm.min_range.$dirty && questionFrm.min_range.$error.number">Valid number.</label>
+                                    </div>
+                                	<div class="form-group col-lg-6" ng-class="{'has-error':(questionFrm.max_range.$dirty && (questionFrm.max_range.$error.required || questionFrm.max_range.$error.number))}">
+                                        <label>Max range</label>
+                                        <input class="form-control" type="number" required value="200" name="max_range" ng-model="question.max_range">
+                                        <label class="control-label" ng-show="questionFrm.max_range.$dirty && questionFrm.max_range.$error.required">Max range is required</label>
+                                        <label class="control-label" ng-show="questionFrm.max_range.$dirty && questionFrm.max_range.$error.number">Valid number.</label>
+                                     </div>
+                                </div>
+                                <div id="text" ng-if="question.answer_type == 'text'">
+                                	<div class="form-group col-lg-12" ng-class="{'has-error':(questionFrm.max_length.$dirty && (questionFrm.max_length.$error.required || questionFrm.max_length.$error.number))}">
+                                        <label>Max length</label>
+                                        <input class="form-control" type="number" required value="500" name="max_length" ng-model="question.max_length">
+                                        <label class="control-label" ng-show="questionFrm.max_length.$dirty && questionFrm.max_length.$error.required">Max length is required</label>
+                                        <label class="control-label" ng-show="questionFrm.max_length.$dirty && questionFrm.max_length.$error.number">Valid number.</label>
+                                    </div>
+                                </div>
+                                <div id="text" ng-if="question.answer_type == 'rb' || question.answer_type == 'cb' || question.answer_type == 'dd'">
+                                	<!--IMPORTANT http://www.shanidkv.com/blog/angularjs-adding-form-fields-dynamically -->
+                                	<div class="col-lg-12" >
+                                        <div class="form-group ">
+                                            <label>Answer Options</label> 
+                                            <button class="btn btn-info"  type="button" ng-click="addNewChoice()">Add More</button>
+                                        </div>
+                                        <!--label>Max length</label-->
+                                        <div data-ng-repeat="answer_opt in answer_opts">
+                                            <!--input ng-model="answer_opt._id" type="text" value=""-->
+                                            <div class="form-group col-lg-6">
+	                                            <input class="form-control" required ng-model="answer_opt.name" placeholder="Answer option">
+      										</div>
+                                            <div class="form-group col-lg-4">
+	                                            <div class="checkbox">
+	                                                <label>
+	                                                    <input ng-checked="answer_opt.out_of_range == 'true'" ng-model="answer_opt.out_of_range" type="checkbox" value="">
+                                                        Out of range
+	                                                </label>
+                                    			</div>
+                                    		</div>
+                                            <div class="form-group col-lg-2">
+                                                <button class="btn btn-danger btn-circle" ng-show="$last" ng-click="removeChoice()" type="button"><i class="fa fa-remove"></i></button>
+      										</div>
+      									</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" style="text-align:center">
+                        		<button ng-if="!question._id" ng-disabled="questionFrm.$invalid" class="btn btn-success" type="button" ng-click="add();">Add Question</button>
+                                <button ng-if="question._id" class="btn btn-success" type="button" ng-click="edit();">Update Now</button>
+                        	</div>
+                        	<!-- /.col-lg-6 (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>

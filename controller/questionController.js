@@ -13,7 +13,7 @@ getlisting = function(req, res, next){
 }
 
 getQuestionDetail = function(req, res){
-    var question_id = req.params.id;
+    var question_id = req.body._id;
     var search_question = {_id:question_id};
     questionModel.getQuestion(search_question, function(err, data){
         var return_val = {};
@@ -23,7 +23,7 @@ getQuestionDetail = function(req, res){
         }
         else{
             if (data == null) {
-                return_val.error = "question doesn't exists";
+                return_val.error = "Question doesn't exist.";
                 res.json(return_val);
             }
             else{
@@ -46,12 +46,14 @@ getQuestionDetail = function(req, res){
 */
 addQuestion = function(req, res, next){
     var questionDetail = req.body;
+    console.log(questionDetail);
     questionDetail.created = Date.now();
     questionModel.addQuestion(questionDetail, function(err, data){
         var return_val = {};
         if (err) {
             var error_detail = [];
             // go through all the errors...
+            console.log(err);
             for (var errName in err.errors) {
                 error_detail.push(err.errors[errName].message);
             }
@@ -59,7 +61,7 @@ addQuestion = function(req, res, next){
             res.json(return_val);
         }
         else{
-            return_val.success = "Question added Successfully";
+            return_val.success = "Question has been added successfully.";
             res.json(return_val);
         }
       //  res.json(return_val);
@@ -67,7 +69,6 @@ addQuestion = function(req, res, next){
 }
 
 updateQuestionDetail = function(req, res){
-
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.name != "undefined"){
@@ -94,13 +95,16 @@ updateQuestionDetail = function(req, res){
     if(typeof req.body.is_deleted != "undefined"){
         update_data.is_deleted = req.body.is_deleted;
     }
+    if(typeof req.body.is_active != "undefined"){
+        update_data.is_active = req.body.is_active;
+    }
     update_data.modified = Date.now();
     //End of code to create object data
     
     // Code to update clinic Details
-    if(typeof req.body.question_id != "undefined"){
+    if(typeof req.body._id != "undefined"){
         var search_criteria = {};
-        var search_criteria = {_id:req.body.question_id};
+        var search_criteria = {_id:req.body._id};
         //code
         questionModel.updateQuestion(search_criteria, update_data, function(err, data){
             var return_data = {};
@@ -120,20 +124,17 @@ updateQuestionDetail = function(req, res){
                 }
             }
             else{
-                return_data.success = "Question updated Successfully";
+                return_data.success = "Question has been updated successfully.";
                 res.json(return_data);
             }
         });
-    }
-    else{
+    } else{
         var return_data = {};
-        return_data.error = "Please enter object id to update";
+        return_data.error = "Please enter object id to update.";
         res.json(return_data);
     }
     //End of code to update clinic detail
 }
-
-
 
 module.exports = function(){
     this.getlisting = getlisting;
@@ -141,4 +142,3 @@ module.exports = function(){
     this.addQuestion = addQuestion;
     this.updateQuestionDetail = updateQuestionDetail;
 }
-

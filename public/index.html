@@ -1,76 +1,94 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="posma">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="0;">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Post Operative Recovery Symptoms - Admin/Clinic</title>
+        <!-- Bootstrap Core CSS -->
+        <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- MetisMenu CSS -->
+        <link href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
+        <!-- Custom Fonts -->
+        <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="css/angular-accordion.css">
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css">
 
-<head>
+        <style type="text/css">
+            .has-error label.control-label{
+                font-weight: normal;
+            }
+        </style>
+        <link rel="stylesheet" href="/css/sweet-alert.css">
+        <link rel="stylesheet" href="/css/ng-table.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/angular-datepicker.css">
+        <link rel="stylesheet" href="flash/angular-flash.css" type="text/css">
+        <link rel="stylesheet" type="text/css" href="css/angular-datepicker.css">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- If not session -->
+         <div class="container"  ng-if="user.user_type==='undefined'">
+            <div ng-view></div>
+        </div>
+        <!--else-->
+        <div id="wrapper" ng-if="user.user_type !=='undefined'">
+            <div ng-show="user.user_type == 0" ng-include="'/html/elements/clinic_admin.html'"></div>
+            <div ng-show="user.user_type == 1" ng-include="'/html/elements/admin.html'"></div>
+            <div ng-show="user.user_type == 2" ng-include="'/html/elements/surgeon.html'"></div>
+            <!--- end of else -->
+            <div ng-view>
+        </div>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="0;">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Post Operative Recovery Symptoms - Admin/Clinic</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- MetisMenu CSS -->
-    <link href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
-    <!-- Custom Fonts -->
-    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-resource.js"></script>
-    <script src="js/angular-route.js"></script>
-    <script src="js/services.js"></script>
-    <script src="js/app.js"></script>
-    
-    <!-- All Controllers -->
-    <script src="html/authenticate/loginCtrl.js"></script>
-    <script src="html/dashboard/dashboardCtrl.js"></script>
-    <script src="html/profile/profileCtrl.js"></script>
-    <!-- End of Controllers-->
+        <script src="js/angular.min.js"></script>
+        <script src="js/angular-resource.js"></script>
+        <script src="js/angular-route.js"></script>
+        <script src="js/angular-cookies.js"></script>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <link href="style.css" type="text/css">
-    <![endif]-->
-</head>
-<body>
-    <!-- If not session -->
-    
-    <div class="container"  ng-if="user.user_type==='undefined'">
-        <div ng-view></div>
-    </div>
-    <!-- else --->
-    <div id="wrapper" ng-if="user.user_type !=='undefined'">
-    
-        <div ng-show="user.user_type == 0" ng-include="'/html/elements/admin.html'"></div>
-        <!--- end of else -->
-        <div ng-view>
-    </div>
-    
-    
-    
-    
-                
-                
+        <script src="flash/angular-flash.js"></script>
+        <script src="js/checklist-model.js"></script>
+        <script src="js/angular-confirm.js"></script>
+        <script src="js/services.js"></script>
+        <script src="js/app.js"></script>
+        <script src="/js/ng-table.min.js"></script>
+        <script src="js/sweet-alert.min.js"></script>
+        <script src="http://pc035860.github.io/angular-highlightjs/angular-highlightjs.min.js"></script>
+        <script src="js/draganddrop.js"></script>
 
-    <!-- jQuery -->
-    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+        <!-- List of all Controllers -->
+        <script src="html/authenticate/loginCtrl.js"></script>
+        <script src="html/dashboard/dashboardCtrl.js"></script>
+        <script src="html/profile/profileCtrl.js"></script>
+        <script src="html/questions/questionsCtrl.js"></script>
+        <script src="html/surgery/surgeryCtrl.js"></script>
+        <script src="html/admin/adminCtrl.js"></script>
+        <script src="html/surgeon/surgeonCtrl.js"></script>
+        <script src="html/questionnaire/questionnaireCtrl.js"></script>  
+        <!-- End of code for list of all controllers-->
+        <script src="js/angular-accordion.js"></script>
+        <script type="text/javascript" src="js/angular-datepicker.js"></script>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+        <script type="text/javascript" src="js/angularjs-dropdown-multiselect.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="/dist/js/sb-admin-2.js"></script>
-
-</body>
-
+        <!-- jQuery -->
+        <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="/dist/js/sb-admin-2.js"></script>
+        <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+    </body>
 </html>

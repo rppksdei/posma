@@ -6,7 +6,7 @@ var patientSchema = ({
     password:{type:String, required:"Password is required"},
     first_name:{type:String, required:"First Name is Required"},
     last_name:{type:String},
-    email:{type:String},
+    email:{type:String, required:"Email is required"},
     date_of_birth:{type:Number, required:"Date of Birth is required"},
     gender:{type:String, required:"Gender is required"},
     address1:{type:String, required:"Address is Required"},
@@ -19,7 +19,21 @@ var patientSchema = ({
     is_deleted:{type:Number, default:0},
     is_active:{type:Number, default:0},
     created:{type:Number},
-    modified:{type:Number}
+    modified:{type:Number},
+    age: {type: Number, required:"Age is required"},
+    dos:{type:Number, required:"Date of Surgery is required"},
+    dohd:{type:Number, required:"Date of hospital discharge is required"},
+    cci:{type:Number},
+    type_tumor:{type:String},
+    tnm:{type:String},
+    tmn:{type:String},
+    bmi:{type:String},
+    clavien_minor_no:{type:Number},
+    clavien_major_no:{type:Number},
+    sbl:{type:String},
+    degfr:{type:String},
+    discharge_hemoglobin:{type:String},
+    blood_transfusion:{type:String} 
 });
 
 var Patient = mongoose.model('Patient', patientSchema);

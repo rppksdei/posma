@@ -1,0 +1,121 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Manage Questions</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div flash-message="5000" ></div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 style="float: left;width:85%" >
+                        Question Answers
+                    </h4>
+                    <a href="/#/questions/add" class="btn btn-primary right">Add Question</a>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="dataTable_wrapper">
+                        <!--table ng-table="tableParams" class="table" show-filter="true"-->
+                        <table ng-table="tableParams" class="table" >
+                            <tr ng-repeat="question in $data  | filter: searchKeyword " ng-class="{even: $even, odd: $odd}" >
+                                <!--td data-title="'Question'" sortable="'name'" filter="{ name: 'text'}">{{question.name}}</td-->
+                                <td data-title="'Question'" sortable="'name'">{{question.name}}</td>
+                                <td width ="13%" data-title="'Answer Type'" sortable="'answer_type'">
+                                    <span ng-if="question.answer_type == 'rb'">
+                                        Radio Buttons
+                                    </span>
+                                    <span ng-if="question.answer_type == 'cb'">
+                                        Check Boxes
+                                    </span>
+                                    <span ng-if="question.answer_type == 'dd'">
+                                        Drop Down
+                                    </span>
+                                    <span ng-if="question.answer_type == 'text'">
+                                        Text Box
+                                    </span>
+                                    <span ng-if="question.answer_type == 'number'">
+                                        Number
+                                    </span>
+                                </td>
+                                <!--td align="center" width="11%" data-title="'Min. Range'" >
+                                    <span ng-if="!question.min_range">
+                                        -
+                                    </span>
+                                    <span ng-if="question.min_range">
+                                        {{question.min_range}}
+                                    </span>
+                                </td>
+                                <td align="center" width="11%" data-title="'Max. Range'" ><span ng-bind="question.max_range?question.max_range:'-'"></span></td>
+                                <td width ="12%"  data-title="'Answer Length (Characters)'" ><span ng-bind="question.max_length?question.max_length:'-'"></span></td-->
+                                <td align="center" width="13%"  data-title="'Question for'" sortable="'gender'"><span ng-if="question.gender == 'b'">
+                                        Male, Female
+                                    </span>
+                                    <span ng-if="question.gender == 'm'">
+                                        Male
+                                    </span>
+                                    <span ng-if="question.gender == 'f'">
+                                        Female
+                                    </span>
+                                </td>
+                                <td width ="7%" align="center" data-title="'Status'">
+                                    <a href="javascript:void(0);" ng-click="changeStatus($index,question.is_active);">
+                                        <button class="btn btn-circle btn-sm btn" ng-class="{'btn-danger':question.is_active == 0, 'btn-success':question.is_active == 1}" type="button"><i class="fa" ng-class="{'fa-times':question.is_active == 0, 'fa-check':question.is_active == 1}"></i></button>
+                                    </a>  
+                                </td>
+                                <td width ="15%"  data-title="'Created'" sortable="'created'">
+                                       {{question.created | date:'MMM d, yyyy'}}
+                                </td>
+                                <td align="center" width="8%"  data-title="'Action'">
+                                    <a ng-if="question.answer_type == 'rb' || question.answer_type == 'dd' || question.answer_type == 'cb'" id="opener" data-toggle="modal" title="View Answers" data-target="#ans{{question._id}}" href="javascript:void(0);">
+                                        <i class="fa fa-files-o fa-fw"></i>
+                                    </a>
+                                    <a href="/#/questions/add/{{question._id}}" title="Edit">
+                                        <i class="fa fa-edit fa-fw"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" ng-click="deleteQuestion(question._id,'question.name');">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>  
+
+                                    <div ng-if="question.answer_type !== 'text' || question.answer_type !== 'number'" id ="ans{{question._id}}" class="modal fade" role="dialog" title="Basic dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Available Answers</h4>
+                                                </div>
+                                                <div class="modessage modal-body">
+                                                    <ol>
+                                                        <li ng-repeat="ans in question.answer">
+                                                            <b>{{ans.name}}</b> <span ng-if="ans.out_of_range == 'true'">Unexpected answer - send alert to institute owner</span>
+                                                        </li>
+                                                    </ol>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Modal -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>

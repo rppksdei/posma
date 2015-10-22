@@ -16,6 +16,7 @@ var app = express();
 // New routes for an application
 
 
+
 // Database Connection
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/healthcare');
@@ -47,12 +48,119 @@ app.use(passport.initialize());
 app.use(passport.session());
 //End of code for Passport Session
 
+
+//Function to check session and user type
+checksession = function(req, res, callback){
+  if(!req.isAuthenticated()){
+    callback(false);
+  }
+  else{
+    callback(true);
+  } 
+}
+
+isLoggedIn = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      next();
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+isSuperAdmin = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 1) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+isClinicAdmin = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 0) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+isSurgeon = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 2) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+isClinicOrSurgeon = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 2 || req.user.user_type == 0) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+
+isClinicOrAdmin = function (req, res, next) {
+  checksession(req, res,function(response){
+    if(response){
+      if (req.user.user_type == 1 || req.user.user_type == 0) {
+        next();
+      }
+      else{
+        res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+      }
+      
+    }
+    else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+  });
+}
+//End of functions to check session and user type
+
 // Route Path
 require('./routes/login')(app,express);
-require('./routes/profile')(app,express);
-require('./routes/admin')(app,express);
-require('./routes/surgery')(app,express);
-require('./routes/question')(app,express);
+require('./routes/profile')(app,express, isLoggedIn);
+require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin);
+require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
+require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
 require('./routes/pathway')(app,express);
 require('./routes/patient')(app,express);
@@ -65,7 +173,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
 // error handlers
 
 // development error handler

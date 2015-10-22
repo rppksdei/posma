@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var answerSchema = new Schema({
     name:{type:String, required:"Option is required"},
-    out_of_range:{type:String, default:0}, // 0=in range, 1=out of range
+    out_of_range:{type:String, default:false}, // 0=in range, 1=out of range
     is_deleted:{type:Number, default:0},
     created:{type:Number},
     modified:{type:Number}
@@ -11,14 +11,15 @@ var answerSchema = new Schema({
 
 
 var questionSchema = new Schema({
-    name:{type:String, required:"Question name is required"},
-    answer_type:{type:Number, default:0}, //0=Text, 1=Number
+    name:{type:String, required:"Question name is required. "},
+    answer_type:{type:String, default:'text'}, //0=Text, 1=Number
     min_range:{type:Number},
     max_range:{type:Number},
     max_length:{type:Number, default:0},
     gender:{type:String, default:"b"}, //m=Male, f=Female, b=Both
     clinic:{type:Schema.Types.ObjectId, ref:'Clinic'},
     answer:[answerSchema],
+    is_active:{type:Number, default:1},
     is_deleted:{type:Number, default:0},
     created:{type:Number},
     modified:{type:Number} 
@@ -32,6 +33,7 @@ exports.getAllQuestion = function(search_criteria, next){
 }
 
 exports.getQuestion = function(search_criteria, next){
+    console.log(search_criteria);
     Question.findOne(search_criteria, next);
 }
 
