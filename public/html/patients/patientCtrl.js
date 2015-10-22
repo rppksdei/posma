@@ -1,4 +1,4 @@
-myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
+myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
     $scope.patients = [];
     $scope.success = "";
     $scope.patient = "";
@@ -23,10 +23,16 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
 
     /* function to get surgeries & pathways on add form */
     $scope.getAdd = function(){
-        Patient.getAddDetails.save({}, function(data){
-            if(data){
-                console.log(data);
-            }
+        Surgery.getDetail().query({}, function(data){
+            $scope.patient.gender = 'M';
+            $scope.surgeries = data;
+        });
+    }
+
+    $scope.getPathways = function(){
+        var surgery_id = $scope.patient.surgery;
+        Patient.getDetail().query({'surgery': surgery_id}, function(data){
+            $scope.pathways = data;
         });
     }
 
@@ -45,9 +51,9 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
                 if (data.error.errors){
                      $scope.errordetail = [];
                     for (var errName in data.error.errors) {
-                        $scope.errordetail[errName] = data.error.errors[errName].message
+                        $scope.errordetail[errName] = data.error.errors[errName].message;
                     }
-                     console.log($scope.errordetail);
+                    console.log($scope.errordetail);
                 }
                 else{
                     $scope.errordetail[data.error.path] = data.error.message;
@@ -60,30 +66,37 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
 
     $scope.edit = function(){
         $scope.error = [];
-        var surgeryId = $routeParams.id;
-        Patient.getDetailId().save({'id': surgeryId}, function(data){
+        var patientId = $routeParams.id;
+        Patient.getDetailId().save({'id': patientId}, function(data){
             if(data){
-                //console.log(data);
-                $scope.surgery = data;
-                $scope.surgery.clinic_name = $rootScope.user.clinic_name;
+                Surgery.getDetail().query({}, function(sdata){
+                    $scope.surgeries = sdata;
+                    var surgery_id = $scope.patient.surgery._id;
+                    Patient.getDetail().query({'surgery': surgery_id}, function(pdata){
+                        $scope.pathways = pdata;
+                    });
+                });
+
+                $scope.patient = data;
+                $scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
+                $scope.patient.dos              = $scope.timeStampToDate(data.dos);
+                $scope.patient.dohd             = $scope.timeStampToDate(data.dohd);
+                $scope.patient.surgery = $scope.patient.surgery._id;
+            //console.log($scope.pathways);
             }
         });
+    }
 
-        // Surgery.editSurgery().save({'id': surgeryId}, function(data){
-        //     if (data.success) {
-        //        // $rootScope.user = $scope.profileData;
-        //         $scope.success_message = data.success;
-        //     }else{
-        //         $scope.error[data.error.path] = data.error.message;
-        //         console.log($scope.error);
-        //     }
-        // });
+    $scope.timeStampToDate = function(timeStamp){
+        var date = new Date(timeStamp);
+        var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
+        return dateString;
     }
     
-    $scope.deleteSurgery = function(id) {
+    $scope.deletePatient = function(id) {
         SweetAlert.swal({
         title: "Are you sure?",
-        text: "You will not be able to recover surgery!",
+        text: "You will not be able to recover patient!",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -109,11 +122,12 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
         });
     };
 
-    $scope.changeSurgeryStatus = function(index) {
+    $scope.changePatientStatus = function(index) {
         var object_detail = $scope.tableParams.data[index];
+        //console.log(object_detail);
         SweetAlert.swal({
         title: "Are you sure?",
-        text: "you want to change status of "+object_detail.name+" ",
+        text: "you want to change status of "+object_detail.username+" ",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -126,7 +140,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, $location, Fla
                 status = 1;
             }
             var update_object = {'_id':object_detail._id, 'is_active':status};
-            //console.log(update_object);
             Patient.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;

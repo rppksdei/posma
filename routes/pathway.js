@@ -24,6 +24,12 @@ module.exports = function(app,express){
         pathwayObj.updatePathwayDetail(req, res);
     });
     //End of code to get one clinic detail
+
+    /* GET users listing. 
+    router.post('/getpathway',  function(req, res, next) {
+        pathwayObj.getpathway(req, res, next);
+    });
+    */
     
     app.use('/pathway',router);
 }

@@ -33,6 +33,13 @@ module.exports = function(app,express,isClinicOrSurgeon, isClinicAdmin){
         surgeryObj.updateSurgeryDetail(req, res);
     });
     //End of code to get one Surgery detail
+
+    // Get Surgery Detail By Clinic
+    /*
+    router.post('/get_surgery_by_clinic', isClinicOrSurgeon, function(req, res, next){
+        surgeryObj.getSurgeryByClinic(req, res, next);
+    });
+    */
     
     app.use('/surgery',router);
 }
