@@ -15,7 +15,7 @@ var patientSchema = ({
     mobile:{type:Number},
     surgery:{type:Schema.Types.ObjectId, ref:"Surgery", required:"Surgery is Required"},
     clinic:{type:Schema.Types.ObjectId, ref:"Admin", required:"Clinic is Required"},
-    pathway:{type:Schema.Types.ObjectId, ref:"Pathway", required:"Pathway is Required"},
+    pathway:{type:Schema.Types.ObjectId, ref:"Pathway"/*, required:"Pathway is Required"*/},
     is_deleted:{type:Number, default:0},
     is_active:{type:Number, default:0},
     created:{type:Number},

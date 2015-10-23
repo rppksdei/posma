@@ -71,6 +71,7 @@ addPatient = function(req, res, next){
             res.json(err);
         }
         else{
+            var return_val = {};
             if (data.success) {
                 //add Admin cum clinic
                 var patientDetail = req.body;
@@ -79,12 +80,22 @@ addPatient = function(req, res, next){
                 patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
                 patientDetail.dos               = dateToTimeStamp(req.body.dos);
                 patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
+                patientDetail.is_active  = 1;
                 //console.log(patientDetail);
                 patientModel.addPatient(patientDetail, function(err, data){
-                    var return_val = {};
                     if (err) {
-                        return_val.error = err;
-                        res.json(return_val);
+                        if (err.errors) {
+                            var error_detail = [];
+                            for (var errName in err.errors) {
+                                error_detail.push(err.errors[errName].message);
+                            }
+                            return_val.error = error_detail;
+                            res.json(return_val);
+                        }
+                        else{
+                            return_val.error = err;
+                            res.json(return_val);
+                        }
                     }
                     else{
                         return_val.success = "Patient added Successfully";
