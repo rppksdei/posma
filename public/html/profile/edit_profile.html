@@ -14,20 +14,20 @@
 
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Edit details
+                            Edit details <span class="required pull-right">* Fields are required.</span>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <form name="edit_profile" id="edit_profile" ng-submit="updateProfile();">
                                 	<div class="col-lg-6">
                                         <div class="form-group">
-                                            <label>Username</label>
+                                            <label>Username <span class="required">*</span></label>
                                             <input class="form-control" disabled  ng-model="profileData.username" name="username" id="username" value="">
                                         </div>
                                         <div class="form-group" ng-show='user.user_type == 0' ng-class="{'has-error': edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required }">
-                                            <label>Clinic Name</label>
+                                            <label>Institution Name <span class="required">*</span></label>
                                             <input class="form-control" autocomplete="off" ng-model="profileData.clinic_name" ng-required='user.user_type == 0' name="clinic_name" id="clinic_name" value="">
-                                            <label class="control-label" ng-show="edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required">Clinic Name is required.</label>
+                                            <label class="control-label" ng-show="edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required">Institution name is required.</label>
                                         </div>
                                         <div class="form-group">
                                             <label>Firstname</label>
@@ -38,13 +38,13 @@
                                             <input class="form-control" autocomplete="off" ng-model="profileData.last_name" name="last_name" id="last_name" autocomplete="off" value="">
                                         </div>
                                         <div class="form-group" ng-class="{'has-error': edit_profile.email.$dirty && (edit_profile.email.$error.required || edit_profile.email.$error.email) }">
-                                            <label>Email</label>
+                                            <label>Email <span class="required">*</span></label>
                                             <input class="form-control" autocomplete="off" ng-model="profileData.email" name="email" id="email" required type="email" value="">
                     						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.required">Email is required.</label>
                     						<label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.email">Invalid Email.</label>
                                         </div>
                                         <div class="form-group" ng-class="{'has-error': (edit_profile.phone.$dirty && (edit_profile.phone.$error.required || edit_profile.phone.$error.number)) || error['phone'] }">
-                                            <label>Phone</label>
+                                            <label>Phone <span class="required">*</span></label>
                                             <input class="form-control" autocomplete="off" type="text" required ng-model="profileData.phone" name="phone" id="phone" value="">
 						<label class="control-label" ng-show="edit_profile.phone.$dirty && edit_profile.phone.$error.required">Phone is required.</label>
 						<label class="control-label" ng-show="error['phone']" ng-bind="error['phone']"></label>
@@ -55,7 +55,7 @@
 						<label class="control-label" ng-show="error['mobile']" ng-bind="error['mobile']"></label>
                                         </div>
                                         <div class="form-group" ng-class="{'has-error': edit_profile.address1.$dirty && edit_profile.address1.$error.required }">
-                                            <label>Address 1</label>
+                                            <label>Address 1 <span class="required">*</span></label>
                                             <input class="form-control" autocomplete="off" ng-model="profileData.address1" name="address1" required id="address1" value="">
 						<label class="control-label" ng-show="edit_profile.address1.$dirty && edit_profile.address1.$error.required">Address is required.</label>
                                         </div>

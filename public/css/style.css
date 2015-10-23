@@ -25,6 +25,12 @@ table tr.odd td{
     padding: 2px 5px;
     width: 100%;
 }
+.required{
+    color: #a94442
+}
+.pull-right{
+    float: right;
+}
 /** gurpreet added */
 /*.lbl-error{color: #ff0000;font-size: 12px;font-weight: normal;}*/
 /* gurpreet added */
