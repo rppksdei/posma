@@ -24,6 +24,7 @@ table tr.odd td{
     min-height: 18px;
     padding: 2px 5px;
     width: 100%;
+    
 }
 .required{
     color: #a94442
