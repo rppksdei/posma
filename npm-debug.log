@@ -1,46 +1,32 @@
 info it worked if it ends with ok
-verbose cli [ 'node', '/usr/bin/npm', 'install', 'forever', '-g' ]
+verbose cli [ 'node', '/usr/bin/npm', 'uninstall', 'forever' ]
 info using npm@1.1.4
 info using node@v0.6.12
-verbose config file /root/.npmrc
+verbose config file /home/ramanpreetk/.npmrc
 verbose config file /usr/etc/npmrc
 verbose config file /usr/share/npm/npmrc
-silly exec /usr/bin/node "/usr/share/npm/bin/npm-get-uid-gid.js" "nobody" 0
-silly spawning [ '/usr/bin/node',
-silly spawning   [ '/usr/share/npm/bin/npm-get-uid-gid.js', 'nobody', 0 ],
-silly spawning   null ]
-silly output from getuid/gid {"uid":65534,"gid":0}
-silly output from getuid/gid 
-verbose cache add [ 'forever', null ]
-silly cache add: name, spec, args [ undefined, 'forever', [ 'forever', null ] ]
-verbose parsed url { pathname: 'forever', path: 'forever', href: 'forever' }
-verbose addNamed [ 'forever', '' ]
-verbose addNamed [ null, '' ]
-silly name, range, hasData [ 'forever', '', false ]
-verbose raw, before any munging forever
-verbose url resolving [ 'https://registry.npmjs.org/', './forever' ]
-verbose url resolved https://registry.npmjs.org/forever
-http GET https://registry.npmjs.org/forever
-ERR! Error: failed to fetch from registry: forever
-ERR!     at /usr/share/npm/lib/utils/npm-registry-client/get.js:139:12
-ERR!     at cb (/usr/share/npm/lib/utils/npm-registry-client/request.js:31:9)
-ERR!     at Request._callback (/usr/share/npm/lib/utils/npm-registry-client/request.js:136:18)
-ERR!     at Request.callback (/usr/lib/nodejs/request/main.js:119:22)
-ERR!     at Request.<anonymous> (/usr/lib/nodejs/request/main.js:212:58)
-ERR!     at Request.emit (events.js:88:20)
-ERR!     at ClientRequest.<anonymous> (/usr/lib/nodejs/request/main.js:412:12)
-ERR!     at ClientRequest.emit (events.js:67:17)
-ERR!     at HTTPParser.onIncoming (http.js:1261:11)
-ERR!     at HTTPParser.onHeadersComplete (http.js:102:31)
-ERR! You may report this log at:
-ERR!     <http://bugs.debian.org/npm>
-ERR! or use
-ERR!     reportbug --attach /home/ramanpreetk/Ramanpreet/Official/projects/posma/npm-debug.log npm
+info unbuild /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever/package.json
+verbose loadDefaults forever@0.15.1
+info preuninstall forever@0.15.1
+info uninstall forever@0.15.1
+verbose unbuild forever@0.15.1 [ true,
+verbose unbuild forever@0.15.1   '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules',
+verbose unbuild forever@0.15.1   '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules' ]
+verbose binRoot [ '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/.bin',
+verbose binRoot   { forever: './bin/forever' } ]
+info postuninstall forever@0.15.1
+ERR! Error: EPERM, operation not permitted '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever'
+ERR! 
+ERR! Please try running this command again as root/Administrator.
 ERR! 
 ERR! System Linux 3.13.0-32-generic
-ERR! command "node" "/usr/bin/npm" "install" "forever" "-g"
+ERR! command "node" "/usr/bin/npm" "uninstall" "forever"
 ERR! cwd /home/ramanpreetk/Ramanpreet/Official/projects/posma
 ERR! node -v v0.6.12
 ERR! npm -v 1.1.4
-ERR! message failed to fetch from registry: forever
+ERR! path /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever
+ERR! code EPERM
+ERR! message EPERM, operation not permitted '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever'
+ERR! errno {}
 verbose exit [ 1, true ]
