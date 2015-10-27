@@ -162,8 +162,8 @@ require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin);
 require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
-require('./routes/pathway')(app,express);
-require('./routes/patient')(app,express);
+require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
+require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patientQuestionnaire')(app,express);
 
 

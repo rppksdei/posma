@@ -25,6 +25,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     $scope.getAdd = function(){
         Surgery.getDetail().query({}, function(data){
             $scope.patient.gender = 'M';
+            $scope.patient.neoadjuvant_chemotherapy = 'na';
+            $scope.patient.tumor_laterality = 'na';
             $scope.surgeries = data;
         });
     }
@@ -91,6 +93,46 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         var date = new Date(timeStamp);
         var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
         return dateString;
+    }
+
+    $scope.getAge = function(){
+        var dob = $scope.patient.date_of_birth;
+        console.log(dob);
+        $scope.patient.age = $scope.getAgeFromDob(dob);
+        console.log($scope.patient);
+        // var date = new Date(timeStamp);
+        // var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
+        // return dateString;
+    }
+
+    $scope.getAgeFromDob = function (dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    $scope.getBMI = function(){
+        var height = $scope.patient.height;
+        var weight = $scope.patient.weight;
+        //console.log(dob);
+        $scope.patient.bmi = $scope.calculateBmi(height, weight);
+        //console.log($scope.patient);
+        // var date = new Date(timeStamp);
+        // var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
+        // return dateString;
+    }
+
+    $scope.calculateBmi = function(height, weight){        
+        var finalBmi = '';
+        if(weight > 0 && height > 0){   
+            finalBmi = weight/(height/100*height/100);
+        }
+        return finalBmi;
     }
     
     $scope.deletePatient = function(id) {

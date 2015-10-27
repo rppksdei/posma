@@ -112,15 +112,25 @@ angular.module('PosmaService', ['ngResource'])
         }
         return serviceObj;
     })
-    /*
     .factory('Pathway', function($resource){
         var serviceObj = {};
+        serviceObj.getList = function(){
+            return $resource('/pathway/');
+        }
+        serviceObj.addPathway = function(){
+            return $resource('/pathway/add');
+        }
+        serviceObj.update = function(){
+            return $resource('/pathway/update');
+        }
         serviceObj.getDetail = function(){
             return $resource('/pathway/');
         }
+        serviceObj.getDetailId = function(){
+            return $resource('/pathway/detail/');
+        }
         return serviceObj;
     })
-    */
     .factory('myService', function() {
         return {
             foo: function() {

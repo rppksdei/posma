@@ -1,200 +1,27 @@
-info it worked if it ends with ok
-verbose cli [ 'node', '/usr/bin/npm', 'install' ]
-info using npm@1.1.4
-info using node@v0.6.12
-verbose config file /root/.npmrc
-verbose config file /usr/etc/npmrc
-verbose config file /usr/share/npm/npmrc
-verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/package.json
-verbose loadDefaults healthcare@0.0.0
-verbose readDependencies: using package.json deps
-verbose where, deps [ '/home/ramanpreetk/Ramanpreet/Official/projects/posma',
-verbose where, deps   [ 'body-parser',
-verbose where, deps     'cookie-parser',
-verbose where, deps     'debug',
-verbose where, deps     'express',
-verbose where, deps     'express-session',
-verbose where, deps     'jade',
-verbose where, deps     'morgan',
-verbose where, deps     'passport',
-verbose where, deps     'passport-local',
-verbose where, deps     'serve-favicon' ] ]
-verbose from cache /home/ramanpreetk/Ramanpreet/Official/projects/posma/package.json
-info preinstall healthcare@0.0.0
-verbose from cache /home/ramanpreetk/Ramanpreet/Official/projects/posma/package.json
-verbose readDependencies: using package.json deps
-verbose cache add [ 'body-parser@~1.13.2', null ]
-silly cache add: name, spec, args [ undefined,
-silly cache add: name, spec, args   'body-parser@~1.13.2',
-silly cache add: name, spec, args   [ 'body-parser@~1.13.2', null ] ]
-verbose parsed url { pathname: 'body-parser@~1.13.2',
-verbose parsed url   path: 'body-parser@~1.13.2',
-verbose parsed url   href: 'body-parser@~1.13.2' }
-silly cache add: name, spec, args [ 'body-parser', '~1.13.2', [ 'body-parser', '~1.13.2' ] ]
-verbose parsed url { pathname: '~1.13.2', path: '~1.13.2', href: '~1.13.2' }
-verbose addNamed [ 'body-parser', '~1.13.2' ]
-verbose addNamed [ null, '>=1.13.2- <1.14.0-' ]
-silly name, range, hasData [ 'body-parser', '>=1.13.2- <1.14.0-', false ]
-verbose cache add [ 'cookie-parser@~1.3.5', null ]
-silly cache add: name, spec, args [ undefined,
-silly cache add: name, spec, args   'cookie-parser@~1.3.5',
-silly cache add: name, spec, args   [ 'cookie-parser@~1.3.5', null ] ]
-verbose parsed url { pathname: 'cookie-parser@~1.3.5',
-verbose parsed url   path: 'cookie-parser@~1.3.5',
-verbose parsed url   href: 'cookie-parser@~1.3.5' }
-silly cache add: name, spec, args [ 'cookie-parser', '~1.3.5', [ 'cookie-parser', '~1.3.5' ] ]
-verbose parsed url { pathname: '~1.3.5', path: '~1.3.5', href: '~1.3.5' }
-verbose addNamed [ 'cookie-parser', '~1.3.5' ]
-verbose addNamed [ null, '>=1.3.5- <1.4.0-' ]
-silly name, range, hasData [ 'cookie-parser', '>=1.3.5- <1.4.0-', false ]
-verbose cache add [ 'debug@~2.2.0', null ]
-silly cache add: name, spec, args [ undefined, 'debug@~2.2.0', [ 'debug@~2.2.0', null ] ]
-verbose parsed url { pathname: 'debug@~2.2.0',
-verbose parsed url   path: 'debug@~2.2.0',
-verbose parsed url   href: 'debug@~2.2.0' }
-silly cache add: name, spec, args [ 'debug', '~2.2.0', [ 'debug', '~2.2.0' ] ]
-verbose parsed url { pathname: '~2.2.0', path: '~2.2.0', href: '~2.2.0' }
-verbose addNamed [ 'debug', '~2.2.0' ]
-verbose addNamed [ null, '>=2.2.0- <2.3.0-' ]
-silly name, range, hasData [ 'debug', '>=2.2.0- <2.3.0-', false ]
-verbose cache add [ 'express@~4.13.1', null ]
-silly cache add: name, spec, args [ undefined, 'express@~4.13.1', [ 'express@~4.13.1', null ] ]
-verbose parsed url { pathname: 'express@~4.13.1',
-verbose parsed url   path: 'express@~4.13.1',
-verbose parsed url   href: 'express@~4.13.1' }
-silly cache add: name, spec, args [ 'express', '~4.13.1', [ 'express', '~4.13.1' ] ]
-verbose parsed url { pathname: '~4.13.1', path: '~4.13.1', href: '~4.13.1' }
-verbose addNamed [ 'express', '~4.13.1' ]
-verbose addNamed [ null, '>=4.13.1- <4.14.0-' ]
-silly name, range, hasData [ 'express', '>=4.13.1- <4.14.0-', false ]
-verbose cache add [ 'express-session@^1.11.3', null ]
-silly cache add: name, spec, args [ undefined,
-silly cache add: name, spec, args   'express-session@^1.11.3',
-silly cache add: name, spec, args   [ 'express-session@^1.11.3', null ] ]
-verbose parsed url { pathname: 'express-session@^1.11.3',
-verbose parsed url   path: 'express-session@^1.11.3',
-verbose parsed url   href: 'express-session@^1.11.3' }
-silly cache add: name, spec, args [ 'express-session',
-silly cache add: name, spec, args   '^1.11.3',
-silly cache add: name, spec, args   [ 'express-session', '^1.11.3' ] ]
-verbose parsed url { pathname: '^1.11.3', path: '^1.11.3', href: '^1.11.3' }
-verbose addNamed [ 'express-session', '^1.11.3' ]
-verbose addNamed [ null, null ]
-info addNameTag [ 'express-session', '^1.11.3' ]
-verbose cache add [ 'jade@~1.11.0', null ]
-silly cache add: name, spec, args [ undefined, 'jade@~1.11.0', [ 'jade@~1.11.0', null ] ]
-verbose parsed url { pathname: 'jade@~1.11.0',
-verbose parsed url   path: 'jade@~1.11.0',
-verbose parsed url   href: 'jade@~1.11.0' }
-silly cache add: name, spec, args [ 'jade', '~1.11.0', [ 'jade', '~1.11.0' ] ]
-verbose parsed url { pathname: '~1.11.0', path: '~1.11.0', href: '~1.11.0' }
-verbose addNamed [ 'jade', '~1.11.0' ]
-verbose addNamed [ null, '>=1.11.0- <1.12.0-' ]
-silly name, range, hasData [ 'jade', '>=1.11.0- <1.12.0-', false ]
-verbose cache add [ 'morgan@~1.6.1', null ]
-silly cache add: name, spec, args [ undefined, 'morgan@~1.6.1', [ 'morgan@~1.6.1', null ] ]
-verbose parsed url { pathname: 'morgan@~1.6.1',
-verbose parsed url   path: 'morgan@~1.6.1',
-verbose parsed url   href: 'morgan@~1.6.1' }
-silly cache add: name, spec, args [ 'morgan', '~1.6.1', [ 'morgan', '~1.6.1' ] ]
-verbose parsed url { pathname: '~1.6.1', path: '~1.6.1', href: '~1.6.1' }
-verbose addNamed [ 'morgan', '~1.6.1' ]
-verbose addNamed [ null, '>=1.6.1- <1.7.0-' ]
-silly name, range, hasData [ 'morgan', '>=1.6.1- <1.7.0-', false ]
-verbose cache add [ 'passport@^0.3.0', null ]
-silly cache add: name, spec, args [ undefined, 'passport@^0.3.0', [ 'passport@^0.3.0', null ] ]
-verbose parsed url { pathname: 'passport@^0.3.0',
-verbose parsed url   path: 'passport@^0.3.0',
-verbose parsed url   href: 'passport@^0.3.0' }
-silly cache add: name, spec, args [ 'passport', '^0.3.0', [ 'passport', '^0.3.0' ] ]
-verbose parsed url { pathname: '^0.3.0', path: '^0.3.0', href: '^0.3.0' }
-verbose addNamed [ 'passport', '^0.3.0' ]
-verbose addNamed [ null, null ]
-info addNameTag [ 'passport', '^0.3.0' ]
-verbose cache add [ 'passport-local@^1.0.0', null ]
-silly cache add: name, spec, args [ undefined,
-silly cache add: name, spec, args   'passport-local@^1.0.0',
-silly cache add: name, spec, args   [ 'passport-local@^1.0.0', null ] ]
-verbose parsed url { pathname: 'passport-local@^1.0.0',
-verbose parsed url   path: 'passport-local@^1.0.0',
-verbose parsed url   href: 'passport-local@^1.0.0' }
-silly cache add: name, spec, args [ 'passport-local', '^1.0.0', [ 'passport-local', '^1.0.0' ] ]
-verbose parsed url { pathname: '^1.0.0', path: '^1.0.0', href: '^1.0.0' }
-verbose addNamed [ 'passport-local', '^1.0.0' ]
-verbose addNamed [ null, null ]
-info addNameTag [ 'passport-local', '^1.0.0' ]
-verbose cache add [ 'serve-favicon@~2.3.0', null ]
-silly cache add: name, spec, args [ undefined,
-silly cache add: name, spec, args   'serve-favicon@~2.3.0',
-silly cache add: name, spec, args   [ 'serve-favicon@~2.3.0', null ] ]
-verbose parsed url { pathname: 'serve-favicon@~2.3.0',
-verbose parsed url   path: 'serve-favicon@~2.3.0',
-verbose parsed url   href: 'serve-favicon@~2.3.0' }
-silly cache add: name, spec, args [ 'serve-favicon', '~2.3.0', [ 'serve-favicon', '~2.3.0' ] ]
-verbose parsed url { pathname: '~2.3.0', path: '~2.3.0', href: '~2.3.0' }
-verbose addNamed [ 'serve-favicon', '~2.3.0' ]
-verbose addNamed [ null, '>=2.3.0- <2.4.0-' ]
-silly name, range, hasData [ 'serve-favicon', '>=2.3.0- <2.4.0-', false ]
-verbose raw, before any munging body-parser
-verbose url resolving [ 'https://registry.npmjs.org/', './body-parser' ]
-verbose url resolved https://registry.npmjs.org/body-parser
-http GET https://registry.npmjs.org/body-parser
-verbose raw, before any munging cookie-parser
-verbose url resolving [ 'https://registry.npmjs.org/', './cookie-parser' ]
-verbose url resolved https://registry.npmjs.org/cookie-parser
-http GET https://registry.npmjs.org/cookie-parser
-verbose raw, before any munging debug
-verbose url resolving [ 'https://registry.npmjs.org/', './debug' ]
-verbose url resolved https://registry.npmjs.org/debug
-http GET https://registry.npmjs.org/debug
-verbose raw, before any munging express
-verbose url resolving [ 'https://registry.npmjs.org/', './express' ]
-verbose url resolved https://registry.npmjs.org/express
-http GET https://registry.npmjs.org/express
-verbose raw, before any munging express-session
-verbose url resolving [ 'https://registry.npmjs.org/', './express-session' ]
-verbose url resolved https://registry.npmjs.org/express-session
-http GET https://registry.npmjs.org/express-session
-verbose raw, before any munging jade
-verbose url resolving [ 'https://registry.npmjs.org/', './jade' ]
-verbose url resolved https://registry.npmjs.org/jade
-http GET https://registry.npmjs.org/jade
-verbose raw, before any munging morgan
-verbose url resolving [ 'https://registry.npmjs.org/', './morgan' ]
-verbose url resolved https://registry.npmjs.org/morgan
-http GET https://registry.npmjs.org/morgan
-verbose raw, before any munging passport
-verbose url resolving [ 'https://registry.npmjs.org/', './passport' ]
-verbose url resolved https://registry.npmjs.org/passport
-http GET https://registry.npmjs.org/passport
-verbose raw, before any munging passport-local
-verbose url resolving [ 'https://registry.npmjs.org/', './passport-local' ]
-verbose url resolved https://registry.npmjs.org/passport-local
-http GET https://registry.npmjs.org/passport-local
-verbose raw, before any munging serve-favicon
-verbose url resolving [ 'https://registry.npmjs.org/', './serve-favicon' ]
-verbose url resolved https://registry.npmjs.org/serve-favicon
-http GET https://registry.npmjs.org/serve-favicon
-ERR! Error: failed to fetch from registry: cookie-parser
-ERR!     at /usr/share/npm/lib/utils/npm-registry-client/get.js:139:12
-ERR!     at cb (/usr/share/npm/lib/utils/npm-registry-client/request.js:31:9)
-ERR!     at Request._callback (/usr/share/npm/lib/utils/npm-registry-client/request.js:136:18)
-ERR!     at Request.callback (/usr/lib/nodejs/request/main.js:119:22)
-ERR!     at Request.<anonymous> (/usr/lib/nodejs/request/main.js:212:58)
-ERR!     at Request.emit (events.js:88:20)
-ERR!     at ClientRequest.<anonymous> (/usr/lib/nodejs/request/main.js:412:12)
-ERR!     at ClientRequest.emit (events.js:67:17)
-ERR!     at HTTPParser.onIncoming (http.js:1261:11)
-ERR!     at HTTPParser.onHeadersComplete (http.js:102:31)
-ERR! You may report this log at:
-ERR!     <http://bugs.debian.org/npm>
-ERR! or use
-ERR!     reportbug --attach /home/ramanpreetk/Ramanpreet/Official/projects/posma/npm-debug.log npm
-ERR! 
-ERR! System Linux 3.13.0-32-generic
-ERR! command "node" "/usr/bin/npm" "install"
-ERR! cwd /home/ramanpreetk/Ramanpreet/Official/projects/posma
-ERR! node -v v0.6.12
-ERR! npm -v 1.1.4
-ERR! message failed to fetch from registry: cookie-parser
-verbose exit [ 1, true ]
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'start' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.37
+4 verbose node symlink /usr/bin/node
+5 verbose run-script [ 'prestart', 'start', 'poststart' ]
+6 info prestart healthcare@0.0.0
+7 info start healthcare@0.0.0
+8 verbose unsafe-perm in lifecycle true
+9 info healthcare@0.0.0 Failed to exec start script
+10 error healthcare@0.0.0 start: `node ./bin/www`
+10 error Exit status 8
+11 error Failed at the healthcare@0.0.0 start script.
+11 error This is most likely a problem with the healthcare package,
+11 error not with npm itself.
+11 error Tell the author that this fails on your system:
+11 error     node ./bin/www
+11 error You can get their info via:
+11 error     npm owner ls healthcare
+11 error There is likely additional logging output above.
+12 error System Linux 3.13.0-32-generic
+13 error command "/usr/bin/node" "/usr/bin/npm" "start"
+14 error cwd /home/gurpreets/RecoveryPathwayGit/posma
+15 error node -v v0.10.37
+16 error npm -v 1.4.28
+17 error code ELIFECYCLE
+18 verbose exit [ 1, true ]
