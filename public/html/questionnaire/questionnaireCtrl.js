@@ -7,6 +7,8 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
     $scope.whole_data = [];
     var flag = '';
     $scope.questionnaire = {};
+    var rec_cnt = 10;
+
     $scope.questionnaire.type='recursive';
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
@@ -15,17 +17,18 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
     /*code to make time dropdown*/
     $scope.dropDownTimeArr = new Array();
     $p = 0;
-    for($i=0;$i<24;$i++){
+    for($i=5;$i<24;$i++){
         $j=0;
         while($j<59){
             $scope.dropDownTimeArr[$p] = {};
             $scope.dropDownTimeArr[$p].id = $i+":"+$j;
             $scope.dropDownTimeArr[$p].label = ($i>9?""+$i:"0"+$i)+":"+($j>9?""+$j:"0"+$j);
             $p++;
-            $j += 10;
+            $j += 30;
         }
     }
     $scope.selectedTime = [];
+    $scope.TimeDropdownTexts = {buttonDefaultText: 'Select time slots'};
     $scope.TimeDropdownsettings = {
         scrollableHeight: '200px',
         scrollable: true, 
@@ -39,53 +42,46 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
     //End of code to make time dropdown
     
     $scope.add = function(){
-        console.log($scope.selectedDays);
+        console.log($scope.questionnaire);
         var time_slots = [];
         for(i=0;i<$scope.selectedTime.length;i++){
             time_slots.push($scope.selectedTime[i].id);
         }
         $scope.questionnaire.time_slots = time_slots;
-//        console.log($scope.questionnaire);
-        
-      /*  if ($scope.questionnaire._id) {
+        /* if ($scope.questionnaire._id) {
             Questionnaire.update().save($scope.questionnaire, function(data){
                 $scope.errordetail = {};
                if (data.success) {
                     Flash.create('success', 'Questionnaire has been updated successfully.', 'alert alert-success');
                     $location.path('/listquestionnaires');
-                }
-                else{
+                } else {
                     if (data.error.errors){
-                         $scope.errordetail = [];
+                        $scope.errordetail = [];
                         for (var errName in data.error.errors) {
                             $scope.errordetail[errName] = data.error.errors[errName].message
                         }
-                    }
-                    else{
+                    } else {
                        $scope.errordetail[data.error.path] = data.error.message;
                     }
                 }
             });
-        }
-        else{
+        } else{*/
             Questionnaire.add().save($scope.questionnaire, function(data){
                if (data.success) {
                     Flash.create('success', 'Questionnaire has been saved successfully.', 'alert alert-success');
-                    $location.path('/listquestionnaires');
-                }
-                else{
+                    $location.path('/questionnaire');
+                } else{
                     if (data.error.errors){
-                         $scope.errordetail = [];
+                        $scope.errordetail = [];
                         for (var errName in data.error.errors) {
                             $scope.errordetail[errName] = data.error.errors[errName].message
                         }
-                    }
-                    else{
+                    } else{
                        $scope.errordetail[data.error.path] = data.error.message;
                     }
                 }
             });
-        }  */
+        /*}  */
     }
     
     $scope.editQuestionnaire = function(){
@@ -97,68 +93,79 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
         });
     }
     
-    $scope.changeQuestionnaireStatus = function(index) {
+    
+    $scope.changeStatus = function(index, existingStatus) {
+        var newStatus = 'inactivate';
+        var newStatus_title = 'inactivataed';
+
+        if(existingStatus == 0){
+            newStatus = 'activate';
+            newStatus_title = 'activataed';
+        }
+
         var object_detail = $scope.tableParams.data[index];
         SweetAlert.swal({
-        title: "Are you sure?",
-        text: "you want to change status of "+object_detail.clinic_name+" ",
+        title: "Confirmation",
+        text: "Are you sure you want to "+newStatus+" "+object_detail.name+"?",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, change it!",
-        cancelButtonText: "No, cancel it!",
-        closeOnConfirm: true}, 
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: true},
+
         function(){ 
             var status = 0;
             if (object_detail.is_active == 0) {
                 status = 1;
             }
             var update_object = {'_id':object_detail._id, 'is_active':status};
-            console.log(update_object);
-            Admin.update().save(update_object, function(data){
+            Questionnaire.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;
-                    Flash.create('success', 'Institute status has been updated successfully.', 'alert alert-success');
+                    Flash.create('success', 'Questionnaire has been '+newStatus_title+' successfully.', 'alert alert-success');
                 }
             });
         });
     };
+
     
-    $scope.deleteQuestionnaire = function(id) {
-        
+    $scope.deleteQuestionnaire = function(id,qname) {
         SweetAlert.swal({
-        title: "Are you sure?",
-        text: "Your will not be able to recover institute !",
+        title: "Confirmation",
+        text: "Are you sure you want to delete "+qname+"?",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel it!",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No!",
         closeOnConfirm: true}, 
         function(){ 
             var update_object = {'_id':id, 'is_deleted':1};
-            Admin.update().save(update_object, function(data){
-                if (data.success) {
+            Questionnaire.update().save(update_object, function(data){
+                console.log(data);
+                console.log($scope.questionnaires);
+               /* if (data.success) {
                     var del_index = 0;
-                    for(i=0;(i < $scope.whole_data.length); i++){
-                        if($scope.whole_data[i]._id == id){
+                    for(i=0;(i < $scope.questionnaires.length); i++){
+                        if($scope.questionnaires[i]._id == id){
                             del_index = i;
                             break;
                         }
                     }
-                    $scope.whole_data.splice(del_index, 1);
-                    $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.whole_data});
-                    Flash.create('success', 'Institute has been deleted successfully.', 'alert alert-success');
-                }
+                    console.log($scope.questionnaires);
+                    $scope.questionnaires.splice(del_index, 1);
+                    $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.questionnaires});
+                    Flash.create('success', 'Questionnaire has been deleted successfully.', 'alert alert-success');
+                }*/
             }); 
         });
-        
     };
    
     $scope.listQuestionnaire = function(){
         Questionnaire.list().query({}, function(data){
             $scope.whole_data = data;
-            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.whole_data});
+            $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.whole_data});
         });
     }
     

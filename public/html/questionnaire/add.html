@@ -1,112 +1,124 @@
 <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Add Questionnaire</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            	<b>Clinic:</b> {{user.clinic_name}}
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <form name="questionnaireFrm" id="questionnaireFrm" ng-submit="add();">
-                                	<div class="col-lg-6">
-                                        <div class="form-group" ng-class="{'has-error':questionnaireFrm.qname.$dirty && questionnaireFrm.qname.$error.required}">
-                                            <label>Title</label>
-                                            <input class="form-control" ng-required="true" ng-model="questionnaire.name" name="qname" id="qname">
-                                            <label class="control-label" ng-show="questionnaireFrm.qname.$dirty && questionnaireFrm.qname.$error.required">Name is required.</label>    
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Type</label>
-                                            <select ng-model="questionnaire.type" class="form-control" name="qtype" id="qtype">
-                                                <option value="single">Single Time</option>
-                                                <option value="recursive">Recursive</option>
-                                            </select>
-                                        </div>  
-                                        <div class="form-group" id="text" ng-if="questionnaire.type == 'single'">
-                                            <div class="col-lg-12" ng-class="{'has-error':questionnaireFrm.execute_time.$dirty && (questionnaireFrm.execute_time.$error.required || questionnaireFrm.execute_time.$error.number)}">
-                                                <div class="col-lg-4">
-                                                    <label>Execute at</label> T0 +
-                                                </div>
-                                                <div class="col-lg-5">
-                                                    <input class="form-control" type="number" ng-required="questionnaire.type == 'single'" ng-model="questionnaire.execute_time" name="execute_time" id="execute_time">
-                                                    <label class="control-label" ng-show="questionnaireFrm.execute_time.$dirty && questionnaireFrm.execute_time.$error.required">Excutes time is required.</label>
-                                                    <label class="control-label" ng-show="questionnaireFrm.execute_time.$dirty && questionnaireFrm.execute_time.$error.number">Invalid number.</label>    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" id="text" ng-if="questionnaire.type == 'recursive'">
-                                            <div class="form-group col-lg-12" ng-class="{'has-error':questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required}">
-                                                <label>Recurrence Type</label>
-                                                <div class="radio-inline">
-                                                    <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="dailyrec" value="d" checked> Daily
-                                                </div>
-                                                <div class="radio-inline">
-                                                        <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="weeklyrec" value="w"> Weekly
-                                                </div>
-                                                <label class="control-label" ng-show="questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required">Recurrence type is required.</label>    
-                                            </div>
-                                        </div>
-                                	</div>
-	                                <!-- /.col-lg-6 (nested) -->
-	                                <div class="col-lg-6">
-                                        <div id="dailyrec" ng-if="(questionnaire.recur_type == 'd' || questionnaire.recur_type == 'w')  && questionnaire.type=='recursive'">
-	                                       <h4>Recurrence Creteria</h4>
-                                            <div class="form-group" ng-if="questionnaire.recur_type == 'd' || questionnaire.recur_type == 'w'">
-                                                <label>Recurrences Interval</label>
-                                                <div ng-dropdown-multiselect="" options="dropDownTimeArr" ng-model="questionnaire.recurrence_interval" selected-model="selectedTime" extra-settings="TimeDropdownsettings"></div>
-                                            </div>
-					    <div>
-                                                <div class="form-group col-lg-4">
-                                                    <label>Starts on</label> T0 +
-                                                </div>
-                                                <div class="form-group col-lg-5" ng-class="{'has-error':questionnaireFrm.start_day.$dirty && (questionnaireFrm.start_day.$error.required || questionnaireFrm.start_day.$error.number)}">
-                                                    <input class="form-control" type="number" required ng-model="questionnaire.start_day" name="start_day" id="start_day">
-						    <label class="control-label" ng-show="questionnaireFrm.start_day.$dirty && questionnaireFrm.start_day.$error.required">Option is required.</label>
-                                                    <label class="control-label" ng-show="questionnaireFrm.start_day.$dirty && questionnaireFrm.start_day.$error.number">Invalid number.</label>    
-                                                </div>
-
-                                                <div class="form-group col-lg-2"> day </div>
-                                            </div>
-                                            <div class="form-group" id="dailyrec"  ng-class="{'has-error':questionnaireFrm.total_days.$dirty && (questionnaireFrm.total_days.$error.required || questionnaireFrm.total_days.$error.number)}">
-                                                <label>For how many days</label>
-                                                <input class="form-control" type="number" required ng-model="questionnaire.total_days" name="total_days" id="total_days">
-					    </div>
-					    
-					    
-					    <div class="form-group" id="dailyrec" ng-if="questionnaire.recur_type == 'w'">
-                                                <label>Days of recurrences</label>
-						
-                                                <div ng-repeat="sel_day in sel_days">
-                                                    <input
-							    type="checkbox"
-							    name="selectedDays[]"
-							    value="{{$index+1}}"
-							    ng-model="selday[$index]"
-							    ng-true-value="{{$index+1}}"
-							    ng-false-value="{{undefined}}"> {{sel_day}}
-                                                </div>
-                                            </div>
-                                        </div>
-	                                </div>
-	                                <div class="col-lg-12" style="text-align:center">
-                                		<button class="btn btn-success" ng-disabled="questionnaireFrm.$invalid" type="submit">Submit</button>
-                                	</div>
-                                	<!-- /.col-lg-6 (nested) -->
-                                </form>
-                            </div>
-                            <!-- /.row (nested) -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Add Questionnaire</h1>
         </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Clinic:</b> {{user.clinic_name}} <span class="required pull-right"> * Fields are required.</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <form name="questionnaireFrm" id="questionnaireFrm" ng-submit="add();">
+                            <div class="col-lg-6">
+                                <div ng-class="{'has-error':questionnaireFrm.qname.$dirty && questionnaireFrm.qname.$error.required}">
+                                    <div class="form-group col-lg-4">
+                                        <label>Title <span class="required">*</span></label>
+                                    </div>
+                                    <div class="form-group col-lg-8">
+                                        <input class="form-control" ng-required="true" ng-model="questionnaire.name" name="qname" id="qname">
+                                        <label class="control-label" ng-show="questionnaireFrm.qname.$dirty && questionnaireFrm.qname.$error.required">Name is required.</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group col-lg-4">
+                                        <label>Type <span class="required">*</span></label>
+                                    </div>
+                                    <div class="form-group col-lg-8">
+                                        <select ng-model="questionnaire.type" class="form-control" name="qtype" id="qtype">
+                                            <option value="single">Single Time</option>
+                                            <option value="recursive">Recursive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="text" ng-if="questionnaire.type == 'single'">
+                                    <div ng-class="{'has-error':questionnaireFrm.execute_time.$dirty && (questionnaireFrm.execute_time.$error.required || questionnaireFrm.execute_time.$error.number)}">
+                                        <div class="col-lg-4">
+                                            <label>Execute at <span class="required">*</span></label>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <input class="form-control" type="number" ng-required="questionnaire.type == 'single'" ng-model="questionnaire.execute_time" name="execute_time" id="execute_time">
+                                            <label class="control-label" ng-show="questionnaireFrm.execute_time.$dirty && questionnaireFrm.execute_time.$error.required">Excutes time is required.</label>
+                                            <label class="control-label" ng-show="questionnaireFrm.execute_time.$dirty && questionnaireFrm.execute_time.$error.number">Invalid number.</label>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <label> hours</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="text" ng-if="questionnaire.type == 'recursive'">
+                                    <div class="form-group" ng-init="questionnaire.recur_type='d'" ng-class="{'has-error':questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required}">
+                                        <div class="col-lg-4">
+                                            <label>Recurrence Type<span class="required">*</span></label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="radio-inline">
+                                                <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="dailyrec" value="d" checked> Daily
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="weeklyrec" value="w">Weekly
+                                            </div>
+                                            <label class="control-label"   ng-show="questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required">Recurrence type is required.</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                            <div class="col-lg-6">
+                                <div id="dailyrec" ng-if="(questionnaire.recur_type == 'd' || questionnaire.recur_type == 'w')  && questionnaire.type=='recursive'">
+                                    <h4>Recurrence Creteria</h4>
+                                    <div ng-if="questionnaire.recur_type == 'd' || questionnaire.recur_type == 'w'">
+                                        <div class="form-group  col-lg-5">
+                                            <label>Recurrences Interval</label>
+                                        </div>
+                                        <div class="form-group  col-lg-5">
+                                            <div ng-dropdown-multiselect="" options="dropDownTimeArr" ng-model="questionnaire.recurrence_interval" selected-model="selectedTime" extra-settings="TimeDropdownsettings"  translation-texts="TimeDropdownTexts"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group col-lg-5">
+                                            <label>Starts on</label> T0 +
+                                        </div>
+                                        <div class="form-group col-lg-5" ng-class="{'has-error':questionnaireFrm.start_day.$dirty && (questionnaireFrm.start_day.$error.required || questionnaireFrm.start_day.$error.number)}">
+                                            <input class="form-control" type="number" required ng-model="questionnaire.start_day" name="start_day" id="start_day">
+                                            <label class="control-label" ng-show="questionnaireFrm.start_day.$dirty && questionnaireFrm.start_day.$error.required">Option is required.</label>
+                                            <label class="control-label" ng-show="questionnaireFrm.start_day.$dirty && questionnaireFrm.start_day.$error.number">Invalid number.</label>
+                                        </div>
+                                        <div class="form-group col-lg-2"> day </div>
+                                    </div>
+                                    <div id="dailyrec"  ng-class="{'has-error':questionnaireFrm.total_days.$dirty && (questionnaireFrm.total_days.$error.required || questionnaireFrm.total_days.$error.number)}">
+                                        <div class="form-group col-lg-5">
+                                            <label>For how many days</label>
+                                        </div>
+                                        <div class="form-group col-lg-5">
+                                            <input class="form-control" type="number" required ng-model="questionnaire.total_days" name="total_days" id="total_days">
+                                        </div>
+                                    </div>
+                                    <div id="dailyrec" ng-if="questionnaire.recur_type == 'w'">
+                                        <div class="form-group col-lg-5">
+                                            <label>Days of recurrences</label>
+                                        </div>
+                                        <div class="form-group col-lg-5">
+                                            <div ng-repeat="sel_day in sel_days">
+                                                <input type="checkbox" name="selectedDays[]" value="{{$index+1}}" ng-model="selday[$index]" ng-true-value="{{$index+1}}" ng-false-value="{{undefined}}"> {{sel_day}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" style="text-align:center">
+                                <button class="btn btn-success" ng-disabled="questionnaireFrm.$invalid" type="submit" ng-click="add();">Submit</button>
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

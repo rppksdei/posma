@@ -28,7 +28,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
             $scope.tableParams = new ngTableParams({count:10}, {counts:{}, data:data});
         });
     }
-
+    /*
     $scope.selectQuestion = function(qindex){
         $scope.selected_questions.push($scope.questions[qindex]);
         $scope.questions.splice(qindex,1);
@@ -69,7 +69,6 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
           }
         }
     };
-
     $scope.dd = function(){
         var accordionPane = 'header-1';
         if(typeof($routeParams.accordionPane) !== 'undefined') {
@@ -241,7 +240,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
             enableSearch: true
         };
         $scope.customFilter = 'a';
-    }
+    }*/
     /*$scope.paneEnabled = function() {
         return enabled;
     };

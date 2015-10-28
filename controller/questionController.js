@@ -1,8 +1,10 @@
 var questionModel = require("./../model/questionModel");
 
 getlisting = function(req, res, next){
-    var search = {is_deleted:0};
-    questionModel.getAllQuestion(search, function(err, questionDetail){
+    var search = {is_deleted:0,clinic:req.user._id};
+    var sort_order = {created: -1 };
+
+    questionModel.getAllQuestion(search,sort_order, function(err, questionDetail){
         if(err){
             res.json(err);
         }
@@ -46,6 +48,7 @@ getQuestionDetail = function(req, res){
 */
 addQuestion = function(req, res, next){
     var questionDetail = req.body;
+    questionDetail.clinic = req.user._id;
     console.log(questionDetail);
     questionDetail.created = Date.now();
     questionModel.addQuestion(questionDetail, function(err, data){

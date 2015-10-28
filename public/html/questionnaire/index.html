@@ -1,44 +1,85 @@
 <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Manage Questionnaires</h1>
-
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div style="float: left;width:80%" >
-                                <b>Clinic:</b> {{user.clinic_name}} 
-                            </div>
-                            <a href="#add_questionnaire" class="btn btn-primary right">Add Questionnaire</a>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="dataTable_wrapper table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th style="width:10% !important">Type</th>
-                                            <th style="width:10% !important">Reccurance Type</th>
-                                            <th style="width:10 % !important">Start Day</th>
-                                            <th style="width:15% !important">Total Days</th>
-                                            <th style="width:10% !important">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Manage Questionnaires</h1>
         </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div flash-message="5000" ></div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div style="float: left;width:80%" >
+                        <b>Clinic:</b> {{user.clinic_name}}
+                    </div>
+                    <a href="#add_questionnaire" class="btn btn-primary right">Add Questionnaire</a>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="dataTable_wrapper table-responsive">
+                        <table ng-table="tableParams" class="table" >
+                            <tr ng-repeat="questionnaire in $data" ng-class="{even: $even, odd: $odd}" >
+                                <td data-title="'Title'" sortable="'name'">{{questionnaire.name}}</td>
+                                <td width ="7%" data-title="'Type'" sortable="'type'">
+                                    <span ng-if="questionnaire.type == 'single'">
+                                        Single
+                                    </span>
+                                    <span ng-if="questionnaire.type == 'recursive'">
+                                        Recursive
+                                    </span>
+                                </td>
+                                <td align="center" width="10%" data-title="'Reccurance'" sortable="'recur_type'">
+                                    <span ng-if="questionnaire.type == 'recursive'">
+                                        <span ng-if="questionnaire.recur_type == 'd'">
+                                            Daily
+                                        </span>
+                                        <span ng-if="questionnaire.recur_type == 'w'">
+                                            Weekly
+                                        </span>
+                                    </span>
+                                </td>
+                                <td align="center" width="15%"  data-title="'Starts On T0+'" sortable="'start_day'">
+                                    <span ng-if="questionnaire.type == 'single'">
+                                        On discharge day
+                                    </span>
+                                    <span ng-if="questionnaire.type == 'recursive'">
+                                        {{questionnaire.start_day}}
+                                    </span>
+                                </td>
+                                <!--td align="center" width="13%"  data-title="'Total Days'" sortable="'total_days'">
+                                    {{questionnaire.total_days}}
+                                </td-->
+                                <td width ="12%"  data-title="'Created'" sortable="'created'">
+                                       {{questionnaire.created | date:'MMM d, yyyy'}}
+                                </td>
+                                <td width ="7%" align="center" data-title="'Status'">
+                                    <a href="javascript:void(0);" ng-click="changeStatus($index,questionnaire.is_active);">
+                                        <button class="btn btn-circle btn-sm btn" ng-class="{'btn-danger':questionnaire.is_active == 0, 'btn-success':questionnaire.is_active == 1}" type="button"><i class="fa" ng-class="{'fa-times':questionnaire.is_active == 0, 'fa-check':questionnaire.is_active == 1}"></i></button>
+                                    </a>  
+                                </td>
+                                <td align="center" width="8%"  data-title="'Action'">
+                                    <a href="/#/questionnaire/add/{{questionnaire._id}}" title="Edit">
+                                        <i class="fa fa-edit fa-fw"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" ng-click="deleteQuestionnaire(questionnaire._id,'questionnaire.name');">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>

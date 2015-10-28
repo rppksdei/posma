@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var answerSchema = new Schema({
-    name:{type:String, required:"Option is required"},
+    name:{type:String, required:"Option is required."},
     out_of_range:{type:String, default:false}, // 0=in range, 1=out of range
     is_deleted:{type:Number, default:0},
     created:{type:Number},
@@ -28,8 +28,12 @@ var questionSchema = new Schema({
 var Question = mongoose.model('Question', questionSchema);
 
 
-exports.getAllQuestion = function(search_criteria, next){
-    Question.find(search_criteria, next);
+exports.getAllQuestion = function(search_criteria, sort_order, next){
+    if(!sort_order) {
+        Question.find(search_criteria, next);
+    } else {
+        Question.find(search_criteria, next).sort(sort_order);
+    }
 }
 
 exports.getQuestion = function(search_criteria, next){
