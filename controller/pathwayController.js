@@ -7,9 +7,14 @@ getlisting = function(req, res, next){
     }else if (req.user.user_type == "0"){
         search.clinic = req.user._id;
     }
+    /*
     if(req.query.surgery!=''){
         search.surgery = req.query.surgery;
+    }*/
+    if(typeof req.query.surgery != "undefined"){
+        search.surgery = req.query.surgery;
     }
+    //console.log(search);
     pathwayModel.getAllPathway(search, function(err, pathwayDetail){
         if(err){
             res.json(err);
@@ -21,8 +26,9 @@ getlisting = function(req, res, next){
 }
 
 getPathwayDetail = function(req, res){
-    var pathway_id = req.params.id;
+    var pathway_id = req.body.id;
     var search_pathway = {_id:pathway_id};
+    //console.log(req);
     pathwayModel.getPathway(search_pathway, function(err, data){
         var return_val = {};
         if (err){
@@ -43,7 +49,9 @@ getPathwayDetail = function(req, res){
 
 addPathway = function(req, res, next){
     var pathwayDetail = req.body;
-    pathwayDetail.created = Date.now();
+    pathwayDetail.created       = Date.now();
+    pathwayDetail.is_active     = 1;
+    pathwayDetail.clinic        = req.user._id;
     pathwayModel.addPathway(pathwayDetail, function(err, data){
         var return_val = {};
         if (err) {
@@ -64,20 +72,9 @@ addPathway = function(req, res, next){
 }
 
 updatePathwayDetail = function(req, res){
-
     //Code to create JSON object data
     var update_data = {};
-    /*
-    name:{type:String, required:"Name is Required"},
-    description:{type:String},
-    surgery:{type:Schema.Types.ObjectId, ref:'Surgery'},
-    clinic:{type:Schema.Types.ObjectId, ref:'Clinic'},
-    questionnaire:[{type:Schema.Types.ObjectId, ref:'Questionnaire'}],
-    is_deleted:{type:Number, default:0},
-    is_active:{type:Number, default:0},
-    created:{type:Number},
-    modified:{type:Number}
-    */
+
     if(typeof req.body.name != "undefined"){
         update_data.name = req.body.name;
     }
@@ -103,10 +100,9 @@ updatePathwayDetail = function(req, res){
     //End of code to create object data
     
     // Code to update clinic Details
-    if(typeof req.body.pathway_id != "undefined"){
+    if(typeof req.body._id != "undefined"){
         var search_criteria = {};
-        var search_criteria = {_id:req.body.pathway_id};
-        //code
+        var search_criteria = {_id:req.body._id};
         pathwayModel.updatePathway(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
