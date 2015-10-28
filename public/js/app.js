@@ -164,6 +164,24 @@ myapp.config(['$routeProvider',
                 flag:'edit',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/pathways',{
+                templateUrl:'/html/pathways/list.html',
+                controller:'pathwayCtrl',
+                flag:'list',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/pathways/add',{
+                templateUrl:'/html/pathways/add.html',
+                controller:'pathwayCtrl',
+                flag:'add',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/pathways/edit/:id',{
+                templateUrl:'/html/pathways/add.html',
+                controller:'pathwayCtrl',
+                flag:'edit',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .otherwise({
                 templateUrl:'/html/login.html',
                 controller:'loginCtrl',
