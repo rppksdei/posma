@@ -1,5 +1,4 @@
 var questionnaireModel = require("./../model/questionnaireModel");
-
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
     var sort_order = {created: -1 };
@@ -14,15 +13,15 @@ getlisting = function(req, res, next){
 }
 
 getQuestionnaireDetail = function(req, res){
-    var question_id = req.params.id;
-    var search_question = {_id:question_id};
-    questionnaireModel.getQuestionnaire(search_question, function(err, data){
+    var questionnaier_id = req.body._id;
+    var search_questionnaier = {_id:questionnaier_id};
+    questionnaireModel.getQuestionnaire(search_questionnaier, function(err, data){
         var return_val = {};
+        console.log(data);
         if (err){
             return_val.error = err;
             res.json(return_val);
-        }
-        else{
+        } else{
             if (data == null) {
                 return_val.error = "Questionnaire doesn't exist.";
                 res.json(return_val);
@@ -33,6 +32,7 @@ getQuestionnaireDetail = function(req, res){
         }  
     });  
 }
+
 addQuestionnaire = function(req, res, next){
     var questionnaireDetail = req.body;
     questionnaireDetail.created = Date.now();
@@ -40,18 +40,15 @@ addQuestionnaire = function(req, res, next){
         var return_val = {};
         if (err) {
             var error_detail = [];
-            // go through all the errors...
             for (var errName in err.errors) {
                 error_detail.push(err.errors[errName].message);
             }
             return_val.error = error_detail;
             res.json(return_val);
-        }
-        else{
+        } else{
             return_val.success = "Questionnaire has been saved successfully.";
             res.json(return_val);
         }
-      //  res.json(return_val);
     });
 }
 
@@ -97,7 +94,6 @@ updateQuestionnaireDetail = function(req, res){
     if(typeof req.body.is_active != "undefined"){
         update_data.is_active = req.body.is_active;
     }
-    
     update_data.modified = Date.now();
     //End of code to create object data
     
@@ -124,7 +120,7 @@ updateQuestionnaireDetail = function(req, res){
                 }
             }
             else{
-                return_data.success = "Questionnaire has been updates successfully.";
+                return_data.success = "Questionnaire has been updated successfully.";
                 res.json(return_data);
             }
         });
@@ -137,12 +133,9 @@ updateQuestionnaireDetail = function(req, res){
     //End of code to update clinic detail
 }
 
-
-
 module.exports = function(){
     this.getlisting = getlisting;
     this.getQuestionnaireDetail = getQuestionnaireDetail;
     this.addQuestionnaire = addQuestionnaire;
     this.updateQuestionnaireDetail = updateQuestionnaireDetail;
 }
-

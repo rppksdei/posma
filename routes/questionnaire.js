@@ -3,27 +3,26 @@ module.exports = function(app,express){
     var questionnaireController = require("./../controller/questionnaireController");
     var questionnaireObj = new questionnaireController();
     
-    /* GET Surgery listing. */
+    /* GET Questionnaire listing. */
     router.get('/',  function(req, res, next) {
         questionnaireObj.getlisting(req, res, next);
     });
     
-    /* add Surgery listing. */
+    /* add Questionnaire listing. */
     router.post('/add',  function(req, res, next) {
         questionnaireObj.addQuestionnaire(req, res, next);
     });
-    
-    // Get One Surgery Detail
-    router.get('/:id', function(req, res){
+    // Get One Questionnaire Detail
+    router.post('/getDetail', function(req, res){
         questionnaireObj.getQuestionnaireDetail(req, res);
     });
-    //End of code to get one Surgery detail
+    //End of code to get one Questionnaire detail
     
-    // Get One Surgery Detail
+    // Get One Questionnaire Detail
     router.post('/update', function(req, res){
         questionnaireObj.updateQuestionnaireDetail(req, res);
     });
-    //End of code to get one Surgery detail
+    //End of code to get one Questionnaire detail
     
     app.use('/questionnaire',router);
 }

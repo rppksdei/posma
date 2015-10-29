@@ -7,6 +7,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
     $scope.Sorted = [];
     $scope.question.answer_type = 'rb';
     var flag = '';
+    var listCnt = 10;
 
     var enabled = false;
     if (typeof $route.current.$$route.flag !== 'undefined') {
@@ -25,10 +26,11 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
     $scope.list = function(){
         $scope.applyGlobalSearch = applyGlobalSearch;
         Questions.getList().query({'is_deleted':0}, function(data) {
-            $scope.tableParams = new ngTableParams({count:10}, {counts:{}, data:data});
+            $scope.questions = data;
+            $scope.tableParams = new ngTableParams({count:listCnt}, {counts:{}, data:data});
         });
     }
-    /*
+    
     $scope.selectQuestion = function(qindex){
         $scope.selected_questions.push($scope.questions[qindex]);
         $scope.questions.splice(qindex,1);
@@ -51,22 +53,22 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
         }
         console.log(current_position);
         if(current_position < index){
-          for (var i = current_position; i <= index; i++){
-            if(i == index){
-              $scope.selected_questions[i] = $data;
-            } else {
-              $scope.selected_questions[i] = $scope.selected_questions[i+1]; 
+            for (var i = current_position; i <= index; i++){
+                if(i == index){
+                    $scope.selected_questions[i] = $data;
+                } else {
+                    $scope.selected_questions[i] = $scope.selected_questions[i+1]; 
+                }
             }
-          }
         }
         if(current_position > index){
-          for (var i = current_position; i >= index ; i--){
-            if(i == index){
-              $scope.selected_questions[i] = $data;
-            } else {
-              $scope.selected_questions[i] = $scope.selected_questions[i-1]; 
+            for (var i = current_position; i >= index ; i--){
+                if(i == index){
+                    $scope.selected_questions[i] = $data;
+                } else {
+                    $scope.selected_questions[i] = $scope.selected_questions[i-1]; 
+                }
             }
-          }
         }
     };
     $scope.dd = function(){
@@ -240,7 +242,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
             enableSearch: true
         };
         $scope.customFilter = 'a';
-    }*/
+    }
     /*$scope.paneEnabled = function() {
         return enabled;
     };
@@ -362,7 +364,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
         function(){ 
             var update_object = {'_id':id, 'is_deleted':1};
             Questions.updateQuestion().save(update_object, function(data){
-                console.log(data);
+                console.log($scope.questions);
                 if (data.success) {
                     var del_index = 0;
                     for(i=0;(i < $scope.questions.length); i++){
@@ -372,7 +374,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
                         }
                     }
                     $scope.questions.splice(del_index, 1);
-                    $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.questions});
+                    $scope.tableParams = new ngTableParams({count:listCnt}, {counts:{}, data:$scope.questions});
                     Flash.create('success', 'Question has been deleted successfully.', 'alert alert-success');
                 }
             }); 
