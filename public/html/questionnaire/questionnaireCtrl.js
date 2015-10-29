@@ -6,7 +6,9 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
     $scope.sel_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
     $scope.whole_data = [];
     var flag = '';
-    $scope.questionnaire = {};
+    $scope.questionnaire = '';
+    $scope.questionnaires = {};
+    $scope.TimeDropdownmodel = [];
     var rec_cnt = 10;
 
     $scope.questionnaire.type='recursive';
@@ -84,15 +86,40 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
         /*}  */
     }
     
-    $scope.editQuestionnaire = function(){
+    /*$scope.edit = function(){
         $scope.form_heading = 'Update Institute';
         $scope.editProfileId = $routeParams.id;
         $scope.admin = {};
         Admin.getDetail().save({'id':$scope.editProfileId}, function(data){
             $scope.admin = data;
         });
-    }
+    }*/
     
+
+    $scope.edit = function(){
+        if(!$scope.questionnaire){
+            Questionnaire.getDetail().save({'_id':$routeParams.id}, function(data) {
+                $scope.questionnaire = data;
+                for(var ts = 0; ts < $scope.questionnaire.time_slots.length; ts++){
+                    $scope.TimeDropdownmodel[ts] = {id:$scope.questionnaire.time_slots[ts]};
+                }
+                //$scope.questionnaire
+                console.log( $scope.TimeDropdownmodel);
+                $scope.selectedTime = $scope.TimeDropdownmodel;
+                //$scope.TimeDropdownmodel = [{id: 1}, {id: 3}];
+            });
+        } else {
+            var questionnairedata = $scope.questionnaire;
+            Questionnaire.update().save(questionnairedata, function(data){
+                if (data.success) {
+                    Flash.create('success', 'Questionnaire has been updated successfully.', 'alert alert-success');
+                    $location.path('/questionnaire');
+                } else{
+                    console.log(data.error.errors);
+                }
+            });
+        }
+    }
     
     $scope.changeStatus = function(index, existingStatus) {
         var newStatus = 'inactivate';
@@ -143,9 +170,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
         function(){ 
             var update_object = {'_id':id, 'is_deleted':1};
             Questionnaire.update().save(update_object, function(data){
-                console.log(data);
-                console.log($scope.questionnaires);
-               /* if (data.success) {
+                if (data.success) {
                     var del_index = 0;
                     for(i=0;(i < $scope.questionnaires.length); i++){
                         if($scope.questionnaires[i]._id == id){
@@ -153,26 +178,25 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
                             break;
                         }
                     }
-                    console.log($scope.questionnaires);
                     $scope.questionnaires.splice(del_index, 1);
                     $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.questionnaires});
                     Flash.create('success', 'Questionnaire has been deleted successfully.', 'alert alert-success');
-                }*/
+                }
             }); 
         });
     };
    
     $scope.listQuestionnaire = function(){
         Questionnaire.list().query({}, function(data){
-            $scope.whole_data = data;
-            $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.whole_data});
+            $scope.questionnaires = data;
+            $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.questionnaires});
         });
     }
     
     if (flag == "list") {
         $scope.listQuestionnaire();
     }
-    else if (flag == "edit_questionnaire") {
-        $scope.editQuestionnaire();
+    else if (flag == "edit") {
+        $scope.edit();
     }
 });

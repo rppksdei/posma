@@ -75,12 +75,6 @@ myapp.config(['$routeProvider',
                 controller:'loginCtrl',
                 logout : true,
             })
-            .when('/questionnaire',{
-                templateUrl:'/html/questionnaire/index.html',
-                controller:'questionnaireCtrl',
-                flag:'list',
-                resolve:{'logged_in':checkloggedIn}
-            })
             .when('/ngtables',{
                 templateUrl:'/html/questions/ngtable.html',
                 controller:'demoController as ',
@@ -116,16 +110,28 @@ myapp.config(['$routeProvider',
                 flag:'edit',
                 resolve:{'logged_in':checkloggedIn}
             })
-             .when('/questionnaires',{
+            /*.when('/questionnaire',{
                 templateUrl:'/html/questionnaire/list.html',
                 controller:'questionnaireCtrl',
                 flag:'get_questionnaire',
                 resolve:{'logged_in':checkloggedIn}
+            })*/
+            .when('/questionnaires',{
+                templateUrl:'/html/questionnaire/index.html',
+                controller:'questionnaireCtrl',
+                flag:'list',
+                resolve:{'logged_in':checkloggedIn}
             })
-            .when('/add_questionnaire',{
+            .when('/questionnaire/add',{
                 templateUrl:'/html/questionnaire/add.html',
                 controller:'questionnaireCtrl',
                 flag:'add_questionnaire',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/questionnaire/edit/:id',{
+                templateUrl:'/html/questionnaire/add.html',
+                controller:'questionnaireCtrl',
+                flag:'edit',
                 resolve:{'logged_in':checkloggedIn}
             })
             .when('/surgeries',{
