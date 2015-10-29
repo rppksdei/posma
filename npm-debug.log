@@ -1,3 +1,37 @@
+<<<<<<< HEAD
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/bin/npm', 'uninstall', 'forever' ]
+info using npm@1.1.4
+info using node@v0.6.12
+verbose config file /home/ramanpreetk/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/share/npm/npmrc
+info unbuild /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever/package.json
+verbose loadDefaults forever@0.15.1
+info preuninstall forever@0.15.1
+info uninstall forever@0.15.1
+verbose unbuild forever@0.15.1 [ true,
+verbose unbuild forever@0.15.1   '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules',
+verbose unbuild forever@0.15.1   '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules' ]
+verbose binRoot [ '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/.bin',
+verbose binRoot   { forever: './bin/forever' } ]
+info postuninstall forever@0.15.1
+ERR! Error: EPERM, operation not permitted '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever'
+ERR! 
+ERR! Please try running this command again as root/Administrator.
+ERR! 
+ERR! System Linux 3.13.0-32-generic
+ERR! command "node" "/usr/bin/npm" "uninstall" "forever"
+ERR! cwd /home/ramanpreetk/Ramanpreet/Official/projects/posma
+ERR! node -v v0.6.12
+ERR! npm -v 1.1.4
+ERR! path /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever
+ERR! code EPERM
+ERR! message EPERM, operation not permitted '/home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever'
+ERR! errno {}
+verbose exit [ 1, true ]
+=======
 0 info it worked if it ends with ok
 1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'start' ]
 2 info using npm@1.4.28
@@ -25,3 +59,4 @@
 16 error npm -v 1.4.28
 17 error code ELIFECYCLE
 18 verbose exit [ 1, true ]
+>>>>>>> c0d9fc44ff4afc6109965c298bf75d0b4c5e7077

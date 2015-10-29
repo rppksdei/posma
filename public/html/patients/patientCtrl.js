@@ -69,6 +69,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     $scope.edit = function(){
         $scope.error = [];
         var patientId = $routeParams.id;
+        $scope.patient.neoadjuvant_chemotherapy = 'na';
+        $scope.patient.tumor_laterality = 'na';
         Patient.getDetailId().save({'id': patientId}, function(data){
             if(data){
                 Surgery.getDetail().query({}, function(sdata){
@@ -83,8 +85,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                 $scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
                 $scope.patient.dos              = $scope.timeStampToDate(data.dos);
                 $scope.patient.dohd             = $scope.timeStampToDate(data.dohd);
-                $scope.patient.surgery = $scope.patient.surgery._id;
-            //console.log($scope.pathways);
+                $scope.patient.surgery          = $scope.patient.surgery._id;
+                
             }
         });
     }

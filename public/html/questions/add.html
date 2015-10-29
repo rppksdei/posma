@@ -52,13 +52,13 @@
                             <div class="col-lg-6" ng-if="question.answer_type == 'rb' || question.answer_type == 'cb' || question.answer_type == 'dd' || question.answer_type == 'number' || question.answer_type == 'text'">
                                 <h4>Answer Values</h4>
                                 <div id="number" ng-if="question.answer_type == 'number'">
-                                	<div class="form-group col-lg-6" ng-class="{'has-error':(questionFrm.min_range.$dirty && (questionFrm.min_range.$error.required || questionFrm.min_range.$error.number))}">
+                                	<div class="form-group col-lg-6" ng-class="{'has-error': (questionFrm.min_range.$dirty && (questionFrm.min_range.$error.required || questionFrm.min_range.$error.number))}">
                                         <label>Min range</label>
                                         <input class="form-control" type="number" required value="20" name="min_range" ng-model="question.min_range">
                                          <label class="control-label" ng-show="questionFrm.min_range.$dirty && questionFrm.min_range.$error.required">Min range is required</label>
-                                        <label class="control-label" ng-show="questionFrm.min_range.$dirty && questionFrm.min_range.$error.number">Valid number.</label>
+                                        <label class="control-label"  ng-show="questionFrm.min_range.$dirty  && questionFrm.min_range.$error.number">Valid number.</label>
                                     </div>
-                                	<div class="form-group col-lg-6" ng-class="{'has-error':(questionFrm.max_range.$dirty && (questionFrm.max_range.$error.required || questionFrm.max_range.$error.number))}">
+                                	<div class="form-group col-lg-6"  ng-class="{'has-error':(questionFrm.max_range.$dirty && (questionFrm.max_range.$error.required || questionFrm.max_range.$error.number))}">
                                         <label>Max range</label>
                                         <input class="form-control" type="number" required value="200" name="max_range" ng-model="question.max_range">
                                         <label class="control-label" ng-show="questionFrm.max_range.$dirty && questionFrm.max_range.$error.required">Max range is required</label>

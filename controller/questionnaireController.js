@@ -2,7 +2,8 @@ var questionnaireModel = require("./../model/questionnaireModel");
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
-    questionnaireModel.getAllQuestionnaire(search, function(err, questionDetail){
+    var sort_order = {created: -1 };
+    questionnaireModel.getAllQuestionnaire(search, sort_order, function(err, questionDetail){
         if(err){
             res.json(err);
         }
@@ -23,7 +24,7 @@ getQuestionnaireDetail = function(req, res){
         }
         else{
             if (data == null) {
-                return_val.error = "question doesn't exists";
+                return_val.error = "Questionnaire doesn't exist.";
                 res.json(return_val);
             }
             else{
@@ -47,7 +48,7 @@ addQuestionnaire = function(req, res, next){
             res.json(return_val);
         }
         else{
-            return_val.success = "Question added Successfully";
+            return_val.success = "Questionnaire has been saved successfully.";
             res.json(return_val);
         }
       //  res.json(return_val);
@@ -55,7 +56,6 @@ addQuestionnaire = function(req, res, next){
 }
 
 updateQuestionnaireDetail = function(req, res){
-
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.name != "undefined"){
@@ -102,9 +102,9 @@ updateQuestionnaireDetail = function(req, res){
     //End of code to create object data
     
     // Code to update clinic Details
-    if(typeof req.body.questionnaire_id != "undefined"){
+    if(typeof req.body._id != "undefined"){
         var search_criteria = {};
-        var search_criteria = {_id:req.body.questionnaire_id};
+        var search_criteria = {_id:req.body._id};
         //code
         questionnaireModel.updateQuestionnaire(search_criteria, update_data, function(err, data){
             var return_data = {};
@@ -124,14 +124,14 @@ updateQuestionnaireDetail = function(req, res){
                 }
             }
             else{
-                return_data.success = "Questionnaire updated Successfully";
+                return_data.success = "Questionnaire has been updates successfully.";
                 res.json(return_data);
             }
         });
     }
     else{
         var return_data = {};
-        return_data.error = "Please enter object id to update";
+        return_data.error = "Please enter object id to update.";
         res.json(return_data);
     }
     //End of code to update clinic detail

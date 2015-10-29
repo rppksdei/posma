@@ -22,8 +22,7 @@ myapp.controller('profileCtrl', function($scope, $route, Profile, $location, $ro
             if (data.success) {
                 $rootScope.user = $scope.profileData;
                 $scope.success_message = data.success;
-            }
-            else{
+            } else{
                 $scope.error[data.error.path] = data.error.message;
                 console.log($scope.error);
             }
@@ -32,16 +31,13 @@ myapp.controller('profileCtrl', function($scope, $route, Profile, $location, $ro
     $scope.changePassword = function(){
         $scope.error = [];
         Profile.changePassword().save($scope.ch_pass, function(data){
-           if (data.success) {
+            if (data.success) {
                 $scope.success_message = data.success;
-           }
-           else{
+            } else{
                 $scope.error['current_password'] = data.error;
-           }
+            }
         });
-        //Profile.
     }
-    
     if (flag == "edit_profile") {
         $scope.getDetail();
     }

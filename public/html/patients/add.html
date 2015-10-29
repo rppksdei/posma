@@ -92,7 +92,7 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label>Body mass index (BMI=kg/m^2)</label>
+                                    <label>Body mass index (BMI)</label>
                                     <input class="form-control" ng-model="patient.bmi" ng-disabled="true">
                                 </div>
                                 <div class="form-group col-lg-12" style="padding:0px;">
@@ -115,14 +115,13 @@
                                         <label class="control-label" ng-show="add_patient_form.dohd.$dirty && (add_patient_form.dohd.$error.required || errordetail.dohd)">Date of hospital discharge is required.</label>
                                     </div>
                                 </div>
-
                             </div>
                             <!-- /.col-lg-6 (nested) -->
                             <div class="col-lg-6">
-                                
-                                <div class="form-group">
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.cci.$dirty && (add_patient_form.cci.$error.number)}">
                                     <label>Charlson comorbidity index (CCI)</label>
-                                    <input class="form-control" ng-model="patient.cci">
+                                    <input class="form-control" ng-model="patient.cci" name="cci" id="cci" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.cci.$dirty &&add_patient_form.cci.$error.number">CCI should be numeric.</label>
                                 </div>
                                 <div class="form-group">
                                     <label>Diagnosis</label> <!-- diagnosis table field is type_tumor -->
@@ -171,18 +170,21 @@
                                     </select>
                                     <!-- <input class="form-control" ng-model="patient.tumor_laterality"> -->
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.size_of_tumor.$dirty && (add_patient_form.size_of_tumor.$error.number)}">
                                     <label>Size of Tumor (cm)</label>
-                                    <input class="form-control" ng-model="patient.size_of_tumor">
+                                    <input class="form-control" ng-model="patient.size_of_tumor" name="size_of_tumor" id="size_of_tumor" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.size_of_tumor.$dirty &&add_patient_form.size_of_tumor.$error.number">Size of Tumor should be numeric.</label>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.clavien_minor_no.$dirty && (add_patient_form.clavien_minor_no.$error.number)}">
                                     <label>Number of Clavien minor complications (GI-II)</label>
-                                    <input class="form-control" ng-model="patient.clavien_minor_no">
+                                    <input class="form-control" ng-model="patient.clavien_minor_no" name="clavien_minor_no" id="clavien_minor_no" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.clavien_minor_no.$dirty &&add_patient_form.clavien_minor_no.$error.number">Clavien minor complications should be numeric.</label>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.clavien_major_no.$dirty && (add_patient_form.clavien_major_no.$error.number)}">
                                     <label>Number of Clavien major complications(GIII-V)</label>
-                                    <input class="form-control" ng-model="patient.clavien_major_no">
+                                    <input class="form-control" ng-model="patient.clavien_major_no" name="clavien_major_no" id="clavien_major_no" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.clavien_major_no.$dirty &&add_patient_form.clavien_major_no.$error.number">Clavien major complications should be numeric.</label>
                                 </div>
                                 <div class="form-group">
                                     <label>Estimated surgical blood loss</label>
