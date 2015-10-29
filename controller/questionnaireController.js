@@ -39,6 +39,7 @@ addQuestionnaire = function(req, res, next){
     questionnaireModel.addQuestionnaire(questionnaireDetail, function(err, data){
         var return_val = {};
         if (err) {
+            console.log(err);
             var error_detail = [];
             for (var errName in err.errors) {
                 error_detail.push(err.errors[errName].message);
@@ -46,6 +47,7 @@ addQuestionnaire = function(req, res, next){
             return_val.error = error_detail;
             res.json(return_val);
         } else{
+            console.log(data);
             return_val.success = "Questionnaire has been saved successfully.";
             res.json(return_val);
         }

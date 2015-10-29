@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var questionnaireSchema = ({
     name:{type:String, required:"Questionnaire name is required"},
-    type:{type:String, default:'recursive'}, //single="Single", recursive="Recurrace"    
+    type:{type:String, default:'recursive',required:"Type is required"}, //single="Single", recursive="Recurrace"    
     question:[{type:Schema.Types.ObjectId, ref:"Question"}],
     execute_time:{type:Number, default:0}, // if single
     recur_type:{type:String}, // d=daily, w=weekly, m=monthly

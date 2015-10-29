@@ -29,11 +29,13 @@
                                     <div class="form-group col-lg-4">
                                         <label>Type <span class="required">*</span></label>
                                     </div>
-                                    <div class="form-group col-lg-8">
-                                        <select ng-model="questionnaire.type" class="form-control" name="qtype" id="qtype">
+                                    <div class="form-group col-lg-8" ng-class="{'has-error':questionnaireFrm.qtype.$dirty && (questionnaireFrm.qtype.$error.required || errordetail.qtype)}">
+                                        <select ng-model="questionnaire.type" class="form-control" name="qtype" id="qtype"  required>
+                                            <option value="" ng-selected="true">--Select a type--</option>
                                             <option value="single">Single Time</option>
                                             <option value="recursive">Recursive</option>
                                         </select>
+                                        <label class="control-label" ng-show="questionnaireFrm.qtype.$dirty && (questionnaireFrm.qtype.$error.required || errordetail.qtype)">Type is required.</label>
                                     </div>
                                 </div>
                                 <div id="text" ng-if="questionnaire.type == 'single'">
@@ -58,7 +60,7 @@
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="radio-inline">
-                                                <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="dailyrec" value="d" checked> Daily
+                                                <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="dailyrec" value="d"> Daily
                                             </div>
                                             <div class="radio-inline">
                                                 <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="weeklyrec" value="w">Weekly
@@ -71,7 +73,7 @@
                             <!-- /.col-lg-6 (nested) -->
                             <div class="col-lg-6">
                                 <div id="dailyrec" ng-if="(questionnaire.recur_type == 'd' || questionnaire.recur_type == 'w')  && questionnaire.type=='recursive'">
-                                    <h4>Recurrence Creteria</h4>
+                                    <h4>Recurrence Criteria</h4>
                                     <div ng-if="questionnaire.recur_type == 'd' || questionnaire.recur_type == 'w'">
                                         <div class="form-group  col-lg-5">
                                             <label>Recurrences Interval</label>
@@ -97,6 +99,8 @@
                                         </div>
                                         <div class="form-group col-lg-5">
                                             <input class="form-control" type="number" required ng-model="questionnaire.total_days" name="total_days" id="total_days">
+                                            <label class="control-label" ng-show="questionnaireFrm.total_days.$dirty && questionnaireFrm.total_days.$error.required">Option is required.</label>
+                                            <label class="control-label" ng-show="questionnaireFrm.total_days.$dirty && questionnaireFrm.total_days.$error.number">Invalid number.</label>
                                         </div>
                                     </div>
                                     <div id="dailyrec" ng-if="questionnaire.recur_type == 'w'">

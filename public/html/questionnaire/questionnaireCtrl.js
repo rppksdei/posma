@@ -11,7 +11,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
     $scope.TimeDropdownmodel = [];
     var rec_cnt = 10;
 
-    $scope.questionnaire.type='recursive';
+    //$scope.questionnaire.type = 'single';
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
@@ -44,7 +44,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
     //End of code to make time dropdown
     
     $scope.add = function(){
-        console.log($scope.questionnaire);
         var time_slots = [];
         for(i=0;i<$scope.selectedTime.length;i++){
             time_slots.push($scope.selectedTime[i].id);
@@ -68,21 +67,21 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
                 }
             });
         } else{*/
-            Questionnaire.add().save($scope.questionnaire, function(data){
-               if (data.success) {
-                    Flash.create('success', 'Questionnaire has been saved successfully.', 'alert alert-success');
-                    $location.path('/questionnaire');
-                } else{
-                    if (data.error.errors){
-                        $scope.errordetail = [];
-                        for (var errName in data.error.errors) {
-                            $scope.errordetail[errName] = data.error.errors[errName].message
-                        }
-                    } else{
-                       $scope.errordetail[data.error.path] = data.error.message;
+        Questionnaire.add().save($scope.questionnaire, function(data){
+           if (data.success) {
+                Flash.create('success', 'Questionnaire has been saved successfully.', 'alert alert-success');
+                $location.path('/questionnaires');
+            } else{
+                if (data.error.errors){
+                    $scope.errordetail = [];
+                    for (var errName in data.error.errors) {
+                        $scope.errordetail[errName] = data.error.errors[errName].message
                     }
+                } else{
+                   $scope.errordetail[data.error.path] = data.error.message;
                 }
-            });
+            }
+        });
         /*}  */
     }
     
