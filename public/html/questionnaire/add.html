@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 <div id="text" ng-if="questionnaire.type == 'recursive'">
-                                    <div class="form-group" ng-init="questionnaire.recur_type='d'" ng-class="{'has-error':questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required}">
+                                    <div class="form-group" ng-class="{'has-error':questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required}">
                                         <div class="col-lg-4">
                                             <label>Recurrence Type<span class="required">*</span></label>
                                         </div>
@@ -65,7 +65,7 @@
                                             <div class="radio-inline">
                                                 <input type="radio" name="recur_type" ng-required="questionnaire.type == 'recursive'" ng-model="questionnaire.recur_type" id="weeklyrec" value="w">Weekly
                                             </div>
-                                            <label class="control-label"   ng-show="questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required">Recurrence type is required.</label>
+                                            <label class="control-label" ng-show="questionnaireFrm.recur_type.$dirty && questionnaireFrm.recur_type.$error.required">Recurrence type is required.</label>
                                         </div>
                                     </div>
                                 </div>

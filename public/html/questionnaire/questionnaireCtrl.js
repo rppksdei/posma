@@ -102,10 +102,9 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
                 for(var ts = 0; ts < $scope.questionnaire.time_slots.length; ts++){
                     $scope.TimeDropdownmodel[ts] = {id:$scope.questionnaire.time_slots[ts]};
                 }
-                //$scope.questionnaire
-                console.log( $scope.TimeDropdownmodel);
-                $scope.selectedTime = $scope.TimeDropdownmodel;
                 //$scope.TimeDropdownmodel = [{id: 1}, {id: 3}];
+                $scope.selectedTime = $scope.TimeDropdownmodel;
+                //$scope.questionnaireRecOpts = {recur_type : data.recur_type};
             });
         } else {
             var questionnairedata = $scope.questionnaire;

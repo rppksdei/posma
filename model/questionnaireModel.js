@@ -45,6 +45,7 @@ exports.getAllQuestionnaire = function(search_criteria, sort_order, next){
 
 exports.getQuestionnaire = function(search_criteria, next){
     Questionnaire.findOne(search_criteria, next).populate('questionnaier');
+    // Questionnaire.findOne(search_criteria, next);
 }
 
 exports.updateQuestionnaire = function(search_criteria, new_data, next){
