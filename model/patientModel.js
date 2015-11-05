@@ -23,6 +23,7 @@ var patientSchema = ({
     age: {type: Number, required:"Age is required"},
     dos:{type:Number, required:"Date of Surgery is required"},
     dohd:{type:Number, required:"Date of hospital discharge is required"},
+    time_of_discharge:{type:String},
     cci:{type:Number},
     type_tumor:{type:String},
     clinicalTstage:{type:String},
