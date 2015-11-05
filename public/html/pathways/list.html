@@ -20,13 +20,15 @@
                         <table ng-table="tableParams" class="table">
                                 <tr ng-repeat="pathway in $data" ng-class="{even: $even, odd: $odd}">
                                     <td data-title="'Title'">{{ pathway.name }}</td>
+                                    <td data-title="'Surgery'">{{ pathway.surgery.name }}</td>
                                     <td data-title="'Description'">{{ pathway.description }}</td>
                                     <td data-title="'Status'">
                                         <a href="javascript:void(0);" ng-click="changepathwayStatus($index);">
                                         <button class="btn btn-circle btn-sm btn" ng-class="{'btn-danger':pathway.is_active == 0, 'btn-success':pathway.is_active == 1}" type="button"><i class="fa" ng-class="{'fa-times':pathway.is_active == 0, 'fa-check':pathway.is_active == 1}"></i></button>
                                         </a>
                                     </td>
-                                    <td data-title="'Action'">
+                                    <td data-title="'Action'" style="width:10%">
+                                        <!-- <a href="/#/pathways/assignquestionnaires/{{ pathway._id }}" title="Assign Questionnaires"><i class="fa fa-chain fa-fw"></i></a> -->
                                         <a href="/#/pathways/edit/{{ pathway._id }}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
                                         <a href="javascript:void(0);" ng-click="deletepathway(pathway._id);" title="Delete"><i class="fa fa-trash-o"></i></a>
                                     </td>

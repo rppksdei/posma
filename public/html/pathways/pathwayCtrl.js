@@ -1,8 +1,11 @@
-myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
+myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, Questionnaire, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
     $scope.pathways = [];
     $scope.success = "";
     $scope.pathway = "";
     $scope.errordetail = [];
+    // Initialize variable
+    $scope.assign = {};
+    //$scope.questionnaires = [];
     
     var flag = '';
     if (typeof $route.current.$$route.flag !== 'undefined') {
@@ -18,10 +21,16 @@ myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, $loca
 
     /* function to get surgeries & pathways on add form */
     $scope.getAdd = function(){
-        //Surgery.getDetail().query({}, function(data){
-            //$scope.pathway.gender = 'M';
-            //$scope.surgeries = data;
-        //});
+        Surgery.getDetail().query({}, function(data){
+            $scope.surgeries = data;
+        });
+        var pathwayId = $routeParams.id;
+        Pathway.getDetailId().save({'id': pathwayId}, function(pdata){
+            $scope.assign = pdata;
+        });
+        Questionnaire.list().query({}, function(data){
+            $scope.questionnaires = data;
+        });
     }
 
     $scope.getPathways = function(){
@@ -34,6 +43,8 @@ myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, $loca
     /* function to add/save new pathway */
     $scope.add = function(){
         var pathwayData = $scope.pathway;
+        console.log(pathwayData);
+        
         Pathway.addPathway().save(pathwayData, function(data){
             if(data.success){
                 if($scope.pathway._id){
@@ -62,15 +73,45 @@ myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, $loca
     $scope.edit = function(){
         $scope.error = [];
         var pathwayId = $routeParams.id;
+        Surgery.getDetail().query({}, function(data){
+            $scope.surgeries = data;
+        });
         Pathway.getDetailId().save({'id': pathwayId}, function(data){
             if(data){
-                // pathway.getDetail().query({'id': pathwayId}, function(pdata){
-                //     $scope.pathways = pdata;
-                // });
                 $scope.pathway = data;           
             }
         });
+        Questionnaire.list().query({}, function(data){
+            $scope.questionnaires = data;
+        });
     }
+
+    /*
+    $scope.assignquestionnaires = function(){
+        var pathwayId = $routeParams.id;
+    console.log(pathwayId);
+        Pathway.getDetailId().save({'id': pathwayId}, function(pdata){
+    console.log(pdata);
+            //$scope.pathway = pdata;
+            $scope.assign = pdata;
+        });
+        Questionnaire.list().query({}, function(data){
+            $scope.questionnaires = data;
+            //console.log($scope.questionnaires);
+        });
+    }
+
+    $scope.savequestionnaires = function(){
+        var qData = $scope.assign.questionnaire;
+        var pathwayId = $routeParams.id;
+        Pathway.update().save({'_id': pathwayId, 'questionnaire': qData}, function(data){
+            if(data.success){
+                Flash.create('success', 'Questionnaires assigned successfully to Pathway.', 'alert alert-success');
+                $location.path('/pathways');
+            }
+        });
+    }
+    */
 
     $scope.timeStampToDate = function(timeStamp){
         var date = new Date(timeStamp);
@@ -140,5 +181,7 @@ myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, $loca
         $scope.edit();
     }else if (flag == "add") {
         $scope.getAdd();
+    }else if (flag == "assign") {
+        $scope.assignquestionnaires();
     };
 });

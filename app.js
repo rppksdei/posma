@@ -165,7 +165,7 @@ require('./routes/questionnaire')(app,express);
 require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patientQuestionnaire')(app,express);
-
+require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

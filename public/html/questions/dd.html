@@ -22,7 +22,7 @@
                 <pane  ui-draggable="true" drag="selected_question" drag-channel="selques" drag-hover-class="bg-info"
                         ui-on-Drop="onDrop($event,$data,$index)" drop-channel="selques"
                         ng-repeat = "selected_question in selected_questions" >
-                    <pane-header>{{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);"><i class="fa fa-backward"></i></a>
+                    <pane-header>{{$event}} {{$index}} dddd {{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);"><i class="fa fa-backward"></i></a>
                     </pane-header>
                     <pane-content ng-if="selected_question.ans">
                        {{selected_question.ans}}
@@ -134,7 +134,7 @@
     </div>
     <hr />
     <div class="row">
-        <div>hange select button title</div>
+        <div>Change select button title</div>
         <div class="col-lg-6">
             <div ng-dropdown-multiselect options="example5data" selected-model="example5model" extra-settings="example5settings" translation-texts="example5customTexts"></div>
         </div>

@@ -3,6 +3,8 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
     $scope.success = "";
     $scope.surgery = "";
     $scope.errordetail = [];
+    $scope.page_title = "Add Surgery";
+    $scope.page_button= "Add Surgery";
     
     var flag = '';
     if (typeof $route.current.$$route.flag !== 'undefined') {
@@ -21,20 +23,18 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
             if(data.success){
                 if($scope.surgery._id){
                     Flash.create('success', 'Surgery has been updated successfully.', 'alert alert-success');
-                }else{
+                } else{
                     Flash.create('success', 'Surgery has been added successfully.', 'alert alert-success');
                 }
                 $location.path('/surgeries');
-            }else{
+            } else{
                 if (data.error.errors){
-                     $scope.errordetail = [];
+                    $scope.errordetail = [];
                     for (var errName in data.error.errors) {
                         $scope.errordetail[errName] = data.error.errors[errName].message
                     }
-                     console.log($scope.errordetail);
-                }
-                else{
-                    //console.log(data.error.errors);
+                    console.log($scope.errordetail);
+                } else{
                     $scope.errordetail[data.error.path] = data.error.message;
                     console.log($scope.errordetail);
                 }
@@ -44,6 +44,8 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
 
     $scope.edit = function(){
         $scope.error = [];
+        $scope.page_title = "Edit Surgery";
+        $scope.page_button = "Update Surgery";
         var surgeryId = $routeParams.id;
         Surgery.getDetailId().save({'id': surgeryId}, function(data){
             if(data){
@@ -110,7 +112,6 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
                 status = 1;
             }
             var update_object = {'_id':object_detail._id, 'is_active':status};
-            //console.log(update_object);
             Surgery.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;

@@ -51,7 +51,6 @@ addQuestionnaire = function(req, res){
             return_val.success = "Questionnaire assigned Successfully";
             res.json(return_val);
         }
-      //  res.json(return_val);
     });
 }
 

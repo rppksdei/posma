@@ -82,7 +82,7 @@ angular.module('PosmaService', ['ngResource'])
     .factory('Questionnaire', function($resource){
         var serviceObj = {};
         serviceObj.getDetail = function(){
-            return $resource('/questionnaire/detail');
+            return $resource('/questionnaire/getDetail');
         }
         serviceObj.add = function(){
             return $resource('/questionnaire/add');
@@ -131,6 +131,13 @@ angular.module('PosmaService', ['ngResource'])
         }
         return serviceObj;
     })
+    // .factory('PatientQuestionnaire', function($resource){
+    //     var serviceObj = {};
+    //     serviceObj.saveAssign = function(){
+    //         return $resource('/patient_questionnaire/add');
+    //     }
+    //     return serviceObj;
+    // })
     .factory('myService', function() {
         return {
             foo: function() {

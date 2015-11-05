@@ -32,6 +32,30 @@ table tr.odd td{
 .pull-right{
     float: right;
 }
+label {
+    margin: 7px 0;
+}
+.angular-accordion-header a{
+    
+    float: right;
+}
+.angular-accordion-header {
+    background-color: #bfe5e5;
+    color: #0e0e0e
+}
+.angular-accordion-header span{
+    margin-right: 20px
+}
+ul .que_ans{
+    margin-left: 10px;
+}
+.angular-accordion-pane-content{
+    padding-top:15px;
+}
+.ans_opts{
+    margin-left: 15px;
+    font-weight: bold;
+}
 /** gurpreet added */
 /*.lbl-error{color: #ff0000;font-size: 12px;font-weight: normal;}*/
 /* gurpreet added */
