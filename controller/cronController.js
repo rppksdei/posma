@@ -1,4 +1,4 @@
-var pathwayModel = require("./../model/pathwayModel");
+var patientModel = require("./../model/patientModel");
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
@@ -7,29 +7,23 @@ getlisting = function(req, res, next){
     }else if (req.user.user_type == "0"){
         search.clinic = req.user._id;
     }
-    /*
-    if(req.query.surgery!=''){
-        search.surgery = req.query.surgery;
-    }*/
-    if(typeof req.query.surgery != "undefined"){
-        search.surgery = req.query.surgery;
-    }
-    //console.log(search);
-    pathwayModel.getAllPathway(search, function(err, pathwayDetail){
+    var time_val = req.body.time_val;
+    search.time_of_discharge = time_val;
+    patientModel.getAllPatient(search, function(err, patientDetail){
         if(err){
             res.json(err);
         }
         else{
-            res.json(pathwayDetail);
+            res.json(patientDetail);
         }
     });
 }
 
-getPathwayDetail = function(req, res){
+getpatientDetail = function(req, res){
     var pathway_id = req.body.id;
     var search_pathway = {_id:pathway_id};
     //console.log(req);
-    pathwayModel.getPathway(search_pathway, function(err, data){
+    patientModel.getPathway(search_pathway, function(err, data){
         var return_val = {};
         if (err){
             return_val.error = err;
@@ -48,11 +42,11 @@ getPathwayDetail = function(req, res){
 }
 
 addPathway = function(req, res, next){
-    var pathwayDetail = req.body;
-    pathwayDetail.created       = Date.now();
-    pathwayDetail.is_active     = 1;
-    pathwayDetail.clinic        = req.user._id;
-    pathwayModel.addPathway(pathwayDetail, function(err, data){
+    var patientDetail = req.body;
+    patientDetail.created       = Date.now();
+    patientDetail.is_active     = 1;
+    patientDetail.clinic        = req.user._id;
+    patientModel.addPathway(patientDetail, function(err, data){
         var return_val = {};
         if (err) {
             var error_detail = [];
@@ -71,7 +65,7 @@ addPathway = function(req, res, next){
     });
 }
 
-updatePathwayDetail = function(req, res){
+updatepatientDetail = function(req, res){
     //Code to create JSON object data
     var update_data = {};
     //console.log(req.body);
@@ -103,7 +97,7 @@ updatePathwayDetail = function(req, res){
     if(typeof req.body._id != "undefined"){
         var search_criteria = {};
         var search_criteria = {_id:req.body._id};
-        pathwayModel.updatePathway(search_criteria, update_data, function(err, data){
+        patientModel.updatePathway(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
             if (err) {
@@ -138,8 +132,8 @@ updatePathwayDetail = function(req, res){
 
 module.exports = function(){
     this.getlisting = getlisting;
-    this.getPathwayDetail = getPathwayDetail;
+    this.getpatientDetail = getpatientDetail;
     this.addPathway = addPathway;
-    this.updatePathwayDetail = updatePathwayDetail;
+    this.updatepatientDetail = updatepatientDetail;
 }
 

@@ -104,12 +104,6 @@ myapp.config(['$routeProvider',
                 flag:'edit',
                 resolve:{'logged_in':checkloggedIn}
             })
-            .when('/questions/add/:id',{
-                templateUrl:'/html/questions/add.html',
-                controller:'questionsCtrl',
-                flag:'edit',
-                resolve:{'logged_in':checkloggedIn}
-            })
             /*.when('/questionnaire',{
                 templateUrl:'/html/questionnaire/list.html',
                 controller:'questionnaireCtrl',
@@ -192,6 +186,12 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/pathways/add.html',
                 controller:'pathwayCtrl',
                 flag:'edit',
+                resolve:{'logged_in':checkloggedIn}
+            })
+            .when('/pathways/assignquestionnaires/:id',{
+                templateUrl:'/html/pathways/assign.html',
+                controller:'pathwayCtrl',
+                flag:'assign',
                 resolve:{'logged_in':checkloggedIn}
             })
             .otherwise({

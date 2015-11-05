@@ -21,7 +21,7 @@ getQuestionnaireDetail = function(req, res){
         if (err){
             return_val.error = err;
             res.json(return_val);
-        } else{
+        }else{
             if (data == null) {
                 return_val.error = "Questionnaire doesn't exist.";
                 res.json(return_val);

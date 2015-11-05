@@ -33,9 +33,27 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
 
     $scope.getPathways = function(){
         var surgery_id = $scope.patient.surgery;
-        Patient.getDetail().query({'surgery': surgery_id}, function(data){
-            $scope.pathways = data;
-        });
+        // console.log(surgery_id);
+        if(typeof surgery_id != 'undefined'){
+            Patient.getDetail().query({'surgery': surgery_id}, function(data){
+                $scope.pathways = data;
+            });
+        }else{
+            $scope.pathways = '';
+        }
+    }
+
+    $scope.getQuestionnaires = function(){
+        console.log($scope.patient);
+        var pathway_id = $scope.patient.pathway;
+        if(typeof pathway_id != 'undefined'){
+            Patient.getDetail().query({'surgery': pathway_id}, function(data){
+                $scope.pathways = data;
+            });
+        }else{
+            $scope.pathways = '';
+        }
+        
     }
 
     /* function to add/save new patient */
@@ -78,6 +96,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                     var surgery_id = $scope.patient.surgery._id;
                     Patient.getDetail().query({'surgery': surgery_id}, function(pdata){
                         $scope.pathways = pdata;
+                        // console.log(pdata); console.log($scope.patient);
                     });
                 });
 
@@ -85,7 +104,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                 $scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
                 $scope.patient.dos              = $scope.timeStampToDate(data.dos);
                 $scope.patient.dohd             = $scope.timeStampToDate(data.dohd);
-                $scope.patient.surgery          = $scope.patient.surgery._id;
+                //$scope.patient.surgery          = $scope.patient.surgery._id;
                 
             }
         });
@@ -99,9 +118,9 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
 
     $scope.getAge = function(){
         var dob = $scope.patient.date_of_birth;
-        console.log(dob);
+        // console.log(dob);
         $scope.patient.age = $scope.getAgeFromDob(dob);
-        console.log($scope.patient);
+        // console.log($scope.patient);
         // var date = new Date(timeStamp);
         // var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
         // return dateString;
