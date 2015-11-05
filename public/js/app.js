@@ -122,6 +122,12 @@ myapp.config(['$routeProvider',
                 flag:'list',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/questionnaire/assign_questions/:id',{
+                templateUrl:'/html/questionnaire/assign_questions.html',
+                controller:'questionnaireCtrl',
+                flag:'assign_ques',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .when('/questionnaire/add',{
                 templateUrl:'/html/questionnaire/add.html',
                 controller:'questionnaireCtrl',

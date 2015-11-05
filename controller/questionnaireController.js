@@ -98,7 +98,13 @@ updateQuestionnaireDetail = function(req, res){
     }
     update_data.modified = Date.now();
     //End of code to create object data
-    
+
+    console.log(req.body.selected_questions);
+
+    if(typeof req.body.selected_questions != "undefined"){
+        update_data.question = req.body.selected_questions;
+    }
+
     // Code to update clinic Details
     if(typeof req.body._id != "undefined"){
         var search_criteria = {};

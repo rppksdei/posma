@@ -1,17 +1,21 @@
-myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $location,Flash, ngTableParams, $rootScope, $routeParams, SweetAlert){
+myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Questions, myService, $http, $location ,Flash, orderByFilter, ngTableParams, $rootScope, $routeParams, SweetAlert){
     $scope.success = "";
+    $scope.ass_quqes = {};
     $scope.listAdmin = "";
     $scope.errordetail = [];
     $scope.form_heading = 'Add Questionnaire';
     $scope.sel_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    $scope.whole_data = [];
     var flag = '';
+    $scope.questionnair_ques = [];
+    $scope.selected_questions = [];
+    $scope.selected_ques={};
+    $scope.queOrder = [];
     $scope.questionnaire = '';
+    $scope.ques_quesnaire = '';
     $scope.questionnaires = {};
     $scope.TimeDropdownmodel = [];
     var rec_cnt = 10;
-
-    //$scope.questionnaire.type = 'single';
+    $scope.questionnaire.recur_type = 'd';
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
@@ -49,24 +53,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
             time_slots.push($scope.selectedTime[i].id);
         }
         $scope.questionnaire.time_slots = time_slots;
-        /* if ($scope.questionnaire._id) {
-            Questionnaire.update().save($scope.questionnaire, function(data){
-                $scope.errordetail = {};
-               if (data.success) {
-                    Flash.create('success', 'Questionnaire has been updated successfully.', 'alert alert-success');
-                    $location.path('/listquestionnaires');
-                } else {
-                    if (data.error.errors){
-                        $scope.errordetail = [];
-                        for (var errName in data.error.errors) {
-                            $scope.errordetail[errName] = data.error.errors[errName].message
-                        }
-                    } else {
-                       $scope.errordetail[data.error.path] = data.error.message;
-                    }
-                }
-            });
-        } else{*/
         Questionnaire.add().save($scope.questionnaire, function(data){
            if (data.success) {
                 Flash.create('success', 'Questionnaire has been saved successfully.', 'alert alert-success');
@@ -82,19 +68,8 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
                 }
             }
         });
-        /*}  */
     }
     
-    /*$scope.edit = function(){
-        $scope.form_heading = 'Update Institute';
-        $scope.editProfileId = $routeParams.id;
-        $scope.admin = {};
-        Admin.getDetail().save({'id':$scope.editProfileId}, function(data){
-            $scope.admin = data;
-        });
-    }*/
-    
-
     $scope.edit = function(){
         if(!$scope.questionnaire){
             Questionnaire.getDetail().save({'_id':$routeParams.id}, function(data) {
@@ -102,16 +77,14 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
                 for(var ts = 0; ts < $scope.questionnaire.time_slots.length; ts++){
                     $scope.TimeDropdownmodel[ts] = {id:$scope.questionnaire.time_slots[ts]};
                 }
-                //$scope.TimeDropdownmodel = [{id: 1}, {id: 3}];
                 $scope.selectedTime = $scope.TimeDropdownmodel;
-                //$scope.questionnaireRecOpts = {recur_type : data.recur_type};
             });
         } else {
             var questionnairedata = $scope.questionnaire;
             Questionnaire.update().save(questionnairedata, function(data){
                 if (data.success) {
                     Flash.create('success', 'Questionnaire has been updated successfully.', 'alert alert-success');
-                    $location.path('/questionnaire');
+                    $location.path('/questionnaires');
                 } else{
                     console.log(data.error.errors);
                 }
@@ -119,6 +92,114 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
         }
     }
     
+    $scope.assign_questions = function(){
+        $scope.ass_ques_criteria = {};
+        if(!$scope.ques_quesnaire){
+            Questionnaire.getDetail().save({'_id':$routeParams.id}, function(data) {
+                $scope.ques_quesnaire = data;
+
+                console.log($scope.ques_quesnaire.question);
+                if($scope.ques_quesnaire.question){
+                    for(var k=0; k< $scope.ques_quesnaire.question.length; k++){
+                        $scope.selected_questions[k] = $scope.ques_quesnaire.question[k];
+                    }
+                }
+                if($scope.ques_quesnaire.question.length != 0){
+                    $scope.ass_quqes.search_cre = {'is_deleted':0,_id: {$nin: $scope.ques_quesnaire.question}};
+                    //$scope.selected_ques.search_cre = {_id: {$in: $scope.ques_quesnaire.question}};
+                    //$scope.selected_ques.sort_order = '-';
+                } else {
+                    $scope.ass_quqes.search_cre = {'is_deleted':0};
+                }
+                Questions.getList().query($scope.ass_quqes, function(quesArr) {
+                    $scope.questionnair_ques = quesArr;
+                    /*for(var i=0; i< $scope.questionnair_ques.length; i++){
+                        $scope.questionnair_ques[i].order = i;
+                        $scope.queOrder[i] = i;
+                    }*/
+                });
+
+                /*if($scope.selected_ques.search_cre){
+                    Questions.getList().query($scope.selected_ques, function(quesArr) {
+                        $scope.selected_questions = quesArr;
+                    });
+                }*/
+            });
+        } else { 
+            var questionnairedata = {};
+            questionnairedata._id = $routeParams.id;
+            var cnt = 0;
+            var selected_ques = [];
+            for(cnt; cnt < $scope.selected_questions.length; cnt++){
+                console.log($scope.selected_questions[cnt]._id);
+                selected_ques[cnt] = $scope.selected_questions[cnt]._id;
+            }
+            console.log($scope.selected_questions);
+            questionnairedata.selected_questions = selected_ques;
+            Questionnaire.update().save(questionnairedata, function(data){
+                if (data.success) {
+                    Flash.create('success', 'Questions have been assigned to questionnaire successfully.', 'alert alert-success');
+                    $location.path('/questionnaires');
+                } else{
+                    console.log(data.error.errors);
+                }
+            });
+        }
+    }
+
+    //$scope.selectQuestion = function(qindex){
+
+    $scope.selectQuestion = function(ques_id){
+        //$scope.selected_questions.push($scope.questionnair_ques[qindex]);
+        //$scope.questionnair_ques.splice(qindex,1);
+        var qq = 0;
+        for(qq; qq < $scope.questionnair_ques.length; qq++){
+            if($scope.questionnair_ques[qq]._id == ques_id){
+                $scope.selected_questions.push($scope.questionnair_ques[qq]);
+                $scope.questionnair_ques.splice(qq,1);
+            }
+        }
+
+    };
+    $scope.unselectQuestion = function(qindex){
+        $scope.questionnair_ques.push($scope.selected_questions[qindex]);
+        /*$scope.Sorted = orderByFilter($scope.questionnair_ques, function(item) {
+            return $scope.queOrder.indexOf(item.order);
+        });*/
+       // $scope.questionnair_ques = $scope.Sorted;
+        $scope.selected_questions.splice(qindex,1); 
+    };
+
+    $scope.onDrop = function($event,$data,index){
+        var current_position;
+        console.log($scope.selected_questions);
+        for(var sq = 0; sq < $scope.selected_questions.length; sq++){
+            if($scope.selected_questions[sq]._id == $data._id){
+                current_position = sq;
+            }
+        }
+        if(current_position < index){
+            for (var i = current_position; i <= index; i++){
+                if(i == index){
+                    $scope.selected_questions[i] = $data;
+                } else {
+                    $scope.selected_questions[i] = $scope.selected_questions[i+1]; 
+                }
+            }
+        }
+        if(current_position > index){
+            for (var i = current_position; i >= index ; i--){
+                if(i == index){
+                    $scope.selected_questions[i] = $data;
+                } else {
+                    $scope.selected_questions[i] = $scope.selected_questions[i-1]; 
+                }
+            }
+        }
+
+        console.log($scope.selected_questions);
+    };
+
     $scope.changeStatus = function(index, existingStatus) {
         var newStatus = 'inactivate';
         var newStatus_title = 'inactivataed';
@@ -127,18 +208,16 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
             newStatus = 'activate';
             newStatus_title = 'activataed';
         }
-
         var object_detail = $scope.tableParams.data[index];
         SweetAlert.swal({
         title: "Confirmation",
-        text: "Are you sure you want to "+newStatus+" "+object_detail.name+"?",
+        text: "Are you sure you want to "+newStatus+" '"+object_detail.name+"'?",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Yes",
         cancelButtonText: "No",
         closeOnConfirm: true},
-
         function(){ 
             var status = 0;
             if (object_detail.is_active == 0) {
@@ -154,11 +233,10 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
         });
     };
 
-    
     $scope.deleteQuestionnaire = function(id,qname) {
         SweetAlert.swal({
         title: "Confirmation",
-        text: "Are you sure you want to delete "+qname+"?",
+        text: "Are you sure you want to delete '"+qname+"'?",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -193,8 +271,9 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, $l
     
     if (flag == "list") {
         $scope.listQuestionnaire();
-    }
-    else if (flag == "edit") {
+    } else if (flag == "edit") {
         $scope.edit();
+    } else if(flag == "assign_ques"){
+        $scope.assign_questions();
     }
 });

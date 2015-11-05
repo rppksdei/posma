@@ -1,14 +1,17 @@
 var questionModel = require("./../model/questionModel");
-
 getlisting = function(req, res, next){
     var search = {is_deleted:0,clinic:req.user._id};
     var sort_order = {created: -1 };
-
+    if(typeof req.query.search_cre != "undefined"){
+        search = JSON.parse(req.query.search_cre);
+        search.is_deleted = 0;
+        search.clinic = req.user._id;
+        sort_order = req.query.sort_order;
+    }
     questionModel.getAllQuestion(search,sort_order, function(err, questionDetail){
         if(err){
             res.json(err);
-        }
-        else{
+        } else{
             res.json(questionDetail);
         }
     });

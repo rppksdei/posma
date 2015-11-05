@@ -29,7 +29,7 @@
                                     <div class="form-group col-lg-4">
                                         <label>Type <span class="required">*</span></label>
                                     </div>
-                                    <div class="form-group col-lg-8" ng-class="{'has-error':questionnaireFrm.qtype.$dirty && (questionnaireFrm.qtype.$error.required || errordetail.qtype)}">
+                                    <div class="form-group col-lg-8"  ng-class="{'has-error':questionnaireFrm.qtype.$dirty && (questionnaireFrm.qtype.$error.required || errordetail.qtype)}">
                                         <select ng-model="questionnaire.type" class="form-control" name="qtype" id="qtype"  required>
                                             <option value="" ng-selected="true">--Select a type--</option>
                                             <option value="single">Single Time</option>
@@ -41,7 +41,7 @@
                                 <div id="text" ng-if="questionnaire.type == 'single'">
                                     <div ng-class="{'has-error':questionnaireFrm.execute_time.$dirty && (questionnaireFrm.execute_time.$error.required || questionnaireFrm.execute_time.$error.number)}">
                                         <div class="col-lg-4">
-                                            <label>Execute at <span class="required">*</span></label>
+                                            <label>Execute at <span class="required">*</span></label> T0+
                                         </div>
                                         <div class="col-lg-5">
                                             <input class="form-control" type="number" ng-required="questionnaire.type == 'single'" ng-model="questionnaire.execute_time" name="execute_time" id="execute_time">
@@ -84,7 +84,7 @@
                                     </div>
                                     <div>
                                         <div class="form-group col-lg-5">
-                                            <label>Starts on</label> T0 +
+                                            <label>Starts on<span class="required">*</span></label> T0 +
                                         </div>
                                         <div class="form-group col-lg-5" ng-class="{'has-error':questionnaireFrm.start_day.$dirty && (questionnaireFrm.start_day.$error.required || questionnaireFrm.start_day.$error.number)}">
                                             <input class="form-control" type="number" required ng-model="questionnaire.start_day" name="start_day" id="start_day">
@@ -95,7 +95,7 @@
                                     </div>
                                     <div id="dailyrec"  ng-class="{'has-error':questionnaireFrm.total_days.$dirty && (questionnaireFrm.total_days.$error.required || questionnaireFrm.total_days.$error.number)}">
                                         <div class="form-group col-lg-5">
-                                            <label>For how many days</label>
+                                            <label>For how many days<span class="required">*</span></label>
                                         </div>
                                         <div class="form-group col-lg-5">
                                             <input class="form-control" type="number" required ng-model="questionnaire.total_days" name="total_days" id="total_days">

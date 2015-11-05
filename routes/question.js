@@ -8,6 +8,11 @@ module.exports = function(app,express,isClinicAdmin){
         console.log("Get list of Question");
         questionObj.getlisting(req, res, next);
     });
+
+    router.post('/',isClinicAdmin,  function(req, res, next) {
+        console.log("Get list of Questionssssa");
+        questionObj.getlisting(req, res, next);
+    });
     
     /* add Question listing. */
     router.post('/add',isClinicAdmin,  function(req, res, next) {

@@ -29,7 +29,7 @@ var Question = mongoose.model('Question', questionSchema);
 
 
 exports.getAllQuestion = function(search_criteria, sort_order, next){
-    if(!sort_order) {
+    if(!sort_order || sort_order == '-') {
         Question.find(search_criteria, next);
     } else {
         Question.find(search_criteria, next).sort(sort_order);
@@ -37,7 +37,6 @@ exports.getAllQuestion = function(search_criteria, sort_order, next){
 }
 
 exports.getQuestion = function(search_criteria, next){
-    console.log(search_criteria);
     Question.findOne(search_criteria, next);
 }
 

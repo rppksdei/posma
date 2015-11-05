@@ -37,7 +37,9 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
     };
     $scope.unselectQuestion = function(qindex){
         $scope.questions.push($scope.selected_questions[qindex]);
+        console.log($scope.queOrder);
         $scope.Sorted = orderByFilter($scope.questions, function(item) {
+            console.log(item.order);
             return $scope.queOrder.indexOf(item.order);
         });
         $scope.questions = $scope.Sorted;
@@ -51,6 +53,9 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
                 current_position = sq;
             }
         }
+        console.log($event);
+        console.log($data);
+        console.log(index);
         console.log(current_position);
         if(current_position < index){
             for (var i = current_position; i <= index; i++){
