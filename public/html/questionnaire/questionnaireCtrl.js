@@ -19,7 +19,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
-    
     /*code to make time dropdown*/
     $scope.dropDownTimeArr = new Array();
     $p = 0;
@@ -39,6 +38,9 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
         scrollableHeight: '200px',
         scrollable: true, 
         smartButtonMaxItems: 6,
+        displayProp: 'label', 
+        idProp: 'label',
+        externalIdProp: 'time_slot',
         smartButtonTextConverter: function(itemText, originalItem) {
             return itemText;
         }
@@ -46,7 +48,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
     /*End of code */
     $scope.selectedSingleTime = [];
     //End of code to make time dropdown
-    
     $scope.add = function(){
         var time_slots = [];
         for(i=0;i<$scope.selectedTime.length;i++){
@@ -69,17 +70,22 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             }
         });
     }
-    
     $scope.edit = function(){
+        var time_slots = [];
         if(!$scope.questionnaire){
             Questionnaire.getDetail().save({'_id':$routeParams.id}, function(data) {
                 $scope.questionnaire = data;
+                console.log($scope.questionnaire.time_slots);
                 for(var ts = 0; ts < $scope.questionnaire.time_slots.length; ts++){
-                    $scope.TimeDropdownmodel[ts] = {id:$scope.questionnaire.time_slots[ts]};
+                    $scope.selectedTime[ts] = {time_slot:$scope.questionnaire.time_slots[ts]};
                 }
-                $scope.selectedTime = $scope.TimeDropdownmodel;
+                
             });
         } else {
+            for(i=0;i<$scope.selectedTime.length;i++){
+                time_slots.push($scope.selectedTime[i].time_slot);
+            }
+            $scope.questionnaire.time_slots = time_slots;
             var questionnairedata = $scope.questionnaire;
             Questionnaire.update().save(questionnairedata, function(data){
                 if (data.success) {
@@ -91,7 +97,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             });
         }
     }
-    
     $scope.assign_questions = function(){
         $scope.ass_ques_criteria = {};
         if(!$scope.ques_quesnaire){
@@ -118,7 +123,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
                         $scope.queOrder[i] = i;
                     }*/
                 });
-
                 /*if($scope.selected_ques.search_cre){
                     Questions.getList().query($scope.selected_ques, function(quesArr) {
                         $scope.selected_questions = quesArr;
@@ -146,9 +150,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             });
         }
     }
-
     //$scope.selectQuestion = function(qindex){
-
     $scope.selectQuestion = function(ques_id){
         //$scope.selected_questions.push($scope.questionnair_ques[qindex]);
         //$scope.questionnair_ques.splice(qindex,1);
@@ -159,7 +161,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
                 $scope.questionnair_ques.splice(qq,1);
             }
         }
-
     };
     $scope.unselectQuestion = function(qindex){
         $scope.questionnair_ques.push($scope.selected_questions[qindex]);
@@ -169,7 +170,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
        // $scope.questionnair_ques = $scope.Sorted;
         $scope.selected_questions.splice(qindex,1); 
     };
-
     $scope.onDrop = function($event,$data,index){
         var current_position;
         console.log($scope.selected_questions);
@@ -196,14 +196,11 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
                 }
             }
         }
-
         console.log($scope.selected_questions);
     };
-
     $scope.changeStatus = function(index, existingStatus) {
         var newStatus = 'inactivate';
         var newStatus_title = 'inactivataed';
-
         if(existingStatus == 0){
             newStatus = 'activate';
             newStatus_title = 'activataed';
@@ -232,7 +229,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             });
         });
     };
-
     $scope.deleteQuestionnaire = function(id,qname) {
         SweetAlert.swal({
         title: "Confirmation",
@@ -261,14 +257,12 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             }); 
         });
     };
-   
     $scope.listQuestionnaire = function(){
         Questionnaire.list().query({}, function(data){
             $scope.questionnaires = data;
             $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.questionnaires});
         });
     }
-    
     if (flag == "list") {
         $scope.listQuestionnaire();
     } else if (flag == "edit") {

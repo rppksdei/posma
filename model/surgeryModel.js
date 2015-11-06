@@ -14,6 +14,8 @@ var SurgerySchema = ({
 var Surgery = mongoose.model('Surgery', SurgerySchema);
 
 exports.getAllSurgery = function(search_criteria, next){
+    console.log('IN MODEL');
+    console.log(search_criteria);
     Surgery.find(search_criteria, next);
 }
 

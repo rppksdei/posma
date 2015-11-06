@@ -15,8 +15,9 @@ myapp.controller('surgeonCtrl', function($scope, $route, Admin, Surgery, $locati
     }
     
     // get surgery list
+    var srch_cre = {is_active:1,is_deleted:0};
     if (flag == "add_surgeon" || flag == "edit_surgeon") {
-        Surgery.getDetail().query({}, function(data){
+        Surgery.getDetail().query({'conditions': srch_cre}, function(data){
             $scope.surgeries = data;
         });    
     }
