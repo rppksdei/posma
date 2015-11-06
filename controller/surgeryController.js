@@ -10,11 +10,7 @@ getlisting = function(req, res, next){
     if (req.user.user_type == "2") {
         search_surgery.clinic = req.user.parent_id;
     } else if (req.user.user_type == "0"){
-        console.log('HERERER');
-        console.log(req.user);
         search_surgery.clinic = req.user._id;
-        console.log(search_surgery);
-        console.log('--------------------');
     }
     console.log(search_surgery);
     surgeryModel.getAllSurgery(search_surgery, function(err, userDetail){
