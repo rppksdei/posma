@@ -1,7 +1,8 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Add Questionnaire</h1>
+            <h1 ng-if="questionnaire._id" class="page-header">Update Questionnaire</h1>
+            <h1 ng-if="!questionnaire._id" class="page-header">Add Questionnaire</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -14,7 +15,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <form name="questionnaireFrm" id="questionnaireFrm" ng-submit="add();">
+                        <form ng-if="questionnaire._id" name="questionnaireFrm" id="questionnaireFrm" ng-submit="edit();">
+                        <form ng-if="!questionnaire._id" name="questionnaireFrm" id="questionnaireFrm" ng-submit="add();">
                             <div class="col-lg-6">
                                 <div ng-class="{'has-error':questionnaireFrm.qname.$dirty && questionnaireFrm.qname.$error.required}">
                                     <div class="form-group col-lg-4">
@@ -25,15 +27,15 @@
                                         <label class="control-label" ng-show="questionnaireFrm.qname.$dirty && questionnaireFrm.qname.$error.required">Name is required.</label>
                                     </div>
                                 </div>
-                                <div>
+                                <div ng-class="{'has-error':questionnaireFrm.qtype.$dirty && (questionnaireFrm.qtype.$error.required || errordetail.type)}">
                                     <div class="form-group col-lg-4">
                                         <label>Type <span class="required">*</span></label>
                                     </div>
-                                    <div class="form-group col-lg-8"  ng-class="{'has-error':questionnaireFrm.qtype.$dirty && (questionnaireFrm.qtype.$error.required || errordetail.qtype)}">
+                                    <div class="form-group col-lg-8" >
                                         <select ng-model="questionnaire.type" class="form-control" name="qtype" id="qtype"  required>
                                             <option value="" ng-selected="true">--Select a type--</option>
-                                            <option value="single">Single Time</option>
-                                            <option value="recursive">Recursive</option>
+                                            <option ng-selected="questionnaire.type == 'single'" value="single">Single Time</option>
+                                            <option ng-selected="questionnaire.type == 'recursive'" value="recursive">Recursive</option>
                                         </select>
                                         <label class="control-label" ng-show="questionnaireFrm.qtype.$dirty && (questionnaireFrm.qtype.$error.required || errordetail.qtype)">Type is required.</label>
                                     </div>
@@ -79,7 +81,7 @@
                                             <label>Recurrences Interval</label>
                                         </div>
                                         <div class="form-group  col-lg-5">
-                                            <div ng-dropdown-multiselect="" options="dropDownTimeArr" ng-model="questionnaire.recurrence_interval" selected-model="selectedTime" extra-settings="TimeDropdownsettings"  translation-texts="TimeDropdownTexts"></div>
+                                            <div ng-dropdown-multiselect="" options="dropDownTimeArr" ng-model="questionnaire.recurrence_interval" selected-model="selectedTime" extra-settings="TimeDropdownsettings" translation-texts="TimeDropdownTexts"></div>
                                         </div>
                                     </div>
                                     <div>
@@ -109,14 +111,15 @@
                                         </div>
                                         <div class="form-group col-lg-5">
                                             <div ng-repeat="sel_day in sel_days">
-                                                <input type="checkbox" name="selectedDays[]" value="{{$index+1}}" ng-model="selday[$index]" ng-true-value="{{$index+1}}" ng-false-value="{{undefined}}"> {{sel_day}}
+                                                <input  ng-checked="questionnaire.selectedDays == $index+1" type="checkbox" name="selectedDays[]" value="{{$index+1}}" ng-model="selday[$index]" ng-true-value="{{$index+1}}" ng-false-value="{{undefined}}"> {{sel_day}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-12" style="text-align:center">
-                                <button class="btn btn-success" ng-disabled="questionnaireFrm.$invalid" type="submit">Submit</button>
+                                <button ng-if="!questionnaire._id" class="btn btn-success" ng-disabled="questionnaireFrm.$invalid" type="submit">Add Questionnaire</button>
+                                <button ng-if="questionnaire._id" class="btn btn-success" ng-disabled="questionnaireFrm.$invalid" type="submit">Update Questionnaire</button>
                             </div>
                             <!-- /.col-lg-6 (nested) -->
                         </form>
