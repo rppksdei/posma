@@ -129,7 +129,7 @@ myapp.config(['$routeProvider',
                 resolve:{'logged_in':checkloggedIn}
             })
             .when('/questionnaire/edit/:id',{
-                templateUrl:'/html/questionnaire/add.html',
+                templateUrl:'/html/questionnaire/edit.html',
                 controller:'questionnaireCtrl',
                 flag:'edit',
                 resolve:{'logged_in':checkloggedIn}

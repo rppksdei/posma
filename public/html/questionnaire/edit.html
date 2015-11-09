@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Add Questionnaire</h1>
+            <h1 class="page-header">Update Questionnaire</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -14,7 +14,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <form name="questionnaireFrm" id="questionnaireFrm" ng-submit="add();">
+                        <form name="questionnaireFrm" id="questionnaireFrm" ng-submit="edit();">
                             <div class="col-lg-6">
                                 <div ng-class="{'has-error':questionnaireFrm.qname.$dirty && questionnaireFrm.qname.$error.required}">
                                     <div class="form-group col-lg-4">
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-12" style="text-align:center">
-                                <button class="btn btn-success" ng-disabled="questionnaireFrm.$invalid" type="submit">Add Questionnaire</button>
+                                <button class="btn btn-success" ng-disabled="questionnaireFrm.$invalid" type="submit">Update Questionnaire</button>
                             </div>
                             <!-- /.col-lg-6 (nested) -->
                         </form>
