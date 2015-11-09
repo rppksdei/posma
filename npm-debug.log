@@ -1,21 +1,72 @@
-0 info it worked if it ends with ok
-1 verbose cli [ '/root/.nvm/v0.10.40/bin/node',
-1 verbose cli   '/root/.nvm/v0.10.40/bin/npm',
-1 verbose cli   'start',
-1 verbose cli   '-g',
-1 verbose cli   'ionic' ]
-2 info using npm@1.4.28
-3 info using node@v0.10.40
-4 error Error: ENOENT, open '/root/.nvm/v0.10.40/lib/node_modules/ionic/package.json'
-5 error If you need help, you may report this *entire* log,
-5 error including the npm and node versions, at:
-5 error     <http://github.com/npm/npm/issues>
-6 error System Linux 3.13.0-32-generic
-7 error command "/root/.nvm/v0.10.40/bin/node" "/root/.nvm/v0.10.40/bin/npm" "start" "-g" "ionic"
-8 error cwd /home/ramanpreetk/Ramanpreet/Official/projects/posma
-9 error node -v v0.10.40
-10 error npm -v 1.4.28
-11 error path /root/.nvm/v0.10.40/lib/node_modules/ionic/package.json
-12 error code ENOENT
-13 error errno 34
-14 verbose exit [ 34, true ]
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/bin/npm', 'install', 'spawn-sync' ]
+info using npm@1.1.4
+info using node@v0.6.12
+verbose config file /root/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/share/npm/npmrc
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/package.json
+verbose loadDefaults healthcare@0.0.0
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/serve-favicon/package.json
+verbose loadDefaults serve-favicon@2.3.0
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/express-session/package.json
+verbose loadDefaults express-session@1.11.3
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/passport/package.json
+verbose loadDefaults passport@0.3.0
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/cookie-parser/package.json
+verbose loadDefaults cookie-parser@1.3.5
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/jade/package.json
+verbose loadDefaults jade@1.11.0
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/forever/package.json
+verbose loadDefaults forever@0.15.1
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/passport-local/package.json
+verbose loadDefaults passport-local@1.0.0
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/spawn-sync/package.json
+verbose loadDefaults spawn-sync@1.0.14
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/ionic/package.json
+verbose loadDefaults ionic@1.7.8
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/body-parser/package.json
+verbose loadDefaults body-parser@1.13.3
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/morgan/package.json
+verbose loadDefaults morgan@1.6.1
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/debug/package.json
+verbose loadDefaults debug@2.2.0
+verbose caching /home/ramanpreetk/Ramanpreet/Official/projects/posma/node_modules/express/package.json
+verbose loadDefaults express@4.13.3
+verbose from cache /home/ramanpreetk/Ramanpreet/Official/projects/posma/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'spawn-sync', null ]
+silly cache add: name, spec, args [ undefined, 'spawn-sync', [ 'spawn-sync', null ] ]
+verbose parsed url { pathname: 'spawn-sync',
+verbose parsed url   path: 'spawn-sync',
+verbose parsed url   href: 'spawn-sync' }
+verbose addNamed [ 'spawn-sync', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'spawn-sync', '', false ]
+verbose raw, before any munging spawn-sync
+verbose url resolving [ 'https://registry.npmjs.org/', './spawn-sync' ]
+verbose url resolved https://registry.npmjs.org/spawn-sync
+http GET https://registry.npmjs.org/spawn-sync
+ERR! Error: failed to fetch from registry: spawn-sync
+ERR!     at /usr/share/npm/lib/utils/npm-registry-client/get.js:139:12
+ERR!     at cb (/usr/share/npm/lib/utils/npm-registry-client/request.js:31:9)
+ERR!     at Request._callback (/usr/share/npm/lib/utils/npm-registry-client/request.js:136:18)
+ERR!     at Request.callback (/usr/lib/nodejs/request/main.js:119:22)
+ERR!     at Request.<anonymous> (/usr/lib/nodejs/request/main.js:212:58)
+ERR!     at Request.emit (events.js:88:20)
+ERR!     at ClientRequest.<anonymous> (/usr/lib/nodejs/request/main.js:412:12)
+ERR!     at ClientRequest.emit (events.js:67:17)
+ERR!     at HTTPParser.onIncoming (http.js:1261:11)
+ERR!     at HTTPParser.onHeadersComplete (http.js:102:31)
+ERR! You may report this log at:
+ERR!     <http://bugs.debian.org/npm>
+ERR! or use
+ERR!     reportbug --attach /home/ramanpreetk/Ramanpreet/Official/projects/posma/npm-debug.log npm
+ERR! 
+ERR! System Linux 3.13.0-32-generic
+ERR! command "node" "/usr/bin/npm" "install" "spawn-sync"
+ERR! cwd /home/ramanpreetk/Ramanpreet/Official/projects/posma
+ERR! node -v v0.6.12
+ERR! npm -v 1.1.4
+ERR! message failed to fetch from registry: spawn-sync
+verbose exit [ 1, true ]
