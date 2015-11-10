@@ -59,6 +59,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
+    console.log(patientData);
         Patient.addPatient().save(patientData, function(data){
             if(data.success){
                 if($scope.patient._id){
@@ -153,7 +154,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         if(weight > 0 && height > 0){   
             finalBmi = weight/(height/100*height/100);
         }
-        return finalBmi;
+        return finalBmi.toFixed(2);
     }
     
     $scope.deletePatient = function(id) {
@@ -185,6 +186,26 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         });
     };
 
+    $scope.dischargePatient = function(id) {
+        SweetAlert.swal({
+        title: "Are you sure?",
+        text: "You are going to discharge patient! Date and time will be saved automatically.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, change it!",
+        cancelButtonText: "No, cancel it!",
+        closeOnConfirm: true}, 
+        function(){
+            var update_object = {'_id':id, 'is_discharged':1};
+            Patient.update().save(update_object, function(data){
+                if (data.success) {
+                    Flash.create('success', 'Patient discharged status has been changed successfully.', 'alert alert-success');
+                }
+            }); 
+        });
+    };
+
     $scope.changePatientStatus = function(index) {
         var object_detail = $scope.tableParams.data[index];
         //console.log(object_detail);
@@ -198,10 +219,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         cancelButtonText: "No, cancel it!",
         closeOnConfirm: true}, 
         function(){ 
-            var status = 0;
-            if (object_detail.is_active == 0) {
-                status = 1;
-            }
+            
             var update_object = {'_id':object_detail._id, 'is_active':status};
             Patient.update().save(update_object, function(data){
                 if (data.success) {
