@@ -2,13 +2,14 @@ var patientModel = require("./../model/patientModel");
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
-    if (req.user.user_type == "2") {
+    /*if (req.user.user_type == "2") {
         search.clinic = req.user.parent_id;
     }else if (req.user.user_type == "0"){
         search.clinic = req.user._id;
-    }
+    }*/
     var time_val = req.body.time_val;
     search.time_of_discharge = time_val;
+    console.log(search);
     patientModel.getAllPatient(search, function(err, patientDetail){
         if(err){
             res.json(err);
