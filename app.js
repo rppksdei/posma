@@ -125,13 +125,10 @@ isClinicOrSurgeon = function (req, res, next) {
     if(response){
       if (req.user.user_type == 2 || req.user.user_type == 0) {
         next();
-      }
-      else{
+      } else{
         res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
       }
-      
-    }
-    else{
+    } else{
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
     }
   });
@@ -184,7 +181,7 @@ if (app.get('env') === 'development') {
       message: err.message,
       error: err
     });
-  });
+  }); 
 }
 
 // production error handler
@@ -197,5 +194,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
+process.on('uncaughtException', function(err) {
+  console.log('Uncaught exception: ' + err);
+});
 
 module.exports = app;
