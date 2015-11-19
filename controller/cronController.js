@@ -1,7 +1,8 @@
 var patientModel = require("./../model/patientModel");
+var questionnaireModel = require("./../model/questionnaireModel");
 
 getlisting = function(req, res, next){
-    var search = {is_deleted:0};
+    var search = {is_deleted:0, pathway:{$ne: null}};
     /*if (req.user.user_type == "2") {
         search.clinic = req.user.parent_id;
     }else if (req.user.user_type == "0"){
@@ -15,6 +16,10 @@ getlisting = function(req, res, next){
             res.json(err);
         }
         else{
+            console.log(patientDetail);
+            if(typeof patientDetail.pathway.questionnaire != "undefined"){
+                var questionnaireIds = patientDetail.pathway.questionnaire;
+            }
             res.json(patientDetail);
         }
     });
