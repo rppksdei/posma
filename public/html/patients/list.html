@@ -19,7 +19,7 @@
                     <div class="dataTable_wrapper table-responsive">
                         <table ng-table="tableParams" class="table">
                                 <tr ng-repeat="patient in $data" ng-class="{even: $even, odd: $odd}">
-                                    <!-- <td data-title="'Username'">{{ patient.username }}</td> -->
+                                    <!-- <td data-title="'Username'">{{patient}}</td> -->
                                     <td data-title="'Full Name'">{{ patient.first_name }} {{ patient.last_name }}</td>
                                     <td data-title="'Email'">{{ patient.email }}</td>
                                     <!-- <td data-title="'D.O.B.'">{{ patient.date_of_birth | date: 'MM/dd/yyyy' }}</td> -->
@@ -42,7 +42,7 @@
                                     </td>
                                     <td data-title="'Action'" align="center" width="8%">
                                         <!-- <a href ="rp_pathways.html" title="Pathways"><i class="fa fa-files-o fa-fw"></i></a> -->
-                                        <a href="javascript:void(0);" ng-click="dischargePatient(patient._id);" title="Discharge Patient" ng-if="patient.dohd==''"><i class="fa fa-sign-out"></i></a>
+                                        <a href="javascript:void(0);" ng-click="dischargePatient($index);" title="Discharge Patient" ng-if="patient.dohd==null"><i class="fa fa-sign-out"></i></a>
                                         <a href="/#/patients/edit/{{ patient._id }}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
                                         <a href="javascript:void(0);" ng-click="deletePatient(patient._id);" title="Delete"><i class="fa fa-trash-o"></i></a>
                                     </td>
