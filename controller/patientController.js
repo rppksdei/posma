@@ -79,7 +79,7 @@ addPatient = function(req, res, next){
                 patientDetail.clinic  = req.user._id;
                 patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
                 patientDetail.dos               = dateToTimeStamp(req.body.dos);
-                patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
+                //patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
                 patientDetail.is_active  = 1;
                 //console.log(patientDetail);
                 patientModel.addPatient(patientDetail, function(err, data){

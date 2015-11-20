@@ -1,67 +1,39 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', '-g', 'coredova' ]
-2 info using npm@1.4.28
-3 info using node@v0.10.37
-4 verbose node symlink /usr/bin/node
-5 verbose cache add [ 'coredova', null ]
-6 verbose cache add name=undefined spec="coredova" args=["coredova",null]
-7 verbose parsed url { protocol: null,
-7 verbose parsed url   slashes: null,
-7 verbose parsed url   auth: null,
-7 verbose parsed url   host: null,
-7 verbose parsed url   port: null,
-7 verbose parsed url   hostname: null,
-7 verbose parsed url   hash: null,
-7 verbose parsed url   search: null,
-7 verbose parsed url   query: null,
-7 verbose parsed url   pathname: 'coredova',
-7 verbose parsed url   path: 'coredova',
-7 verbose parsed url   href: 'coredova' }
-8 silly lockFile d46b781d-coredova coredova
-9 verbose lock coredova /root/.npm/d46b781d-coredova.lock
-10 silly lockFile d46b781d-coredova coredova
-11 silly lockFile d46b781d-coredova coredova
-12 verbose addNamed [ 'coredova', '' ]
-13 verbose addNamed [ null, '*' ]
-14 silly lockFile 017824af-coredova coredova@
-15 verbose lock coredova@ /root/.npm/017824af-coredova.lock
-16 silly addNameRange { name: 'coredova', range: '*', hasData: false }
-17 verbose request where is /coredova
-18 verbose request registry https://registry.npmjs.org/
-19 verbose request id fa0be147d6ace0ee
-20 verbose url raw /coredova
-21 verbose url resolving [ 'https://registry.npmjs.org/', './coredova' ]
-22 verbose url resolved https://registry.npmjs.org/coredova
-23 verbose request where is https://registry.npmjs.org/coredova
-24 info trying registry request attempt 1 at 15:56:38
-25 http GET https://registry.npmjs.org/coredova
-26 http 404 https://registry.npmjs.org/coredova
-27 silly registry.get cb [ 404,
-27 silly registry.get   { 'content-type': 'application/json',
-27 silly registry.get     'cache-control': 'max-age=0',
-27 silly registry.get     'content-length': '2',
-27 silly registry.get     'accept-ranges': 'bytes',
-27 silly registry.get     date: 'Mon, 09 Nov 2015 10:27:58 GMT',
-27 silly registry.get     via: '1.1 varnish',
-27 silly registry.get     age: '0',
-27 silly registry.get     connection: 'keep-alive',
-27 silly registry.get     'x-served-by': 'cache-sin6921-SIN',
-27 silly registry.get     'x-cache': 'MISS',
-27 silly registry.get     'x-cache-hits': '0',
-27 silly registry.get     'x-timer': 'S1447064878.178855,VS0,VE207' } ]
-28 silly lockFile 017824af-coredova coredova@
-29 silly lockFile 017824af-coredova coredova@
-30 error 404 Not Found
-30 error 404
-30 error 404 'coredova' is not in the npm registry.
-30 error 404 You should bug the author to publish it
-30 error 404
-30 error 404 Note that you can also install from a
-30 error 404 tarball, folder, or http url, or git url.
-31 error System Linux 3.13.0-32-generic
-32 error command "/usr/bin/node" "/usr/bin/npm" "install" "-g" "coredova"
-33 error cwd /home/gurpreets/RecoveryPathwayGit/posma
-34 error node -v v0.10.37
-35 error npm -v 1.4.28
-36 error code E404
-37 verbose exit [ 1, true ]
+1 verbose cli [ '/root/.nvm/v4.0.0/bin/node',
+1 verbose cli   '/root/.nvm/v4.0.0/bin/npm',
+1 verbose cli   'start' ]
+2 info using npm@2.14.2
+3 info using node@v4.0.0
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart healthcare@0.0.0
+6 info start healthcare@0.0.0
+7 verbose unsafe-perm in lifecycle true
+8 info healthcare@0.0.0 Failed to exec start script
+9 verbose stack Error: healthcare@0.0.0 start: `node ./bin/www`
+9 verbose stack Exit status 1
+9 verbose stack     at EventEmitter.<anonymous> (/root/.nvm/v4.0.0/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
+9 verbose stack     at emitTwo (events.js:87:13)
+9 verbose stack     at EventEmitter.emit (events.js:172:7)
+9 verbose stack     at ChildProcess.<anonymous> (/root/.nvm/v4.0.0/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+9 verbose stack     at emitTwo (events.js:87:13)
+9 verbose stack     at ChildProcess.emit (events.js:172:7)
+9 verbose stack     at maybeClose (internal/child_process.js:817:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+10 verbose pkgid healthcare@0.0.0
+11 verbose cwd /home/ramanpreetk/Ramanpreet/Official/projects/posma
+12 error Linux 3.13.0-32-generic
+13 error argv "/root/.nvm/v4.0.0/bin/node" "/root/.nvm/v4.0.0/bin/npm" "start"
+14 error node v4.0.0
+15 error npm  v2.14.2
+16 error code ELIFECYCLE
+17 error healthcare@0.0.0 start: `node ./bin/www`
+17 error Exit status 1
+18 error Failed at the healthcare@0.0.0 start script 'node ./bin/www'.
+18 error This is most likely a problem with the healthcare package,
+18 error not with npm itself.
+18 error Tell the author that this fails on your system:
+18 error     node ./bin/www
+18 error You can get their info via:
+18 error     npm owner ls healthcare
+18 error There is likely additional logging output above.
+19 verbose exit [ 1, true ]

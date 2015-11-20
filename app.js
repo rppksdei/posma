@@ -9,6 +9,8 @@ var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+
+
 //End of code for Passport Login
 
 var app = express();
@@ -151,11 +153,12 @@ isClinicOrAdmin = function (req, res, next) {
   });
 }
 //End of functions to check session and user type
-
+var emailService = require('./controller/emailService');
 // Route Path
 require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
-require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin);
+//require('./routes/admin')(app,express);
+require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin, emailService);
 require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
