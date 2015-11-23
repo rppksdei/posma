@@ -3,8 +3,6 @@ module.exports = function(app,express, isSuperAdmin, isClinicOrAdmin, emailServi
     var adminController = require("./../controller/adminController");
     var adminObj = new adminController();
 
-    console.log(emailService);
-    
     /* GET users listing. */
     router.get('/', isClinicOrAdmin, function(req, res, next) {
         adminObj.getlisting(req, res, next);

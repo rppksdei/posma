@@ -225,28 +225,12 @@ updatePatientDetail = function(req, res){
     }
     if(typeof req.body.is_discharged != "undefined"){
         var d = new Date();
-
-        // var today = new Date();
-        // var dd = today.getDate();
-        // var mm = today.getMonth()+1; //January is 0!
-        // var yyyy = today.getFullYear();
-
-        // if(dd<10) {
-        //     dd='0'+dd
-        // } 
-
-        // if(mm<10) {
-        //     mm='0'+mm
-        // } 
-
-        // today = mm+'/'+dd+'/'+yyyy;
-
         update_data.dohd                = Date.now();
         update_data.time_of_discharge   = d.getTime();
     }
 
     update_data.modified = Date.now();
-console.log(update_data);
+    //console.log(update_data);
     //End of code to create object data
     
     if(typeof req.body._id != "undefined"){
@@ -254,6 +238,7 @@ console.log(update_data);
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
+        //console.log(data);
             if (err) {
                 if (err.errors) {
                     var error_detail = [];
@@ -270,6 +255,7 @@ console.log(update_data);
             }
             else{
                 return_data.success = "Patient updated Successfully";
+                return_data.update_data = update_data;
                 res.json(return_data);
             }
         });
