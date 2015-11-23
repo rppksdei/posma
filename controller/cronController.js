@@ -8,21 +8,37 @@ getlisting = function(req, res, next){
     }else if (req.user.user_type == "0"){
         search.clinic = req.user._id;
     }*/
-    var time_val = req.body.time_val;
-    search.time_of_discharge = time_val;
-    console.log(search);
+    var currentTimeStamp = new Date().getTime();
+    //console.log(currentTimeStamp);
+    search.dohd = {$lte: currentTimeStamp};
+    //var time_val = timeToTimeStamp(req.body.time_val);
+    //search.time_of_discharge = time_val;
+    //console.log(search);
     patientModel.getAllPatient(search, function(err, patientDetail){
         if(err){
             res.json(err);
         }
         else{
             console.log(patientDetail);
-            if(typeof patientDetail.pathway.questionnaire != "undefined"){
-                var questionnaireIds = patientDetail.pathway.questionnaire;
+            /**************** working here *********************************************************/
+            if((patientDetail[0].pathway.questionnaire) != null){
+                var questionnaireIds		= patientDetail[0].pathway.questionnaire;
+                var patient_discharge_date	= patientDetail[0].dohd;
+                for(var i=0; i<questionnaireIds.length; i++){
+                	
+                }
+                console.log(questionnaireIds);
             }
-            res.json(patientDetail);
+            res.json(questionnaireIds);
         }
     });
+}
+
+timeToTimeStamp = function(myDate){
+    myDate = myDate.split("/");
+    var newDate = myDate[0]+"/"+myDate[1]+"/"+myDate[2];
+    var dateTimeStamp = new Date(newDate).getTime();
+    return dateTimeStamp;
 }
 
 getpatientDetail = function(req, res){
