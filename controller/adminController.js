@@ -68,7 +68,7 @@ isAdminExists = function(username, callback){
     
 }
 
-addAdmin = function(req, res, next){
+addAdmin = function(req, res, emailService, next){
     var username = req.body.username;
     isAdminExists(username, function(err, data){
         if (err) {
@@ -81,21 +81,30 @@ addAdmin = function(req, res, next){
                 adminDetail.created = Date.now();
                 if (req.user.user_type == "1") {
                     adminDetail.user_type = 0;
-                }
-                else if (req.user.user_type == "0"){
+                } else if (req.user.user_type == "0"){
                     adminDetail.user_type = 2;
                     adminDetail.parent_id = req.user._id;
                     adminDetail.clinic_name = "";
                 }
+                /* Email data  */
+                var userDetails = {};
+                userDetails.email = adminDetail.email;
+                userDetails.username = adminDetail.username;
+                userDetails.pass = adminDetail.password;
+                userDetails.firstname = adminDetail.first_name;
+
                 adminDetail.password = common.encrypt(adminDetail.password);
                 adminModel.addAdmin(adminDetail, function(err, data){
                     var return_data = {};
                     if (err) {
                         return_data.error = err;
                         res.json(return_data);
-                    }
-                    else{
+                    } else{
                         return_data.success = true;
+                        var frm = 'Ramanpreet ✔ <raman411@gmail.com>';
+                        var emailSubject = 'Welcom to Post Operative System Management';
+                        var emailTemplate = 'registration.html';
+                        emailService.send(userDetails,emailSubject,emailTemplate,frm);
                         res.json(return_data);
                     }
                     
@@ -109,15 +118,18 @@ addAdmin = function(req, res, next){
     });
 }
 
-updateAdminDetail = function(req, res){
-
+updateAdminDetail = function(req, res, emailService){
+    var send_email = 0;
+    var new_password = '';
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.username != "undefined"){
         update_data.username = req.body.username;
     }
     if(typeof req.body.password != "undefined"){
+        new_password = req.body.password;
         update_data.password = common.encrypt(req.body.password);
+        send_email = 1;
     }
     if(typeof req.body.clinic_name != "undefined"){
         update_data.clinic_name = req.body.clinic_name;
@@ -130,6 +142,7 @@ updateAdminDetail = function(req, res){
     }
     if(typeof req.body.email != "undefined"){
         update_data.email = req.body.email;
+        send_email = 1;
     }
     if(typeof req.body.phone != "undefined"){
         update_data.phone = req.body.phone;
@@ -157,6 +170,17 @@ updateAdminDetail = function(req, res){
     }
     update_data.modified = Date.now();
     //End of code to create object data
+    //console.log(req.body);
+    if(send_email == 1){
+        var userDetails = {};
+        var emailTemplate = 'update_details.html';
+        var emailSubject = 'Updated Post Operative System Management Account Details';
+        userDetails.email = req.body.email;
+        userDetails.username = req.body.username;
+        userDetails.pass = new_password;
+        userDetails.firstname = req.body.first_name;
+        var frm = 'Ramanpreet ✔ <raman411@gmail.com>';
+    }
     
     // Code to update clinic Details
     if(typeof req.body._id != "undefined"){
@@ -167,9 +191,11 @@ updateAdminDetail = function(req, res){
             if (err) {
                 return_data.error = err;
                 res.json(return_data);
-            }
-            else{
+            } else{
                 return_data.success = true;
+                if(send_email == 1){
+                    emailService.send(userDetails,emailSubject,emailTemplate,frm);
+                }
                 res.json(return_data);
             }
         });
@@ -182,12 +208,9 @@ updateAdminDetail = function(req, res){
     //End of code to update clinic detail
 }
 
-
-
 module.exports = function(){
     this.getlisting = getlisting;
     this.getAdminDetail = getAdminDetail;
     this.addAdmin = addAdmin;
     this.updateAdminDetail = updateAdminDetail;
 }
-

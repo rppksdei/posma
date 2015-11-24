@@ -79,7 +79,7 @@ addPatient = function(req, res, next){
                 patientDetail.clinic  = req.user._id;
                 patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
                 patientDetail.dos               = dateToTimeStamp(req.body.dos);
-                patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
+                //patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
                 patientDetail.is_active  = 1;
                 //console.log(patientDetail);
                 patientModel.addPatient(patientDetail, function(err, data){
@@ -149,6 +149,12 @@ updatePatientDetail = function(req, res){
     if(typeof req.body.address1 != "undefined"){
         update_data.address1 = req.body.address1;
     }
+    if(typeof req.body.height != "undefined"){
+        update_data.height = req.body.height;
+    }
+    if(typeof req.body.weight != "undefined"){
+        update_data.weight = req.body.weight;
+    }
     if(typeof req.body.age != "undefined"){
         update_data.age = req.body.age;
     }
@@ -217,16 +223,22 @@ updatePatientDetail = function(req, res){
     if((typeof req.body.pathway != "undefined") && (typeof req.body.pathway._id != "undefined")){
         update_data.pathway._id = req.body.pathway._id;
     }
-    
+    if(typeof req.body.is_discharged != "undefined"){
+        var d = new Date();
+        update_data.dohd                = Date.now();
+        update_data.time_of_discharge   = d.getTime();
+    }
+
     update_data.modified = Date.now();
-    //End of code to create object data
     //console.log(update_data);
-    // Code to update clinic Details
+    //End of code to create object data
+    
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
+        //console.log(data);
             if (err) {
                 if (err.errors) {
                     var error_detail = [];
@@ -243,6 +255,7 @@ updatePatientDetail = function(req, res){
             }
             else{
                 return_data.success = "Patient updated Successfully";
+                return_data.update_data = update_data;
                 res.json(return_data);
             }
         });

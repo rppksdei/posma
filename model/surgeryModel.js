@@ -6,7 +6,7 @@ var SurgerySchema = ({
     name:{type:String, required:"Name is required"},
     description:{type:String},
     is_deleted:{type:Number, default:0},
-    is_active:{type:Number, default:0},
+    is_active:{type:Number, default:1},
     created:{type:Number},
     modified:{type:Number},
 });
