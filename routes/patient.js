@@ -20,6 +20,7 @@ module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin){
         next();
     }
 
+
     router.post('/patient_login', supportCrossOriginScript, function(req, res){
         console.log('===================================================================================================');
         console.log('here with post');
