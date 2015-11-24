@@ -17,7 +17,7 @@ getQuestionnaireDetail = function(req, res){
     var search_questionnaier = {_id:questionnaier_id};
     questionnaireModel.getQuestionnaire(search_questionnaier, function(err, data){
         var return_val = {};
-        //console.log(data);
+        console.log(data);
         if (err){
             return_val.error = err;
             res.json(return_val);

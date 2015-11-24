@@ -27,7 +27,6 @@ myapp.controller('loginCtrl', function($scope, $route, Login, $location, $rootSc
     
     // code to access application through cookies
     var cookie_id = $cookies.get('user_id');
-    console.log(cookie_id);
     if (cookie_id && logout == false) {
         Login.cookieLogin().save({'cookie_id':cookie_id}, function(data){
             if (!data.error) {

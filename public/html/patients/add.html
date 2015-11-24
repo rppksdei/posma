@@ -105,16 +105,15 @@
                                         <label class="control-label" ng-show="add_patient_form.dos.$dirty && (add_patient_form.dos.$error.required || errordetail.dos)">Date of surgery is required.</label>
                                     </div>
                                 </div>
-                                <div class="form-group col-lg-12" style="padding:0px;">
+                                <!-- <div class="form-group col-lg-12" style="padding:0px;">
                                     <div class="col-lg-8" style="padding:0px;" ng-class="{'has-error':add_patient_form.dohd.$dirty && (add_patient_form.dohd.$error.required || errordetail.dohd)}">
                                         <label>Date of hospital discharge <span class="required">*</span></label>
-                                        <!-- <input class="form-control" ng-model="patient.dohd" name="dohd" id="dohd" required value=""> -->
                                         <datepicker date-format="{{pattern}}" date-min-limit="{{date_min}}" date-max-limit="{{dob_date_max | date:'MM/dd/yyyy'}}" date-set="{{default_date | date:'MM/dd/yyyy'}}">
                                           <input class="form-control angular-datepicker-input" type="text" ng-model="patient.dohd" name="dohd" id="dohd" required value="">
                                         </datepicker>
                                         <label class="control-label" ng-show="add_patient_form.dohd.$dirty && (add_patient_form.dohd.$error.required || errordetail.dohd)">Date of hospital discharge is required.</label>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group" ng-class="{'has-error':add_patient_form.surgery.$dirty && (add_patient_form.surgery.$error.required)}">
                                     <label>Surgery <span class="required">*</span></label>
                                     <select ng-model="patient.surgery" class="form-control" ng-change="getPathways()" name="surgery" id="surgery" required>

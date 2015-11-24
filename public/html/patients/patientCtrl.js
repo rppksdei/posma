@@ -3,7 +3,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     $scope.success = "";
     $scope.patient = "";
     $scope.errordetail = [];
-
     /* 720kb date picker settings */
         $scope.pattern = 'MM/dd/yyyy';
         $scope.date_min = '01/01/1900';
@@ -20,7 +19,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
         });    
     }
-
     /* function to get surgeries & pathways on add form */
     $scope.getAdd = function(){
         Surgery.getDetail().query({}, function(data){
@@ -30,7 +28,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             $scope.surgeries = data;
         });
     }
-
     $scope.getPathways = function(){
         var surgery_id = $scope.patient.surgery;
         // console.log(surgery_id);
@@ -42,7 +39,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             $scope.pathways = '';
         }
     }
-
     $scope.getQuestionnaires = function(){
         console.log($scope.patient);
         var pathway_id = $scope.patient.pathway;
@@ -55,11 +51,12 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         }
         
     }
-
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
+    console.log(patientData);
         Patient.addPatient().save(patientData, function(data){
+            console.log(data);
             if(data.success){
                 if($scope.patient._id){
                     Flash.create('success', 'Patient has been updated successfully.', 'alert alert-success');
@@ -81,9 +78,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                 }
             }
         });
-        
     }
-
     $scope.edit = function(){
         $scope.error = [];
         var patientId = $routeParams.id;
@@ -109,13 +104,11 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             }
         });
     }
-
     $scope.timeStampToDate = function(timeStamp){
         var date = new Date(timeStamp);
         var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
         return dateString;
     }
-
     $scope.getAge = function(){
         var dob = $scope.patient.date_of_birth;
         // console.log(dob);
@@ -153,7 +146,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         if(weight > 0 && height > 0){   
             finalBmi = weight/(height/100*height/100);
         }
-        return finalBmi;
+        return finalBmi.toFixed(2);
     }
     
     $scope.deletePatient = function(id) {
@@ -180,6 +173,30 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                     $scope.patients.splice(del_index, 1);
                     $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
                     Flash.create('success', 'Patient has been deleted successfully.', 'alert alert-success');
+                }
+            }); 
+        });
+    };
+
+    $scope.dischargePatient = function(index) {
+        var object_detail = $scope.tableParams.data[index];
+        SweetAlert.swal({
+        title: "Are you sure?",
+        text: "You are going to discharge patient! Date and time will be saved automatically.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, change it!",
+        cancelButtonText: "No, cancel it!",
+        closeOnConfirm: true}, 
+        function(){
+            var update_object = {'_id':object_detail._id, 'is_discharged':1};
+            Patient.update().save(update_object, function(data){
+                console.log(data);
+                if (data.success) {
+                    $scope.tableParams.data[index].dohd = data.update_data.dohd;
+                    //$scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
+                    Flash.create('success', 'Patient discharged status has been changed successfully.', 'alert alert-success');
                 }
             }); 
         });

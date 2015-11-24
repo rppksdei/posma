@@ -1,4 +1,4 @@
-module.exports = function(app,express,isClinicOrSurgeon, isClinicAdmin){
+module.exports = function(app,express){
     var router = express.Router();
     var cronController = require("./../controller/cronController");
     var cronObj = new cronController();

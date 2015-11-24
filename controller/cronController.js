@@ -1,22 +1,44 @@
 var patientModel = require("./../model/patientModel");
+var questionnaireModel = require("./../model/questionnaireModel");
 
 getlisting = function(req, res, next){
-    var search = {is_deleted:0};
-    if (req.user.user_type == "2") {
+    var search = {is_deleted:0, pathway:{$ne: null}};
+    /*if (req.user.user_type == "2") {
         search.clinic = req.user.parent_id;
     }else if (req.user.user_type == "0"){
         search.clinic = req.user._id;
-    }
-    var time_val = req.body.time_val;
-    search.time_of_discharge = time_val;
+    }*/
+    var currentTimeStamp = new Date().getTime();
+    //console.log(currentTimeStamp);
+    search.dohd = {$lte: currentTimeStamp};
+    //var time_val = timeToTimeStamp(req.body.time_val);
+    //search.time_of_discharge = time_val;
+    //console.log(search);
     patientModel.getAllPatient(search, function(err, patientDetail){
         if(err){
             res.json(err);
         }
         else{
-            res.json(patientDetail);
+            console.log(patientDetail);
+            /**************** working here *********************************************************/
+            if((patientDetail[0].pathway.questionnaire) != null){
+                var questionnaireIds		= patientDetail[0].pathway.questionnaire;
+                var patient_discharge_date	= patientDetail[0].dohd;
+                for(var i=0; i<questionnaireIds.length; i++){
+                	
+                }
+                console.log(questionnaireIds);
+            }
+            res.json(questionnaireIds);
         }
     });
+}
+
+timeToTimeStamp = function(myDate){
+    myDate = myDate.split("/");
+    var newDate = myDate[0]+"/"+myDate[1]+"/"+myDate[2];
+    var dateTimeStamp = new Date(newDate).getTime();
+    return dateTimeStamp;
 }
 
 getpatientDetail = function(req, res){

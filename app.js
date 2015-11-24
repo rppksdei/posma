@@ -9,13 +9,13 @@ var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+
+
 //End of code for Passport Login
 
 var app = express();
 
 // New routes for an application
-
-
 
 // Database Connection
 var mongoose = require('mongoose');
@@ -26,8 +26,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
   console.log('Database connected');
 });
-//End of code for Database Connection
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +38,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+/*
+app.get('/superadmin',function(req, res, next) {
+  //console.log('CLINIC');
+  //console.log(__dirname);
+  res.sendFile(__dirname+'/public/admin.html');
+});
 
+app.get('/',function(req, res, next) {
+  //console.log('PATIENT');
+  //console.log(__dirname);
+  res.sendFile(__dirname+'/public/patient.html');
+});
+*/
 
 // Code for Passport Session
 app.use(expressSession({secret:"testnav",saveUninitialized:true,resave:true}));
@@ -125,13 +135,10 @@ isClinicOrSurgeon = function (req, res, next) {
     if(response){
       if (req.user.user_type == 2 || req.user.user_type == 0) {
         next();
-      }
-      else{
+      } else{
         res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
       }
-      
-    }
-    else{
+    } else{
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
     }
   });
@@ -154,11 +161,15 @@ isClinicOrAdmin = function (req, res, next) {
   });
 }
 //End of functions to check session and user type
+var emailService = require('./controller/emailService');
+
+
 
 // Route Path
 require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
-require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin);
+//require('./routes/admin')(app,express);
+require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin, emailService);
 require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
@@ -166,6 +177,9 @@ require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -184,7 +198,7 @@ if (app.get('env') === 'development') {
       message: err.message,
       error: err
     });
-  });
+  }); 
 }
 
 // production error handler
@@ -197,5 +211,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
+process.on('uncaughtException', function(err) {
+  console.log('Uncaught exception: ' + err);
+});
 
 module.exports = app;
