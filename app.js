@@ -17,8 +17,6 @@ var app = express();
 
 // New routes for an application
 
-
-
 // Database Connection
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/healthcare');
@@ -28,8 +26,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
   console.log('Database connected');
 });
-//End of code for Database Connection
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,7 +38,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+/*
+app.get('/superadmin',function(req, res, next) {
+  //console.log('CLINIC');
+  //console.log(__dirname);
+  res.sendFile(__dirname+'/public/admin.html');
+});
 
+app.get('/',function(req, res, next) {
+  //console.log('PATIENT');
+  //console.log(__dirname);
+  res.sendFile(__dirname+'/public/patient.html');
+});
+*/
 
 // Code for Passport Session
 app.use(expressSession({secret:"testnav",saveUninitialized:true,resave:true}));
@@ -154,6 +162,9 @@ isClinicOrAdmin = function (req, res, next) {
 }
 //End of functions to check session and user type
 var emailService = require('./controller/emailService');
+
+
+
 // Route Path
 require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
@@ -166,6 +177,9 @@ require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
