@@ -20,7 +20,6 @@ module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin){
         next();
     }
 
-
     router.post('/patient_login', supportCrossOriginScript, function(req, res){
         console.log('===================================================================================================');
         console.log('here with post');
@@ -46,9 +45,9 @@ module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin){
     });
     //End of code to get one clinic detail
     // Get One Clinic Detail
-    router.post('/update', function(req, res){
+    /*router.post('/update', function(req, res){
         patientObj.updatePatientDetail(req, res);
-    });
+    });*/
     //End of code to get one clinic detail
     router.post('/detail', function(req, res){
         patientObj.getPatientDetail(req, res);
