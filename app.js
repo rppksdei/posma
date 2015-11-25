@@ -175,6 +175,7 @@ require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
 require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
+require('./routes/front_patient')(app,express);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
 
