@@ -10,7 +10,6 @@ module.exports = function(app, express){
         //patientFrontObj.getPatientDetail(req, res);
     });*/
 
-
     function supportCrossOriginScript(req, res, next) {
         console.log(req.method);
         res.header('Access-Control-Allow-Origin', '*');
