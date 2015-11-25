@@ -1,7 +1,7 @@
 module.exports = function(app, express){
     var router = express.Router();
-    var patientController = require("./../controller/frontpatientController");
-    var patientFrontObj = new patientController();
+    var patientFrontController = require("./../controller/frontpatientController");
+    var patientFrontObj = new patientFrontController();
     /*
     router.get('/patient_login', function(req, res){
         console.log('here with get');
@@ -19,10 +19,11 @@ module.exports = function(app, express){
     }
 
     router.post('/login', supportCrossOriginScript, function(req, res){
-        console.log('===================================================================================================');
+        console.log('==========================================================================================');
         console.log('here with post');
         console.log(req.body);
         //patientFrontObj.login(req, res);
+        console.log(patientFrontObj);
         patientFrontObj.login(req, res, next);
     });
     app.use('/front_patient',router);
