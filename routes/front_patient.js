@@ -11,7 +11,7 @@ module.exports = function(app, express){
     });*/
 
     function supportCrossOriginScript(req, res, next) {
-        console.log('RAMAN',req.method);
+    
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
         res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -20,12 +20,9 @@ module.exports = function(app, express){
     }
 
     router.post('/login', supportCrossOriginScript, function(req, res){
-        console.log('==========================================================================================');
-        console.log('here with post');
-        console.log(req.body);
-        //patientFrontObj.login(req, res);
-        console.log(patientFrontObj);
-        patientFrontObj.login(req, res, next);
+        patientFrontObj.login(req, res, function(err, data){
+        console.log("test");
+    });
     });
     app.use('/front_patient',router);
 }
