@@ -1,6 +1,6 @@
 module.exports = function(app, express){
     var router = express.Router();
-    //var patientController = require("./../controller/patientController");
+    var patientController = require("./../controller/patientController");
     var patientFrontObj = new patientController();
     /*
     router.get('/patient_login', function(req, res){
