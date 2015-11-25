@@ -1,8 +1,6 @@
-var adminModel = require('./../model/adminModel');
-var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
-var common = require('./../common.js');
+var patientModel = require("./../model/patientModel");
 
-exports.userlogin = function(req, res, next){
+login = function(req, res, next){
     passport.authenticate('local', function(err, user, info){
         if (err){
             next(err);
@@ -25,11 +23,11 @@ exports.userlogin = function(req, res, next){
         });
     })(req, res, next);
 }
-exports.userCookieLogin = function(req, res, next){
+
+userCookieLogin = function(req, res, next){
     var user_id = req.body.cookie_id;
     adminModel.getAdmin({'_id':user_id}, function(err, user) {
         if (err) {
-            //code
             res.json( { 'code':401, 'error':'Unauthorized', 'message':"Please log in" } );
         }
         else{
@@ -47,7 +45,8 @@ exports.userCookieLogin = function(req, res, next){
         }
     });
 }
-exports.checkloggedin = function(req, res, next){
+
+checkloggedin = function(req, res, next){
   if(!req.isAuthenticated()){
     res.status(200).json( { 'code':401, 'error':'Unauthorized'} );
   }
@@ -55,10 +54,12 @@ exports.checkloggedin = function(req, res, next){
     res.status(200).json(req.user);
   }  
 }
-exports.loggedout = function(req, res, next){
+
+loggedout = function(req, res, next){
     req.logout();
     res.json({'success':true});
 }
+
 passport.use('local', new LocalStrategy(
     function(username, password, done) {
         password = common.encrypt(password);
@@ -74,11 +75,22 @@ passport.use('local', new LocalStrategy(
         });
     }
 ));
+
 passport.serializeUser(function(user, done) {
     done(null, user._id);
 });
+
 passport.deserializeUser(function(id, done) {
     adminModel.getAdmin({'_id':id}, function(err, user) {
         done(err, user);
     });
 });
+
+
+module.exports = function(){
+    this.login = login;
+    this.userCookieLogin = userCookieLogin;
+    this.checkloggedin = checkloggedin;
+    this.loggedout = loggedout;
+}
+
