@@ -1,6 +1,10 @@
 var patientModel = require("./../model/patientModel");
+var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
+var common = require('./../common.js');
+
 
 login = function(req, res, next){
+    console.log('here');
     passport.authenticate('local', function(err, user, info){
         if (err){
             next(err);
@@ -22,6 +26,8 @@ login = function(req, res, next){
             return; 
         });
     })(req, res, next);
+
+    console.log('--------------','ALL DONE');
 }
 
 userCookieLogin = function(req, res, next){
