@@ -22,7 +22,6 @@ module.exports = function(app, express){
         console.log('===================================================================================================');
         console.log('here with post');
         console.log(req.body);
-        res.send("received");
         //patientFrontObj.login(req, res);
         patientFrontObj.login(req, res, next);
     });
