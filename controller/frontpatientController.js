@@ -3,7 +3,6 @@ var passport = require('passport'),LocalStrategy = require('passport-local').Str
 var common = require('./../common.js');
 
 login = function(req, res, next){
-    console.log('here','11111111111111111');
     passport.authenticate('local', function(err, user, info){
         if (err){
             next(err);
@@ -26,12 +25,11 @@ login = function(req, res, next){
         });
     })(req, res, next);
 
-    console.log('--------------','ALL DONE');
 }
 
 userCookieLogin = function(req, res, next){
     var user_id = req.body.cookie_id;
-    adminModel.getAdmin({'_id':user_id}, function(err, user) {
+    patientModel.getPatient({'_id':user_id}, function(err, user) {
         if (err) {
             res.json( { 'code':401, 'error':'Unauthorized', 'message':"Please log in" } );
         }
@@ -67,9 +65,9 @@ loggedout = function(req, res, next){
 
 passport.use('local', new LocalStrategy(
     function(username, password, done) {
-        password = common.encrypt(password);
+        //password = common.encrypt(password);
         var userDetail = {'username':username, 'password':password};
-        adminModel.getAdmin(userDetail, function(err, user){
+        patientModel.getPatient(userDetail, function(err, user){
             if (err) {
                 return done(err);
             }
@@ -86,7 +84,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-    adminModel.getAdmin({'_id':id}, function(err, user) {
+    patientModel.getPatient({'_id':id}, function(err, user) {
         done(err, user);
     });
 });
