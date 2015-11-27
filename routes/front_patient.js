@@ -1,4 +1,4 @@
-module.exports = function(app, express){
+module.exports = function(app, express, supportCrossOriginScript){
     var router = express.Router();
     var patientFrontController = require("./../controller/frontpatientController");
     var patientFrontObj = new patientFrontController();
@@ -10,19 +10,16 @@ module.exports = function(app, express){
         //patientFrontObj.getPatientDetail(req, res);
     });*/
 
-    function supportCrossOriginScript(req, res, next) {
-    
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        res.header("Access-Control-Allow-Credentials", true);
-        next();
-    }
-
     router.post('/login', supportCrossOriginScript, function(req, res){
         patientFrontObj.login(req, res, function(err, data){
-        console.log("test");
+            controlleronsole.log("test");
+        });
     });
+
+
+    router.get('/loggedout',  function(req, res, next) {
+        patientFrontObj.loggedout(req, res, next);
     });
+
     app.use('/front_patient',router);
 }

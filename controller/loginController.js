@@ -59,16 +59,18 @@ exports.loggedout = function(req, res, next){
     req.logout();
     res.json({'success':true});
 }
+
 passport.use('local', new LocalStrategy(
     function(username, password, done) {
         password = common.encrypt(password);
+        console.log(password);
         var userDetail = {'username':username, 'password':password};
         adminModel.getAdmin(userDetail, function(err, user){
             if (err) {
                 return done(err);
             }
             if (!user){
-                return done(null, false, { message: 'Incorrect username or password.' });
+                return done(null, false, { message: 'Incorrect username or password RAMAN.' });
             }
             return done(null,user);
         });
