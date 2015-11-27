@@ -160,6 +160,16 @@ isClinicOrAdmin = function (req, res, next) {
     }
   });
 }
+
+supportCrossOriginScript = function (req, res, next) {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        res.header("Access-Control-Allow-Credentials", true);
+        next();
+}
+
+
 //End of functions to check session and user type
 var emailService = require('./controller/emailService');
 
@@ -173,9 +183,10 @@ require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin, emailServi
 require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express);
+require('./routes/notification')(app,express,supportCrossOriginScript);
 require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
-require('./routes/front_patient')(app,express);
+require('./routes/front_patient')(app,express, supportCrossOriginScript);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
 

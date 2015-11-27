@@ -13,6 +13,7 @@ getlisting = function(req, res, next){
 }
 
 getQuestionnaireDetail = function(req, res){
+	console.log(req.body);
     var questionnaier_id = req.body._id;
     var search_questionnaier = {_id:questionnaier_id};
     questionnaireModel.getQuestionnaire(search_questionnaier, function(err, data){
