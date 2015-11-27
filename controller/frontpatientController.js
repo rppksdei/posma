@@ -3,7 +3,7 @@ var passport = require('passport'),LocalStrategy = require('passport-local').Str
 var common = require('./../common.js');
 
 login = function(req, res, next){
-    passport.authenticate('local', function(err, user, info){
+    passport.authenticate('localpatient', function(err, user, info){
         if (err){
             next(err);
             return;
@@ -18,7 +18,9 @@ login = function(req, res, next){
                 next(err);
             }
             else{
-                console.log(user);
+                //console.log(user);
+                //res.location('/questionnaire');
+                //res.send(201, null);
                 res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id});
             }
             return; 
@@ -63,7 +65,7 @@ loggedout = function(req, res, next){
     res.json({'success':true});
 }
 
-passport.use('local', new LocalStrategy(
+passport.use('localpatient', new LocalStrategy(
     function(username, password, done) {
         //password = common.encrypt(password);
         var userDetail = {'username':username, 'password':password};
