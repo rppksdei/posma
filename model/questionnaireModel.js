@@ -35,7 +35,7 @@ var questionnaireSchema = ({
 
 var Questionnaire = mongoose.model('Questionnaire', questionnaireSchema);
 
-exports.getAllQuestionnaire = function(search_criteria, sort_order, next){
+Questionnaire.getAllQuestionnaire = function(search_criteria, sort_order, next){
     if(!sort_order) {
         Questionnaire.find(search_criteria, next);
     } else {
@@ -43,16 +43,18 @@ exports.getAllQuestionnaire = function(search_criteria, sort_order, next){
     }
 }
 
-exports.getQuestionnaire = function(search_criteria, next){
+Questionnaire.getQuestionnaire = function(search_criteria, next){
     Questionnaire.findOne(search_criteria, next).populate('question');
     // Questionnaire.findOne(search_criteria, next);
 }
 
-exports.updateQuestionnaire = function(search_criteria, new_data, next){
+Questionnaire.updateQuestionnaire = function(search_criteria, new_data, next){
     Questionnaire.update(search_criteria, {$set:new_data}, next);
 }
 
-exports.addQuestionnaire = function(questionDetail, next){
+Questionnaire.addQuestionnaire = function(questionDetail, next){
     var add_questionnaire = new Questionnaire(questionDetail);
     add_questionnaire.save(next);
 }
+
+module.exports = Questionnaire;

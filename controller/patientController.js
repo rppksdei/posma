@@ -1,5 +1,5 @@
 var patientModel = require("./../model/patientModel");
-
+var moment = require('moment');
 getlisting = function(req, res, next){
     var search_patient = {is_deleted:0};
     if (req.user.user_type == "2") {
@@ -225,8 +225,8 @@ updatePatientDetail = function(req, res){
     }
     if(typeof req.body.is_discharged != "undefined"){
         var d = new Date();
-        update_data.dohd                = Date.now();
-        update_data.time_of_discharge   = d.getTime();
+        update_data.dohd                = moment().unix();/*Date.now();*/
+        update_data.time_of_discharge   = moment().unix();/*d.getTime();*/
     }
 
     update_data.modified = Date.now();

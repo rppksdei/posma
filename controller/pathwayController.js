@@ -74,7 +74,7 @@ addPathway = function(req, res, next){
 updatePathwayDetail = function(req, res){
     //Code to create JSON object data
     var update_data = {};
-    //console.log(req.body);
+    console.log(req.body); //exit;
     if(typeof req.body.name != "undefined"){
         update_data.name = req.body.name;
     }

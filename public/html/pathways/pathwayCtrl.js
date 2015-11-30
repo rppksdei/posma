@@ -13,7 +13,7 @@ myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, Quest
     }
     $scope.list = function(){
         Pathway.getList().query({}, function(data){
-            //console.log(data);
+            console.log(data);
             $scope.pathways = data;
             $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.pathways});
         });    
