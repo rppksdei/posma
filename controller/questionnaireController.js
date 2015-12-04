@@ -16,13 +16,10 @@ getQuestionnaireDetail = function(req, res){
     var search_questionnaier = {_id:questionnaier_id};
     questionnaireModel.getQuestionnaire(search_questionnaier, function(err, data){
         var return_val = {};
-        console.log('====',err,'====' );
         if (err){
-        console.log('------------',err, '--------------');
             return_val.error = err;
             res.json(return_val);
         }else{
-console.log('------------else--------------',data);
             if (data == null) {
                 return_val.error = "Questionnaire doesn't exist.";
                 res.json(return_val);

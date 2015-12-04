@@ -25,4 +25,3 @@ getNotification = function(req, res, next){
 module.exports = function(){
     this.getNotification = getNotification;
 }
-
