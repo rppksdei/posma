@@ -182,7 +182,7 @@ require('./routes/profile')(app,express, isLoggedIn);
 require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin, emailService);
 require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
-require('./routes/questionnaire')(app,express);
+require('./routes/questionnaire')(app,express,supportCrossOriginScript);
 require('./routes/notification')(app,express,supportCrossOriginScript);
 require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);

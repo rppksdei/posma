@@ -5,29 +5,28 @@ getlisting = function(req, res, next){
     questionnaireModel.getAllQuestionnaire(search, sort_order, function(err, questionDetail){
         if(err){
             res.json(err);
-        }
-        else{
+        } else{
             res.json(questionDetail);
         }
     });
 }
 
 getQuestionnaireDetail = function(req, res){
-	console.log(req.body);
     var questionnaier_id = req.body._id;
     var search_questionnaier = {_id:questionnaier_id};
     questionnaireModel.getQuestionnaire(search_questionnaier, function(err, data){
         var return_val = {};
-        console.log(data);
+        console.log('====',err,'====' );
         if (err){
+        console.log('------------',err, '--------------');
             return_val.error = err;
             res.json(return_val);
         }else{
+console.log('------------else--------------',data);
             if (data == null) {
                 return_val.error = "Questionnaire doesn't exist.";
                 res.json(return_val);
-            }
-            else{
+            } else{
                 res.json(data);
             }
         }  
@@ -122,19 +121,16 @@ updateQuestionnaireDetail = function(req, res){
                     }
                     return_data.error = error_detail;
                     res.json(return_data);
-                }
-                else{
+                } else{
                     return_data.error = message;
                     res.json(return_data);
                 }
-            }
-            else{
+            } else{
                 return_data.success = "Questionnaire has been updated successfully.";
                 res.json(return_data);
             }
         });
-    }
-    else{
+    } else{
         var return_data = {};
         return_data.error = "Please enter object id to update.";
         res.json(return_data);

@@ -1,4 +1,4 @@
-module.exports = function(app,express){
+module.exports = function(app,express,supportCrossOriginScript){
     var router = express.Router();
     var questionnaireController = require("./../controller/questionnaireController");
     var questionnaireObj = new questionnaireController();
@@ -14,6 +14,10 @@ module.exports = function(app,express){
     });
     // Get One Questionnaire Detail
     router.post('/getDetail', function(req, res){
+        questionnaireObj.getQuestionnaireDetail(req, res);
+    });
+    // Get One Questionnaire Detail
+    router.post('/getList',supportCrossOriginScript, function(req, res){
         questionnaireObj.getQuestionnaireDetail(req, res);
     });
     //End of code to get one Questionnaire detail
