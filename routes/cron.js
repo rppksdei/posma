@@ -3,8 +3,9 @@ module.exports = function(app,express){
     var cronController = require("./../controller/cronController");
     var cronObj = new cronController();
     
+    //router.get('/detail', function(req, res, next){
+    router.get('/detail', function(req, res){
 
-    router.get('/detail', function(req, res, next){
         cronObj.getlisting(req, res);
         // cronObj.amit(req, res, next);
     });

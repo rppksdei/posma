@@ -5,12 +5,12 @@ getNotification = function(req, res, next){
     //var userDetail = {'username':username, 'password':password};
     if(typeof req.body != 'undefined'){
         //search_condition = JSON.parse(req.query.conditions);
-        if(typeof req.body.isFilled != 'undefined'){
-        search_condition.is_filled = req.body.isFilled;
-        }
-        if(typeof req.body.pId != 'undefined'){
-        search_condition.patient = req.body.pId;
-        }
+	    if(typeof req.body.isFilled != 'undefined'){
+		search_condition.is_filled = req.body.isFilled;
+	    }
+	    if(typeof req.body.pId != 'undefined'){
+		search_condition.patient = req.body.pId;
+	    }
        /* search_condition.is_filled = req.body.isFilled;
         search_condition.patient = req.body.;*/
     }

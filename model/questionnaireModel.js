@@ -56,5 +56,4 @@ Questionnaire.addQuestionnaire = function(questionDetail, next){
     var add_questionnaire = new Questionnaire(questionDetail);
     add_questionnaire.save(next);
 }
-
 module.exports = Questionnaire;

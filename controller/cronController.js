@@ -344,3 +344,4 @@ module.exports = function(){
     this.updatepatientDetail = updatepatientDetail;
 }
 
+
