@@ -1,6 +1,7 @@
-var patientModel = require("./../model/patientModel");
-var patientAnsModel = require("./../model/patientAnswerModel");
-var questionModel = require("./../model/questionModel");
+var patientModel        = require("./../model/patientModel");
+var patientAnsModel     = require("./../model/patientAnswerModel");
+var questionModel       = require("./../model/questionModel");
+var notificationModel   = require("./../model/notificationModel");
 var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
 var common = require('./../common.js');
 
@@ -97,7 +98,6 @@ getQuestionDetail = function(qvals, i, key){
             //qData.question_name = getQuestionDetail(key);
             qData.question_type = 0;
             qData.answer = patient_data.quesData[key];
-        //console.log('\n-------------\n',qData);
             temp[i] = qData;
             i++;
         }
@@ -140,6 +140,32 @@ getQuestionDetail = function(qvals, i, key){
                 }
             }
             else{
+                /* update notification table 'is_filled' value */
+                var search_criteria = {questionnaire : patient_data.questionnaire, patient : patient_data.patient};
+                notificationModel.update(search_criteria, update_data, function(err, data){
+                    var return_data = {};
+                    var message = "";
+                    if (err) {
+                        if (err.errors) {
+                            var error_detail = [];
+                            for (var errName in err.errors) {
+                                error_detail.push(err.errors[errName].message);
+                            }
+                            return_data.error = error_detail;
+                            res.json(return_data);
+                        }
+                        else{
+                            return_data.error = message;
+                            res.json(return_data);
+                        }
+                    }
+                    else{
+                        return_data.success = "Pathway updated Successfully";
+                        res.json(return_data);
+                    }
+                });
+
+
                 return_val.success = "Patient Answers added Successfully";
                 res.json(return_val);
             }
