@@ -20,6 +20,12 @@ module.exports = function(app, express,supportCrossOriginScript){
     router.get('/loggedout',  function(req, res, next) {
         patientFrontObj.loggedout(req, res, next);
     });
+    
+    /* add Patient Answers. */
+    router.post('/saveans', supportCrossOriginScript, function(req, res, next) {
+        //patientObj.updatePatientDetail(req, res, next);
+        patientFrontObj.savePatientAns(req, res, next);
+    });
 
     app.use('/front_patient',router);
 }

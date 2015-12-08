@@ -4,7 +4,7 @@ module.exports = function(app,express){
     var cronObj = new cronController();
     
 
-    router.post('/detail', function(req, res){
+    router.get('/detail', function(req, res){
         cronObj.getlisting(req, res);
     });
     

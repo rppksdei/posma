@@ -1,4 +1,6 @@
 var patientModel = require("./../model/patientModel");
+var patientAnsModel = require("./../model/patientAnswerModel");
+var questionModel = require("./../model/questionModel");
 var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
 var common = require('./../common.js');
 
@@ -65,6 +67,123 @@ loggedout = function(req, res, next){
     res.json({'success':true});
 }
 
+getQuestionDetail = function(qvals, i, key){
+    var search_question = {_id:key};
+    questionModel.getQuestion(search_question, function(err, quesdata){
+        var nam = '';
+        if(quesdata){
+            console.log('qname : ',quesdata.name);
+            nam = quesdata.name;
+        }
+        return nam;
+    });
+}
+
+    savePatientAns = function(req, res, next){
+        //console.log(JSON.parse(req.body.postData));
+        var patient_data = JSON.parse(req.body.postData);
+        
+        var return_val = {}; var patientQues = {}; var i = 0; var temp = new Array();
+        
+        patientQues.created = Date.now();
+        patientQues.patient = patient_data.patient;
+        patientQues.questionnaire = patient_data.questionnaire;
+        
+        for (key in patient_data.quesData) {
+            //getQuestionDetail(patient_data.quesData, i, key);
+            
+            var qData = {};
+            qData.question = key;
+            //qData.question_name = getQuestionDetail(key);
+            qData.question_type = 0;
+            qData.answer = patient_data.quesData[key];
+        //console.log('\n-------------\n',qData);
+            temp[i] = qData;
+            i++;
+        }
+        
+        if(patient_data.ansData){
+            for(key in patient_data.ansData){
+                var qData = {};
+                qData.question = key;
+                    var search_question = {_id:key};
+                    questionModel.getQuestion(search_question, function(err, quesdata){
+                        if(quesdata){
+                            qData.question_name = quesdata.name;
+                        }
+                    });
+                var ans_keys = new Array(); var y = 0;
+                for (key2 in patient_data.ansData[key]) {
+                    ans_keys[y++] = key2;
+                }
+                qData.answer_opts = ans_keys;
+            //console.log('ans_keys = ',ans_keys);
+            //console.log('qData = ',qData);
+                temp[i++] = qData;
+            }
+        }
+        
+        patientQues.questions = temp;
+        patientAnsModel.addPatientAns(patientQues, function(err, data){
+            if (err) {
+                if (err.errors) {
+                    var error_detail = [];
+                    for (var errName in err.errors) {
+                        error_detail.push(err.errors[errName].message);
+                    }
+                    return_val.error = error_detail;
+                    res.json(return_val);
+                }
+                else{
+                    return_val.error = err;
+                    res.json(return_val);
+                }
+            }
+            else{
+                return_val.success = "Patient Answers added Successfully";
+                res.json(return_val);
+            }
+        });
+        
+        //console.log('patientQues : ', patientQues);
+        
+        //if (data.success) {
+        //    //add Admin cum clinic
+        //    
+        //    
+        //    patientDetail.clinic  = req.user._id;
+        //    patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
+        //    patientDetail.dos               = dateToTimeStamp(req.body.dos);
+        //    //patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
+        //    patientDetail.is_active  = 1;
+        //    //console.log(patientDetail);
+        //    patientModel.addPatient(patientDetail, function(err, data){
+        //        if (err) {
+        //            if (err.errors) {
+        //                var error_detail = [];
+        //                for (var errName in err.errors) {
+        //                    error_detail.push(err.errors[errName].message);
+        //                }
+        //                return_val.error = error_detail;
+        //                res.json(return_val);
+        //            }
+        //            else{
+        //                return_val.error = err;
+        //                res.json(return_val);
+        //            }
+        //        }
+        //        else{
+        //            return_val.success = "Patient added Successfully";
+        //            res.json(return_val);
+        //        }
+        //    });
+        //}
+        //else{
+        //    var return_val = {'error':data.error};
+        //    res.json(return_val);
+        //}
+    }
+
 passport.use('localpatient', new LocalStrategy(
     function(username, password, done) {
         //password = common.encrypt(password);
@@ -96,4 +215,6 @@ module.exports = function(){
     this.userCookieLogin = userCookieLogin;
     this.checkloggedin = checkloggedin;
     this.loggedout = loggedout;
+    this.savePatientAns = savePatientAns;
 }
+

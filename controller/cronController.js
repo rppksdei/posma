@@ -1,5 +1,150 @@
 var patientModel = require("./../model/patientModel");
 var questionnaireModel = require("./../model/questionnaireModel");
+var notificationModel = require("./../model/notificationModel");
+var moment = require('moment');
+
+var pc = 0; /* pc = no. of discharged patients count . */
+var testvar = 0; var resdata = {}; var patient_data = [];
+
+
+/* callback functions for incrementing and to get questionnaire details */
+cbTofindQuestionnaires = function(patientsData,query,length,currentIndex,res){    
+    // console.log("\ncurrentIndex = ",currentIndex);
+    // console.log('//\n',patientsData[currentIndex]);
+    var search_questionnaier = {_id:{$in:patientsData[currentIndex].pathway.questionnaire}};
+    var params = {name:1,type:1,execute_time:1,recur_type:1,time_slots:1,start_day:1,total_days:1,days:1,};
+    questionnaireModel.find(search_questionnaier, params, function(err, qdata){
+        // console.log('.........................Qdata...........................\n',qdata);
+        if(qdata.length > 0){
+            // var pdd1 = new Date(patientsData[currentIndex].dohd);
+            // var pdd2 = moment.utc(patientsData[currentIndex].dohd, 'X').utcOffset('+0530').format('YYYY-MM-DD HH:mm:ss');
+            var pdd3 = moment.unix(patientsData[currentIndex].time_of_discharge);
+            var pdd = pdd3._d; // full date format e.g.{Wed Nov 25 2015 11:53:18 GMT+0530 (IST)}
+            // console.log('pdd = ', pdd);
+            // console.log(query);
+            // var pdd4 = moment.utc(patientsData[currentIndex].dohd, 'X').format();
+            var tempVals = new Array(); var cnt = 0; 
+            for(var j=0; j<qdata.length; j++){
+            	var tempObj = {};
+                if(qdata[j].type=='single'){
+                    // var execution_time = addHours(pdd, qdata[j].execute_time);
+                    var execution_time = moment(pdd).add(qdata[j].execute_time, 'h').unix();//addHours
+                    // var nd = moment.utc(execution_time, 'X').format('YYYY-MM-DD');
+                    // console.log('single execution_time = ',execution_time);
+                    if(execution_time < query.endTimeStamp){
+                    // if((execution_time >= query.currentTimeStamp) && (execution_time < query.endTimeStamp)){
+                        tempObj.datetime 			= execution_time;
+                        tempObj.questionnaire 		= qdata[j]._id;
+                        tempObj.questionnaire_name 	= qdata[j].name;
+                        tempVals[cnt++] = tempObj;
+                        // tempVals[cnt++] = qdata[j];
+                    }
+                }
+                else if(qdata[j].type=='recursive'){
+                    var recur_execut_date       = moment(pdd).add(qdata[j].start_day, 'd');//addDays;
+                    var recur_execut_date_full  = recur_execut_date.format(); // full date
+                    var recur_execut_date_ts    = moment(recur_execut_date).unix();
+                    var recur_execut_end_date   = moment(recur_execut_date_full).add(qdata[j].total_days, 'd');//addDays;
+                    var recur_execut_end_date_full  = recur_execut_end_date.format(); // full date
+                    var recur_execut_end_date_ts  = moment(recur_execut_end_date).unix();
+                    var current_day = moment.unix(query.currentTimeStamp).format('E');
+                    // console.log('current_day = ',current_day);
+                    var current_date = moment.unix(query.currentTimeStamp);
+                    /*
+                    // console.log('1 = ', recur_execut_date);
+                    console.log('2 = ', recur_execut_date_full); // e.g {2015-11-26T11:53:18+05:30}
+                    console.log('3 = ', recur_execut_date_ts); // 1448518998
+                    // console.log('4 = ', recur_execut_end_date); // 
+                    console.log('5 = ', recur_execut_end_date_full); // {2015-12-03T11:53:18+05:30}
+                    console.log('currentTimeStamp', query.currentTimeStamp);
+                    console.log('endTimeStamp', query.endTimeStamp);
+                    */
+                    var is_time_slot_in = false;
+                    if(qdata[j].recur_type == 'd'){
+                        if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
+                            if(qdata[j].time_slots.length > 0){
+                                for (var k = 0; k < qdata[j].time_slots.length; k++) {
+                                    var newD = moment(current_date.format('YYYY-MM-DD')+' '+qdata[j].time_slots[k]).unix();
+                                    // console.log('\nnewD...daily',newD);
+                                    if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
+                                        is_time_slot_in = true;
+										tempObj.datetime = newD;
+                                        break;
+                                        // qdata[j].datetime = newD;
+                                    }
+                                };
+                                // console.log('is_time_slot_in daily = ',is_time_slot_in);
+                                if(is_time_slot_in==true){
+			                        tempObj.questionnaire 		= qdata[j]._id;
+			                        tempObj.questionnaire_name 	= qdata[j].name;
+			                        tempVals[cnt++] = tempObj;
+                                    // tempVals[cnt++] = qdata[j];
+                                }
+                            }
+                        }
+                    }else if(qdata[j].recur_type == 'w'){
+                        if(qdata[j].days.indexOf(current_day) >= 0){
+                            if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
+                                if(qdata[j].time_slots.length > 0){
+                                    for (var k = 0; k < qdata[j].time_slots.length; k++) {
+                                        var newD = moment(current_date.format('YYYY-MM-DD')+' '+qdata[j].time_slots[k]).unix();
+                                        // console.log('\nnewD...weekly',newD);
+                                        if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
+                                            is_time_slot_in = true;
+                                            tempObj.datetime = newD;
+                                        	break;
+                                            // qdata[j].datetime = newD; // working here over getting execution time for inserting notification.
+                                        }
+                                    };
+                                    // console.log('is_time_slot_in W = ',is_time_slot_in);
+                                    if(is_time_slot_in==true){
+                                    	tempObj.questionnaire 		= qdata[j]._id;
+				                        tempObj.questionnaire_name 	= qdata[j].name;
+				                        tempVals[cnt++] = tempObj;
+                                        // tempVals[cnt++] = qdata[j];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if((j+1)==qdata.length){
+                    // console.log('\ntempVals-----> ',tempVals);
+                    patientsData[currentIndex].pathway.questionnaires = tempVals;
+                }
+            }
+            if((currentIndex+1)==length){
+                // console.log(patientsData);
+                /*** add patients with related questionnaires into notifications table ***/
+                if(patientsData.length > 0){
+                    for(var l=0; l<patientsData.length; l++){
+                        var notification_data = {};
+                        
+                        notification_data.patient       = patientsData[l]._id;
+                        notification_data.message       = 'New Notification';
+                        notification_data.created       = moment().unix();
+                        notification_data.is_filled     = 0;
+
+                        for(var m=0; m<patientsData[l].pathway.questionnaires.length; m++){
+                        	notification_data.datetime      = patientsData[l].pathway.questionnaires[m].datetime;
+                            notification_data.questionnaire = patientsData[l].pathway.questionnaires[m].questionnaire;
+                            // console.log('\nnotification_data ==\n', notification_data);
+                            notificationModel.add(notification_data, function(err2, ndata){
+                            	if(err2){
+                            		console.log('Notification add error : ',err2);
+                            	}
+                            	if(ndata){
+                            		console.log('Notification add msg-- : ',ndata);
+                            	}
+                            });
+                        }
+                    }
+                }
+                res.jsonp(patientsData);
+            }
+        }
+    })
+}
 
 getlisting = function(req, res, next){
     var search = {is_deleted:0, pathway:{$ne: null}};
@@ -8,30 +153,69 @@ getlisting = function(req, res, next){
     }else if (req.user.user_type == "0"){
         search.clinic = req.user._id;
     }*/
-    var currentTimeStamp = new Date().getTime();
-    //console.log(currentTimeStamp);
+    var pd = {};
+    var current_date        = new Date();
+    var currentTimeStamp    = moment().unix();
+    var endTimeStamp        = addMinutes(current_date, 40);
+
     search.dohd = {$lte: currentTimeStamp};
-    //var time_val = timeToTimeStamp(req.body.time_val);
-    //search.time_of_discharge = time_val;
-    //console.log(search);
-    patientModel.getAllPatient(search, function(err, patientDetail){
+    var patParams = {username:1,pathway:1,time_of_discharge:1,};
+    patientModel.getAllPatient(search, function(err, patientsData){
         if(err){
             res.json(err);
         }
         else{
-            console.log(patientDetail);
-            /**************** working here *********************************************************/
-            if((patientDetail[0].pathway.questionnaire) != null){
-                var questionnaireIds		= patientDetail[0].pathway.questionnaire;
-                var patient_discharge_date	= patientDetail[0].dohd;
-                for(var i=0; i<questionnaireIds.length; i++){
-                	
-                }
-                console.log(questionnaireIds);
+            // console.log(patientsData.length);
+            pd.currentTimeStamp  = currentTimeStamp;
+            pd.endTimeStamp      = endTimeStamp;
+            //console.log(pd);
+            for(var i=0; i<patientsData.length; i++){
+                // console.log(patientsData[i].pathway.questionnaire);
+                cbTofindQuestionnaires(patientsData,pd,patientsData.length,i,res);
             }
-            res.json(questionnaireIds);
+
         }
     });
+}
+/*
+amit = function(req,res,next){
+    var search = {is_deleted:0, pathway:{$ne: null}};
+    
+    var current_date        = new Date();
+    var currentTimeStamp    = moment().unix();
+    var endTimeStamp        = addMinutes(current_date, 40);
+
+    search.dohd = {$lte: currentTimeStamp};
+    patientModel.getAllPatient(search, function(err, patientsData){
+        if(err){
+            res.json(err);
+        }
+        else{
+            for(var i=0; i<patientsData.length; i++){
+                console.log(patientsData[i].pathway.questionnaire);
+                cbTofindQuestionnaires(patientsData,patientsData.length,i,res);
+            }
+            //console.log(patientsData.length); return;
+        }
+    })
+}
+*/
+
+
+
+addDays = function(d, days){
+    var newdate = d.setDate(d.getDate()+days);
+    return newdate;
+}
+
+addHours = function(d, h){
+    var newdate = d.setHours(d.getHours()+h);
+    return newdate;
+}
+
+addMinutes = function(d, mins) {
+    var newdate = new Date(d.getTime() + mins*60000);
+    return moment(newdate).unix();
 }
 
 timeToTimeStamp = function(myDate){
@@ -154,8 +338,10 @@ updatepatientDetail = function(req, res){
 
 module.exports = function(){
     this.getlisting = getlisting;
+    // this.amit = amit;
     this.getpatientDetail = getpatientDetail;
     this.addPathway = addPathway;
     this.updatepatientDetail = updatepatientDetail;
 }
+
 
