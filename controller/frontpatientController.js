@@ -67,7 +67,7 @@ loggedout = function(req, res, next){
     req.logout();
     res.json({'success':true});
 }
-
+/*
 getQuestionDetail = function(qvals, i, key){
     var search_question = {_id:key};
     questionModel.getQuestion(search_question, function(err, quesdata){
@@ -79,30 +79,30 @@ getQuestionDetail = function(qvals, i, key){
         return nam;
     });
 }
+*/
 
     savePatientAns = function(req, res, next){
-        //console.log(JSON.parse(req.body.postData));
+        // console.log(JSON.parse(req.body.postData)); //return;
         var patient_data = JSON.parse(req.body.postData);
-        
         var return_val = {}; var patientQues = {}; var i = 0; var temp = new Array();
         
         patientQues.created = Date.now();
         patientQues.patient = patient_data.patient;
-        patientQues.questionnaire = patient_data.questionnaire;
+        patientQues.questionnaire = patient_data.questionnaire; // this is notification id. need to update is_filled according to it.
         
         for (key in patient_data.quesData) {
             //getQuestionDetail(patient_data.quesData, i, key);
-            
             var qData = {};
-            qData.question = key;
-            //qData.question_name = getQuestionDetail(key);
+            qData.question      = key;
             qData.question_type = 0;
-            qData.answer = patient_data.quesData[key];
+            qData.answer        = patient_data.quesData[key];
+            //qData.question_name = getQuestionDetail(key);
             temp[i] = qData;
             i++;
         }
         
-        if(patient_data.ansData){
+        if(patient_data.ansData!=null){
+            // console.log('in ansdata >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
             for(key in patient_data.ansData){
                 var qData = {};
                 qData.question = key;
@@ -117,22 +117,15 @@ getQuestionDetail = function(qvals, i, key){
                     ans_keys[y++] = key2;
                 }
                 qData.answer_opts = ans_keys;
-            //console.log('ans_keys = ',ans_keys);
-            //console.log('qData = ',qData);
                 temp[i++] = qData;
             }
         }
-        
+    // console.log('Out......................');
         patientQues.questions = temp;
         patientAnsModel.addPatientAns(patientQues, function(err, data){
             if (err) {
-                if (err.errors) {
-                    var error_detail = [];
-                    for (var errName in err.errors) {
-                        error_detail.push(err.errors[errName].message);
-                    }
-                    return_val.error = error_detail;
-                    res.json(return_val);
+                if (err) {
+                    res.json(err);
                 }
                 else{
                     return_val.error = err;
@@ -141,73 +134,24 @@ getQuestionDetail = function(qvals, i, key){
             }
             else{
                 /* update notification table 'is_filled' value */
-                var search_criteria = {questionnaire : patient_data.questionnaire, patient : patient_data.patient};
-                notificationModel.update(search_criteria, update_data, function(err, data){
+                var search_criteria = {_id : patient_data.notification_id};
+                var update_data     = {is_filled:1};
+            console.log('search_criteria : ', search_criteria);
+            console.log('update_data : ', update_data);
+
+                notificationModel.updateNotification(search_criteria, update_data, function(err, data){
                     var return_data = {};
                     var message = "";
                     if (err) {
-                        if (err.errors) {
-                            var error_detail = [];
-                            for (var errName in err.errors) {
-                                error_detail.push(err.errors[errName].message);
-                            }
-                            return_data.error = error_detail;
-                            res.json(return_data);
-                        }
-                        else{
-                            return_data.error = message;
-                            res.json(return_data);
-                        }
+                        res.json(err);
                     }
                     else{
-                        return_data.success = "Pathway updated Successfully";
-                        res.json(return_data);
+                        return_val.success = "Patient Answers added Successfully";
+                        res.json(return_val);
                     }
                 });
-
-
-                return_val.success = "Patient Answers added Successfully";
-                res.json(return_val);
             }
         });
-        
-        //console.log('patientQues : ', patientQues);
-        
-        //if (data.success) {
-        //    //add Admin cum clinic
-        //    
-        //    
-        //    patientDetail.clinic  = req.user._id;
-        //    patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
-        //    patientDetail.dos               = dateToTimeStamp(req.body.dos);
-        //    //patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
-        //    patientDetail.is_active  = 1;
-        //    //console.log(patientDetail);
-        //    patientModel.addPatient(patientDetail, function(err, data){
-        //        if (err) {
-        //            if (err.errors) {
-        //                var error_detail = [];
-        //                for (var errName in err.errors) {
-        //                    error_detail.push(err.errors[errName].message);
-        //                }
-        //                return_val.error = error_detail;
-        //                res.json(return_val);
-        //            }
-        //            else{
-        //                return_val.error = err;
-        //                res.json(return_val);
-        //            }
-        //        }
-        //        else{
-        //            return_val.success = "Patient added Successfully";
-        //            res.json(return_val);
-        //        }
-        //    });
-        //}
-        //else{
-        //    var return_val = {'error':data.error};
-        //    res.json(return_val);
-        //}
     }
 
 passport.use('localpatient', new LocalStrategy(

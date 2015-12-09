@@ -41,7 +41,7 @@ Notification.add = function(submit_data, next){
     add_notification.save(next);
 }
 
-Notification.update = function(search_criteria, new_data, next){
+Notification.updateNotification = function(search_criteria, new_data, next){
     Notification.update(search_criteria, {$set:new_data}, next);
 }
 
