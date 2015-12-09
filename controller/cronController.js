@@ -8,7 +8,7 @@ var testvar = 0; var resdata = {}; var patient_data = [];
 
 
 /* callback functions for incrementing and to get questionnaire details */
-cbTofindQuestionnaires = function(patientsData,query,length,currentIndex,res){    
+cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){    
     // console.log("\ncurrentIndex = ",currentIndex);
     // console.log('//\n',patientsData[currentIndex]);
     var search_questionnaier = {_id:{$in:patientsData[currentIndex].pathway.questionnaire}};
@@ -25,7 +25,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex,res){
             // var pdd4 = moment.utc(patientsData[currentIndex].dohd, 'X').format();
             var tempVals = new Array(); var cnt = 0; 
             for(var j=0; j<qdata.length; j++){
-            	var tempObj = {};
+                var tempObj = {};
                 if(qdata[j].type=='single'){
                     // var execution_time = addHours(pdd, qdata[j].execute_time);
                     var execution_time = moment(pdd).add(qdata[j].execute_time, 'h').unix();//addHours
@@ -68,16 +68,16 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex,res){
                                     // console.log('\nnewD...daily',newD);
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
                                         is_time_slot_in = true;
-										tempObj.datetime = newD;
+                                        tempObj.datetime = newD;
                                         break;
                                         // qdata[j].datetime = newD;
                                     }
                                 };
                                 // console.log('is_time_slot_in daily = ',is_time_slot_in);
                                 if(is_time_slot_in==true){
-			                        tempObj.questionnaire 		= qdata[j]._id;
-			                        tempObj.questionnaire_name 	= qdata[j].name;
-			                        tempVals[cnt++] = tempObj;
+                                    tempObj.questionnaire 		= qdata[j]._id;
+                                    tempObj.questionnaire_name 	= qdata[j].name;
+                                    tempVals[cnt++] = tempObj;
                                     // tempVals[cnt++] = qdata[j];
                                 }
                             }
@@ -98,9 +98,9 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex,res){
                                     };
                                     // console.log('is_time_slot_in W = ',is_time_slot_in);
                                     if(is_time_slot_in==true){
-                                    	tempObj.questionnaire 		= qdata[j]._id;
-				                        tempObj.questionnaire_name 	= qdata[j].name;
-				                        tempVals[cnt++] = tempObj;
+                                        tempObj.questionnaire 		= qdata[j]._id;
+                                        tempObj.questionnaire_name 	= qdata[j].name;
+                                        tempVals[cnt++] = tempObj;
                                         // tempVals[cnt++] = qdata[j];
                                     }
                                 }
@@ -140,13 +140,14 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex,res){
                         }
                     }
                 }
-                res.jsonp(patientsData);
+                console.log(patientsData);
+                //res.jsonp(patientsData);
             }
         }
     })
 }
 
-getlisting = function(req, res, next){
+getlisting = function(){
     var search = {is_deleted:0, pathway:{$ne: null}};
     /*if (req.user.user_type == "2") {
         search.clinic = req.user.parent_id;
@@ -159,10 +160,12 @@ getlisting = function(req, res, next){
     var endTimeStamp        = addMinutes(current_date, 40);
 
     search.dohd = {$lte: currentTimeStamp};
-    var patParams = {username:1,pathway:1,time_of_discharge:1,};
+    var patParams = {username:1,pathway:1,time_of_discharge:1};
+    //console.log(search);
     patientModel.getAllPatient(search, function(err, patientsData){
         if(err){
-            res.json(err);
+            console.log(err);
+            //res.json(err);
         }
         else{
             // console.log(patientsData.length);
@@ -171,7 +174,7 @@ getlisting = function(req, res, next){
             //console.log(pd);
             for(var i=0; i<patientsData.length; i++){
                 // console.log(patientsData[i].pathway.questionnaire);
-                cbTofindQuestionnaires(patientsData,pd,patientsData.length,i,res);
+                cbTofindQuestionnaires(patientsData,pd,patientsData.length,i);
             }
 
         }

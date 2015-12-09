@@ -4,11 +4,22 @@ module.exports = function(app,express){
     var cronObj = new cronController();
     
     //router.get('/detail', function(req, res, next){
-    router.get('/detail', function(req, res){
+    /*setInterval(
+    	router.get('/detail', function(req, res){
+    		console.log('Ramanpreet');
+        	cronObj.getlisting(req, res);
+    	}), 6000);*/
+    setInterval(function(){ 
+		//req = {};res = {};
+		console.log('Cron Job');
+		cronObj.getlisting();
+    },600000);
 
-        cronObj.getlisting(req, res);
-        // cronObj.amit(req, res, next);
-    });
-    
+    /*router.get('/detail', function(req, res){
+		console.log('Ramanpreet');
+    	cronObj.getlisting(req, res);
+    	// cronObj.amit(req, res, next);
+	})*/
+
     app.use('/cron',router);
 }
