@@ -227,4 +227,7 @@ process.on('uncaughtException', function(err) {
   console.log('Uncaught exception: ' + err);
 });
 
+app.listen(8987,function(){
+console.log('serever is running');
+});
 module.exports = app;
