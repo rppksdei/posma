@@ -22,6 +22,21 @@ getNotification = function(req, res, next){
         }
     });
 }
+
+getQuestionnaire = function(req, res){
+    // console.log(req.body);
+    var nid     = req.body._id;
+    var search  = {_id : nid};
+    notificationModel.getOne(search, function(err, data){
+        if (err){
+            res.json(err);
+        }else{
+            res.json(data);
+        }  
+    });  
+}
+
 module.exports = function(){
-    this.getNotification = getNotification;
+    this.getNotification        = getNotification;
+    this.getQuestionnaire       = getQuestionnaire;
 }
