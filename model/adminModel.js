@@ -9,12 +9,14 @@ var adminSchema = new Schema({
     last_name:{type:String},
     email:{type:String},
     phone:{type:Number},
-    user_type:{type:Number, default:0}, //1=Super admin, 0=clinic Admin
+    user_type:{type:Number, default:0}, //1=Super admin, 0=clinic Admin, 2=Surgeon Login
     mobile:{type:Number},
     address1:{type:String},
     address2:{type:String},
+    parent_id:{type:Schema.Types.ObjectId}, // if it is surgeon then it will be clinic id otherwise it will be 0
+    surgery:[{type:Schema.Types.ObjectId}],
     is_deleted:{type:Number, default:0},
-    is_active:{type:Number, default:0},
+    is_active:{type:Number, default:1},
     created:{type:Number},
     modified:{type:Number}
 });

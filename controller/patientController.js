@@ -1,19 +1,26 @@
 var patientModel = require("./../model/patientModel");
-
+var moment = require('moment');
 getlisting = function(req, res, next){
-    var search = {is_deleted:0};
-    patientModel.getAllPatient(search, function(err, patientDetail){
+    var search_patient = {is_deleted:0};
+    if (req.user.user_type == "2") {
+        search_patient.clinic = req.user.parent_id;
+    }
+    else if (req.user.user_type == "0"){
+        search_patient.clinic = req.user._id;
+    }
+    patientModel.getAllPatient(search_patient, function(err, patientDetail){
         if(err){
             res.json(err);
         }
         else{
+            //console.log(patientDetail);
             res.json(patientDetail);
         }
     });
 }
 
 getPatientDetail = function(req, res){
-    var patient_id = req.params.id;
+    var patient_id = req.body.id;
     var search_patient = {_id:patient_id};
     patientModel.getPatient(search_patient, function(err, data){
         var return_val = {};
@@ -64,26 +71,36 @@ addPatient = function(req, res, next){
             res.json(err);
         }
         else{
+            var return_val = {};
             if (data.success) {
                 //add Admin cum clinic
                 var patientDetail = req.body;
                 patientDetail.created = Date.now();
+                patientDetail.clinic  = req.user._id;
+                patientDetail.date_of_birth     = dateToTimeStamp(req.body.date_of_birth);
+                patientDetail.dos               = dateToTimeStamp(req.body.dos);
+                //patientDetail.dohd              = dateToTimeStamp(req.body.dohd);
+                patientDetail.is_active  = 1;
+                //console.log(patientDetail);
                 patientModel.addPatient(patientDetail, function(err, data){
-                    var return_val = {};
                     if (err) {
-                        var error_detail = [];
-                        // go through all the errors...
-                        for (var errName in err.errors) {
-                            error_detail.push(err.errors[errName].message);
+                        if (err.errors) {
+                            var error_detail = [];
+                            for (var errName in err.errors) {
+                                error_detail.push(err.errors[errName].message);
+                            }
+                            return_val.error = error_detail;
+                            res.json(return_val);
                         }
-                        return_val.error = error_detail;
-                        res.json(return_val);
+                        else{
+                            return_val.error = err;
+                            res.json(return_val);
+                        }
                     }
                     else{
                         return_val.success = "Patient added Successfully";
                         res.json(return_val);
                     }
-                  //  res.json(return_val);
                 });
             }
             else{
@@ -94,8 +111,15 @@ addPatient = function(req, res, next){
     });
 }
 
-updatePatientDetail = function(req, res){
+dateToTimeStamp = function(myDate){
+    myDate = myDate.split("/");
+    var newDate = myDate[0]+"/"+myDate[1]+"/"+myDate[2];
+    var dateTimeStamp = new Date(newDate).getTime();
+    return dateTimeStamp;
+}
 
+updatePatientDetail = function(req, res){
+    //console.log(req.body);
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.username != "undefined"){
@@ -114,13 +138,28 @@ updatePatientDetail = function(req, res){
         update_data.email = req.body.email;
     }
     if(typeof req.body.date_of_birth != "undefined"){
-        update_data.date_of_birth = req.body.date_of_birth;
+        update_data.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
+    }
+    if(typeof req.body.dos != "undefined"){
+        update_data.dos = dateToTimeStamp(req.body.dos);
+    }
+    if(typeof req.body.dohd != "undefined"){
+        update_data.dohd = dateToTimeStamp(req.body.dohd);
     }
     if(typeof req.body.address1 != "undefined"){
         update_data.address1 = req.body.address1;
     }
-    if(typeof req.body.address2 != "undefined"){
-        update_data.address2 = req.body.address2;
+    if(typeof req.body.height != "undefined"){
+        update_data.height = req.body.height;
+    }
+    if(typeof req.body.weight != "undefined"){
+        update_data.weight = req.body.weight;
+    }
+    if(typeof req.body.age != "undefined"){
+        update_data.age = req.body.age;
+    }
+    if(typeof req.body.gender != "undefined"){
+        update_data.gender = req.body.gender;
     }
     if(typeof req.body.phone != "undefined"){
         update_data.phone = req.body.phone;
@@ -137,16 +176,69 @@ updatePatientDetail = function(req, res){
     if(typeof req.body.pathway != "undefined"){
         update_data.pathway = req.body.pathway;
     }
-    
+    if(typeof req.body.is_deleted != "undefined"){
+        update_data.is_deleted = req.body.is_deleted;
+    }
+    if(typeof req.body.is_active != "undefined"){
+        update_data.is_active = req.body.is_active;
+    }
+
+    if(typeof req.body.cci != "undefined"){
+        update_data.cci = req.body.cci;
+    }
+    if(typeof req.body.type_tumor != "undefined"){
+        update_data.type_tumor = req.body.type_tumor;
+    }
+    if(typeof req.body.tnm != "undefined"){
+        update_data.tnm = req.body.tnm;
+    }
+    if(typeof req.body.tmn != "undefined"){
+        update_data.tmn = req.body.tmn;
+    }
+    if(typeof req.body.bmi != "undefined"){
+        update_data.bmi = req.body.bmi;
+    }
+    if(typeof req.body.clavien_minor_no != "undefined"){
+        update_data.clavien_minor_no = req.body.clavien_minor_no;
+    }
+    if(typeof req.body.clavien_major_no != "undefined"){
+        update_data.clavien_major_no = req.body.clavien_major_no;
+    }
+    if(typeof req.body.sbl != "undefined"){
+        update_data.sbl = req.body.sbl;
+    }
+    if(typeof req.body.degfr != "undefined"){
+        update_data.degfr = req.body.degfr;
+    }
+    if(typeof req.body.discharge_hemoglobin != "undefined"){
+        update_data.discharge_hemoglobin = req.body.discharge_hemoglobin;
+    }
+    if(typeof req.body.blood_transfusion != "undefined"){
+        update_data.blood_transfusion = req.body.blood_transfusion;
+    }
+
+    if((typeof req.body.surgery != "undefined") && (typeof req.body.surgery._id != "undefined")){
+        update_data.surgery._id = req.body.surgery._id;
+    }
+    if((typeof req.body.pathway != "undefined") && (typeof req.body.pathway._id != "undefined")){
+        update_data.pathway._id = req.body.pathway._id;
+    }
+    if(typeof req.body.is_discharged != "undefined"){
+        var d = new Date();
+        update_data.dohd                = moment().unix();/*Date.now();*/
+        update_data.time_of_discharge   = moment().unix();/*d.getTime();*/
+    }
+
     update_data.modified = Date.now();
+    //console.log(update_data);
     //End of code to create object data
     
-    // Code to update clinic Details
-    if(typeof req.body.patient_id != "undefined"){
-        var search_criteria = {_id:req.body.patient_id};
+    if(typeof req.body._id != "undefined"){
+        var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
+        //console.log(data);
             if (err) {
                 if (err.errors) {
                     var error_detail = [];
@@ -163,6 +255,7 @@ updatePatientDetail = function(req, res){
             }
             else{
                 return_data.success = "Patient updated Successfully";
+                return_data.update_data = update_data;
                 res.json(return_data);
             }
         });

@@ -1,0 +1,65 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Manage Surgeries</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div style="float: left;width:85%" >List surgeries</div>
+                    <a href="/#/surgeries/add" class="btn btn-primary right">Add Surgery</a>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div flash-message="5000" ></div>
+                    <div class="dataTable_wrapper table-responsive">
+                        <table ng-table="tableParams" class="table">
+                                <tr ng-repeat="surgery in $data" ng-class="{even: $even, odd: $odd}">
+                                    <td data-title="'Name'">{{ surgery.name }}</td>
+                                    <td data-title="'Description'">{{ surgery.description }}</td>
+                                    <td width="8%" align="center" data-title="'Status'">
+                                        <a href="javascript:void(0);" ng-click="changeSurgeryStatus($index);">
+                                        <button class="btn btn-circle btn-sm btn" ng-class="{'btn-danger':surgery.is_active == 0, 'btn-success':surgery.is_active == 1}" type="button"><i class="fa" ng-class="{'fa-times':surgery.is_active == 0, 'fa-check':surgery.is_active == 1}"></i></button>
+                                        </a>
+                                    </td>
+                                    <td width="8%" align="center" data-title="'Action'">
+                                        <!-- <a href ="rp_pathways.html" title="Pathways"><i class="fa fa-files-o fa-fw"></i></a> -->
+                                        <a href="/#/surgeries/edit/{{ surgery._id }}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
+                                        <a href="javascript:void(0);" ng-click="deleteSurgery(surgery._id);" title="Delete"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                </tr>
+                        </table>
+                        <!-- <table ng-table="tableParams" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%!important">Name</th>
+                                    <th>Description</th>
+                                    <th style="width:10%!important">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="odd gradeX" ng-repeat="surgery in surgeries">
+                                    <td>{{ surgery.name }}</td>
+                                    <td>{{ surgery.description }}</td>
+                                    <td class="right">
+                                        <a href ="rp_pathways.html" title="Pathways"><i class="fa fa-files-o fa-fw"></i></a>
+                                        <a href="/#/surgeries/edit/{{ surgery._id }}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
+                                        <a href="javascript:void(0);" ng-click="deleteSurgery(surgery._id);" title="Delete"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table> -->
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+<!-- /#page-wrapper -->

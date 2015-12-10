@@ -1,0 +1,108 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Assign Questions to {{ques_quesnaire.name}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 form-group">
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label>Search Question: </label>
+                </div>
+                <div class="form-group col-lg-8">
+                    <input class="form-control" type = "text" ng-model = "filterFields.name">
+                </div>
+            </div>
+            <angular-accordion>
+                <pane ng-repeat = "que in questionnair_ques  | filter: filterFields">
+                    <pane-header>
+                        {{que.name}}
+                        <a href="javascript:void(0);" ng-click="selectQuestion(que._id);"><i class="fa fa-forward"></i></a>
+                    </pane-header>
+                    <pane-content>
+                        <ul class="que_ans" ng-if="que.answer_type == 'number'">
+                            <li>
+                                Answer can be a number between {{que.min_range}} to {{que.max_range}}
+                            </li>
+                        </ul>
+                        <ul class="que_ans" ng-if="que.answer_type == 'text'">
+                            <li>
+                                Answer can be text, maximum of {{que.max_length}} characters.
+                            </li>
+                        </ul>
+                        <span ng-if="que.answer_type == 'rb' || que.answer_type == 'cb' || que.answer_type == 'dd'">
+                            <span class="ans_opts"> Answer Options:</span>
+                            <ul class="que_ans">
+                                <li ng-repeat="ans in que.answer">
+                                    {{ans.name}} {{ans.out_of_range}} 
+                                </li>
+                            </ul>
+                        </span>
+                    </pane-content>
+                </pane>
+            </angular-accordion>
+        </div>
+        <div class="col-lg-6 form-group">
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label>Assigned Question </label>
+                </div>
+            </div>
+            <angular-accordion>
+                <pane ui-draggable="true" drag="selected_question" drag-channel="selques" drag-hover-class="bg-info"
+                        ui-on-Drop="onDrop($event,$data,$index)" drop-channel="selques"
+                        ng-repeat = "selected_question in selected_questions" >
+                    <pane-header>{{selected_question.name}} <a href="javascript:void(0);" ng-click="unselectQuestion($index);"><i class="fa fa-backward"></i></a>
+                    </pane-header>
+                    <pane-content>
+                        <ul class="que_ans" ng-if="selected_question.answer_type == 'number'">
+                            <li>
+                                Answer can be a number between {{selected_question.min_range}} to {{selected_question.max_range}}
+                            </li>
+                        </ul>
+                        <ul class="que_ans" ng-if="selected_question.answer_type == 'text'">
+                            <li>
+                                Answer can be text, maximum of {{selected_question.max_length}} characters.
+                            </li>
+                        </ul>
+                        <span ng-if="selected_question.answer_type == 'rb' || selected_question.answer_type == 'cb' || selected_question.answer_type == 'dd'">
+                            <span class="ans_opts"> Answer Options:</span>
+                            <ul class="que_ans">
+                                <li ng-repeat="ans in selected_question.answer">
+                                    {{ans.name}} {{ans.out_of_range}} 
+                                </li>
+                            </ul>
+                        </span>
+                    </pane-content>
+                </pane>
+            </angular-accordion>
+        </div>
+        <div class="col-lg-12">
+            <!--div class="form-group" style="text-align:center">
+                <button class="btn btn-success" ng-click="assign_questions();" ng-disabled="selected_questions.length == 0" type="submit">Assign Questions</button>
+            </div-->
+            <div class="form-group" style="text-align:center">
+                <button class="btn btn-success" ng-click="assign_questions();" type="submit">Assign Questions</button>
+            </div>
+        </div>
+    </div>
+    <!--div class="row">
+        <div class="col-lg-12">
+            <div>
+                <table style="width:auto;" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>title</th>
+                        </tr>
+                    </thead>
+                    <tbody ui:sortable ng:model="list">
+                        <tr ng:repeat="selected_question in selected_questions" class="item" style="cursor: move;">
+                            <td>{{selected_question.name}}</td>
+                        </tr>
+                    </tbody>
+                    <hr>
+            </div>
+        </div>
+    </div-->
+</div>

@@ -1,0 +1,62 @@
+.has-error label.control-label{
+    font-weight: normal !important;
+}
+.header {
+	background: #EFEFEF;
+}
+table tr.odd td{
+	background: #F5F5F5;
+}
+.table {
+    border: 1px solid #dedede;
+}
+.btn-sm{
+    height: 20px;
+    padding: 1px 0;
+    width: 20px;
+}
+.ng-table th.filter .input-filter {
+    box-sizing: border-box;
+    display: block;
+    font-weight: normal;
+    height: 22px;
+    margin: 0;
+    min-height: 18px;
+    padding: 2px 5px;
+    width: 100%;
+    
+}
+.required{
+    color: #a94442
+}
+.pull-right{
+    float: right;
+}
+label {
+    margin: 7px 0;
+}
+.angular-accordion-header a{
+    
+    float: right;
+}
+.angular-accordion-header {
+    background-color: #bfe5e5;
+    color: #0e0e0e
+}
+.angular-accordion-header span{
+    margin-right: 20px
+}
+ul .que_ans{
+    margin-left: 10px;
+}
+.angular-accordion-pane-content{
+    padding-top:15px;
+}
+.ans_opts{
+    margin-left: 15px;
+    font-weight: bold;
+}
+/** gurpreet added */
+/*.lbl-error{color: #ff0000;font-size: 12px;font-weight: normal;}*/
+.discharged{color: #dfdfdf;}
+/* gurpreet added */

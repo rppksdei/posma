@@ -1,0 +1,61 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Add/ Edit Pathway</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Pathway Details <span class="required pull-right">* Fields are required.</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <form name="add_pathway_form" id="add_pathway_form" role="form" ng-submit="add();">
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error':add_pathway_form.surgery.$dirty && (add_pathway_form.surgery.$error.required)}">
+                                    <label>Surgery <span class="required">*</span></label>
+                                    <select ng-model="pathway.surgery" class="form-control" ng-change="getPathways()" name="surgery" id="surgery" required>
+                                        <option value="">--Select a surgery--</option>
+                                        <option ng-repeat="surg in surgeries" value ="{{surg._id}}" ng-selected="($index < 0) || (pathway.surgery==surg._id)">{{surg.name}}</option>
+                                    </select>
+                                    <label class="control-label" ng-show="add_pathway_form.surgery.$dirty && (add_pathway_form.surgery.$error.required || errordetail.surgery)">Surgery is required.</label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_pathway_form.name.$dirty && (add_pathway_form.name.$error.required || errordetail.name)}">
+                                    <label>Title <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="pathway.name" name="name" id="name" required value="">
+                                    <label class="control-label" ng-show="add_pathway_form.name.$dirty && (add_pathway_form.name.$error.required || errordetail.name)">Title is required.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" ng-model="pathway.description" name="description" id="description" value=""></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Assign Questionnaires to Pathway</label><br/>
+                                    <div ng-repeat="qn in questionnaires">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" checklist-model="pathway.questionnaire" checklist-value="qn._id" >{{qn.name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" style="text-align:left">
+                                <input type="submit" class="btn btn-success" ng-disabled="add_pathway_form.$invalid" value="Submit">
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->

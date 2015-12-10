@@ -20,3 +20,8 @@ var patientAnswerSchema = ({
 });
 
 var PatientAnswer = mongoose.model('PatientAnswer', patientAnswerSchema);
+
+exports.addPatientAns = function(patientDetail, next){
+    var add_patient = new PatientAnswer(patientDetail);
+    add_patient.save(next);
+}

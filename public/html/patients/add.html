@@ -1,0 +1,250 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Add/ Edit Patient</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Patient Details <span class="required pull-right">* Fields are required.</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <form name="add_patient_form" id="add_patient_form" role="form" ng-submit="add();">
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.username.$dirty && (add_patient_form.username.$error.required || errordetail.username)}">
+                                    <label>Username <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.username" name="username" id="username" required value="">
+                                    <label class="control-label" ng-show="add_patient_form.username.$dirty && (add_patient_form.username.$error.required || errordetail.username)">Username is required.</label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.password.$dirty && (add_patient_form.password.$error.required || errordetail.password)}">
+                                    <label>Password <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.password" name="password" id="password" required value="">
+                                    <label class="control-label" ng-show="add_patient_form.password.$dirty && (add_patient_form.password.$error.required || errordetail.password)">Password is required.</label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.first_name.$dirty && (add_patient_form.first_name.$error.required || errordetail.first_name)}">
+                                    <label>Firstname <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.first_name" name="first_name" id="first_name" required value="">
+                                    <label class="control-label" ng-show="add_patient_form.first_name.$dirty && (add_patient_form.first_name.$error.required || errordetail.first_name)">Firstname is required.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Lastname</label>
+                                    <input class="form-control" ng-model="patient.last_name">
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.email.$dirty && (add_patient_form.email.$error.required || errordetail.email || add_patient_form.email.$error.email)}">
+                                    <label>Email <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.email" name="email" id="email" required value="" type="email">
+                                    <label class="control-label" ng-show="add_patient_form.email.$dirty && (add_patient_form.email.$error.required || errordetail.email)">Email is required.</label>
+                                    <label class="control-label" ng-show="add_patient_form.email.$dirty && add_patient_form.email.$error.email">Invalid Email.</label>
+                                </div>
+                                <div class="form-group col-lg-12" style="padding:0px;">
+                                    <div class="col-lg-8" style="padding:0px;" ng-class="{'has-error':add_patient_form.date_of_birth.$dirty && (add_patient_form.date_of_birth.$error.required || errordetail.date_of_birth)}">
+                                        <label>Date Of Birth <span class="required">*</span></label>
+                                        <datepicker date-format="{{pattern}}" date-min-limit="{{date_min}}" date-max-limit="{{dob_date_max | date:'MM/dd/yyyy'}}" date-set="{{default_date | date:'MM/dd/yyyy'}}">
+                                          <input class="form-control angular-datepicker-input" type="text" ng-model="patient.date_of_birth" name="date_of_birth" id="date_of_birth" ng-change="getAge()" required value="">
+                                        </datepicker>
+                                        
+                                        <label class="control-label" ng-show="add_patient_form.date_of_birth.$dirty && (add_patient_form.date_of_birth.$error.required || errordetail.date_of_birth)">Date Of Birth is required.</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.age.$dirty && (add_patient_form.age.$error.required || errordetail.age)}">
+                                    <label>Age <span class="required">*</span></label>
+                                    <input class="form-control" ng-disabled="true" ng-model="patient.age" name="age" id="age" required value="">
+                                    <label class="control-label" ng-show="add_patient_form.age.$dirty && (add_patient_form.age.$error.required || errordetail.age)">Age is required.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender <span class="required">*</span></label>
+                                    <select ng-model="patient.gender" class="form-control">
+                                        <option value = "M"  ng-selected="true">Male</option>
+                                        <option value = "F">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.mobile.$dirty && (add_patient_form.mobile.$error.required || errordetail.mobile || add_patient_form.mobile.$error.number)}">
+                                    <label>Mobile <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.mobile" name="mobile" id="mobile" required value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.mobile.$dirty && (add_patient_form.mobile.$error.required || errordetail.mobile)">Mobile is required.</label>
+                                    <label class="control-label" ng-show="add_patient_form.mobile.$dirty &&add_patient_form.mobile.$error.number">Mobile should be numeric 10 digits.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input class="form-control" ng-model="patient.phone" type="number">
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.address1.$dirty && (add_patient_form.address1.$error.required || errordetail.address1)}">
+                                    <label>Address <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.address1" name="address1" id="address1" required value="">
+                                    <label class="control-label" ng-show="add_patient_form.address1.$dirty && (add_patient_form.address1.$error.required || errordetail.address1)">Address is required.</label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.height.$dirty && (add_patient_form.height.$error.required || errordetail.height || add_patient_form.height.$error.number)}">
+                                    <label>Height (cm)<span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.height" ng-change="getBMI()" name="height" id="height" required value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.height.$dirty && (add_patient_form.height.$error.required || errordetail.height)">Height is required.</label>
+                                    <label class="control-label" ng-show="add_patient_form.height.$dirty &&add_patient_form.height.$error.number">Height should be numeric.</label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.weight.$dirty && (add_patient_form.weight.$error.required || errordetail.weight || add_patient_form.weight.$error.number)}">
+                                    <label>Weight (kg) <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.weight" ng-change="getBMI()" name="weight" id="weight" required value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.weight.$dirty && (add_patient_form.weight.$error.required || errordetail.weight)">Weight is required.</label>
+                                    <label class="control-label" ng-show="add_patient_form.weight.$dirty &&add_patient_form.weight.$error.number">Weight should be numeric.</label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Body mass index (BMI)</label>
+                                    <input class="form-control" ng-model="patient.bmi" ng-disabled="true">
+                                </div>
+                                <div class="form-group col-lg-12" style="padding:0px;">
+                                    <div class="col-lg-8" style="padding:0px;" ng-class="{'has-error':add_patient_form.dos.$dirty && (add_patient_form.dos.$error.required || errordetail.dos)}">
+                                        <label>Date of surgery (mm/dd/yyyy) <span class="required">*</span></label>
+                                        <datepicker date-format="{{pattern}}" date-min-limit="{{date_min}}" date-max-limit="{{dob_date_max | date:'MM/dd/yyyy'}}" date-set="{{default_date | date:'MM/dd/yyyy'}}">
+                                          <input class="form-control angular-datepicker-input" type="text" ng-model="patient.dos" name="dos" id="dos" required value="">
+                                        </datepicker>
+                                        <!-- <input class="form-control" ng-model="patient.dos" name="dos" id="dos" required value=""> -->
+                                        <label class="control-label" ng-show="add_patient_form.dos.$dirty && (add_patient_form.dos.$error.required || errordetail.dos)">Date of surgery is required.</label>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group col-lg-12" style="padding:0px;">
+                                    <div class="col-lg-8" style="padding:0px;" ng-class="{'has-error':add_patient_form.dohd.$dirty && (add_patient_form.dohd.$error.required || errordetail.dohd)}">
+                                        <label>Date of hospital discharge <span class="required">*</span></label>
+                                        <datepicker date-format="{{pattern}}" date-min-limit="{{date_min}}" date-max-limit="{{dob_date_max | date:'MM/dd/yyyy'}}" date-set="{{default_date | date:'MM/dd/yyyy'}}">
+                                          <input class="form-control angular-datepicker-input" type="text" ng-model="patient.dohd" name="dohd" id="dohd" required value="">
+                                        </datepicker>
+                                        <label class="control-label" ng-show="add_patient_form.dohd.$dirty && (add_patient_form.dohd.$error.required || errordetail.dohd)">Date of hospital discharge is required.</label>
+                                    </div>
+                                </div> -->
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.surgery.$dirty && (add_patient_form.surgery.$error.required)}">
+                                    <label>Surgery <span class="required">*</span></label>
+                                    <select ng-model="patient.surgery" class="form-control" ng-change="getPathways()" name="surgery" id="surgery" required>
+                                        <option value="">--Select a surgery--</option>
+                                        <option ng-repeat="surg in surgeries" value ="{{surg._id}}" ng-selected="($index < 0) || (patient.surgery._id==surg._id)">{{surg.name}}</option>
+                                    </select>
+                                    <label class="control-label" ng-show="add_patient_form.surgery.$dirty && (add_patient_form.surgery.$error.required || errordetail.surgery)">Surgery is required.</label>
+                                </div>
+                                <div class="form-group" ng-if="patient.surgery">
+                                    <label>Pathway with questionnaires</label><br/>
+                                    <div class="col-lg-12" ng-repeat="pw in pathways">
+                                        <input type="radio" ng-model="patient.pathway" name="optionsRadios" id="optionsRadios{{ $index }}" value="{{ pw._id }}" checked ng-checked="patient.pathway._id==pw._id"> {{ pw.name }}
+                                        <div class="col-lg-12" ng-repeat="ques in pw.questionnaire">
+                                            <span style="font-size:12px;font-style:italic;color:grey;">{{ ques.name }}</span>
+                                        </div>
+                                    </div>
+                                    <!--
+                                    <div class="radio-inline">
+                                        <input type="radio" ng-model="patient.pathway" name="optionsRadios" id="optionsRadios2" value="p2"> Pathway 2
+                                    </div>
+                                    <div class="radio-inline">
+                                        <input type="radio" ng-model="patient.pathway" name="optionsRadios" id="optionsRadios3" value="p3"> Pathway 3
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.cci.$dirty && (add_patient_form.cci.$error.number)}">
+                                    <label>Charlson comorbidity index (CCI)</label>
+                                    <input class="form-control" ng-model="patient.cci" name="cci" id="cci" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.cci.$dirty &&add_patient_form.cci.$error.number">CCI should be numeric.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Diagnosis</label> <!-- diagnosis table field is type_tumor -->
+                                    <input class="form-control" ng-model="patient.type_tumor">
+                                </div>
+                                <div class="form-group">
+                                    <label>Clinical T stage</label>
+                                    <input class="form-control" ng-model="patient.clinicalTstage">
+                                </div>
+                                <div class="form-group">
+                                    <label>Clinical N stage</label>
+                                    <input class="form-control" ng-model="patient.clinicalNstage">
+                                </div>
+                                <div class="form-group">
+                                    <label>Clinical M stage</label>
+                                    <input class="form-control" ng-model="patient.clinicalMstage">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Pathologic T stage</label>
+                                    <input class="form-control" ng-model="patient.pathologicTstage">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pathologic N stage</label>
+                                    <input class="form-control" ng-model="patient.pathologicNstage">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pathologic M stage</label>
+                                    <input class="form-control" ng-model="patient.pathologicMstage">
+                                </div>
+                                <div class="form-group">
+                                    <label>Neoadjuvant Chemotherapy</label>
+                                    <select ng-model="patient.neoadjuvant_chemotherapy" class="form-control">
+                                        <option value = "yes" ng-selected="true">Yes</option>
+                                        <option value = "no">No</option>
+                                        <option value = "na">-NA-</option>
+                                    </select>
+                                    <!-- <input class="form-control" ng-model="patient.neoadjuvant_chemotherapy"> -->
+                                </div>
+                                <div class="form-group">
+                                    <label>Tumor Laterality</label>
+                                    <select ng-model="patient.tumor_laterality" class="form-control">
+                                        <option value = "left" ng-selected="true">Left</option>
+                                        <option value = "right">Right</option>
+                                        <option value = "na">-NA-</option>
+                                    </select>
+                                    <!-- <input class="form-control" ng-model="patient.tumor_laterality"> -->
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.size_of_tumor.$dirty && (add_patient_form.size_of_tumor.$error.number)}">
+                                    <label>Size of Tumor (cm)</label>
+                                    <input class="form-control" ng-model="patient.size_of_tumor" name="size_of_tumor" id="size_of_tumor" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.size_of_tumor.$dirty &&add_patient_form.size_of_tumor.$error.number">Size of Tumor should be numeric.</label>
+                                </div>
+
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.clavien_minor_no.$dirty && (add_patient_form.clavien_minor_no.$error.number)}">
+                                    <label>Number of Clavien minor complications (GI-II)</label>
+                                    <input class="form-control" ng-model="patient.clavien_minor_no" name="clavien_minor_no" id="clavien_minor_no" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.clavien_minor_no.$dirty &&add_patient_form.clavien_minor_no.$error.number">Clavien minor complications should be numeric.</label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':add_patient_form.clavien_major_no.$dirty && (add_patient_form.clavien_major_no.$error.number)}">
+                                    <label>Number of Clavien major complications(GIII-V)</label>
+                                    <input class="form-control" ng-model="patient.clavien_major_no" name="clavien_major_no" id="clavien_major_no" value="" type="number">
+                                    <label class="control-label" ng-show="add_patient_form.clavien_major_no.$dirty &&add_patient_form.clavien_major_no.$error.number">Clavien major complications should be numeric.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Estimated surgical blood loss</label>
+                                    <input class="form-control" ng-model="patient.sbl">
+                                </div>
+                                <div class="form-group">
+                                    <label>Discharge eGFR</label>
+                                    <input class="form-control" ng-model="patient.degfr">
+                                </div>
+                                <div class="form-group">
+                                    <label>Discharge hemoglobin</label>
+                                    <input class="form-control" ng-model="patient.discharge_hemoglobin">
+                                </div>
+                                <div class="form-group">
+                                    <label>Receipt of blood transfusion during hospitalization</label>
+                                    <input class="form-control" ng-model="patient.blood_transfusion">
+                                </div>
+                                
+                                <!-- <datepicker date-format="{{pattern}}" date-min-limit="{{date_min}}" date-max-limit="{{date_max}}" date-set="{{default_date | date:'MM/dd/yyyy'}}">
+                                  <input ng-model="date" type="text"/>
+                                </datepicker> -->
+                            </div>
+                            <div class="col-lg-12" style="text-align:left">
+                                <input type="submit" class="btn btn-success" ng-disabled="add_patient_form.$invalid" value="Submit">
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->

@@ -6,7 +6,7 @@ var SurgerySchema = ({
     name:{type:String, required:"Name is required"},
     description:{type:String},
     is_deleted:{type:Number, default:0},
-    is_active:{type:Number, default:0},
+    is_active:{type:Number, default:1},
     created:{type:Number},
     modified:{type:Number},
 });
@@ -14,6 +14,8 @@ var SurgerySchema = ({
 var Surgery = mongoose.model('Surgery', SurgerySchema);
 
 exports.getAllSurgery = function(search_criteria, next){
+    console.log('IN MODEL');
+    console.log(search_criteria);
     Surgery.find(search_criteria, next);
 }
 
@@ -29,3 +31,7 @@ exports.addSurgery = function(surgeryDetail, next){
     var add_surgery = new Surgery(surgeryDetail);
     add_surgery.save(next);
 }
+
+// exports.getSurgeryByClinic = function(search_criteria, next){
+//     Surgery.find(search_criteria, next);
+// }

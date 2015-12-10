@@ -3,15 +3,15 @@ var Schema = mongoose.Schema;
 
 var questionnaireSchema = ({
     name:{type:String, required:"Questionnaire name is required"},
-    type:{type:Number, default:0}, //0="Single", 1="Recurrace"    
+    type:{type:String, default:'recursive',required:"Type is required"}, //single="Single", recursive="Recurrace"    
     question:[{type:Schema.Types.ObjectId, ref:"Question"}],
     execute_time:{type:Number, default:0}, // if single
     recur_type:{type:String}, // d=daily, w=weekly, m=monthly
     
     // if recur_type=d
-    daily_recurrence:{type:Number, default:1}, // 1 means once in a day
+    //daily_recurrence:{type:Number, default:1}, // 1 means once in a day
 
-    time_slots:[{type:Number}],
+    time_slots:[{type:String}],
 
     // if recur_type=d OR  if recur_type=w
     start_day:{type:Number, default:0}, // then 0 means  startdate = aligned date
@@ -28,27 +28,32 @@ var questionnaireSchema = ({
     
     // for all
     is_deleted:{type:Number, default:0},
-    is_active:{type:Number, default:0},
+    is_active:{type:Number, default:1},
     created:{type:Number},
     modified:{type:Number}
 });
 
 var Questionnaire = mongoose.model('Questionnaire', questionnaireSchema);
 
-
-exports.getAllQuestionnaire = function(search_criteria, next){
-    Questionnaire.find(search_criteria, next).populate('question');
+Questionnaire.getAllQuestionnaire = function(search_criteria, sort_order, next){
+    if(!sort_order) {
+        Questionnaire.find(search_criteria, next);
+    } else {
+        Questionnaire.find(search_criteria, next).sort(sort_order);
+    }
 }
 
-exports.getQuestionnaire = function(search_criteria, next){
+Questionnaire.getQuestionnaire = function(search_criteria, next){
     Questionnaire.findOne(search_criteria, next).populate('question');
+    // Questionnaire.findOne(search_criteria, next);
 }
 
-exports.updateQuestionnaire = function(search_criteria, new_data, next){
-     Questionnaire.update(search_criteria, {$set:new_data}, next);
+Questionnaire.updateQuestionnaire = function(search_criteria, new_data, next){
+    Questionnaire.update(search_criteria, {$set:new_data}, next);
 }
 
-exports.addQuestionnaire = function(questionDetail, next){
+Questionnaire.addQuestionnaire = function(questionDetail, next){
     var add_questionnaire = new Questionnaire(questionDetail);
     add_questionnaire.save(next);
 }
+module.exports = Questionnaire;

@@ -1,0 +1,97 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{form_heading}}</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+			<div ng-show="success_message" class="alert alert-success">
+    			{{success_message}}
+			</div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{form_heading}}
+                </div>
+                <form name="add_admin_form" id="add_admin_form" ng-submit="add();">
+                    <div class="panel-body">
+                        <div class="row">
+                        	<div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error':add_admin_form.username.$dirty && (add_admin_form.username.$error.required || errordetail['username'])}">
+                                    <label>Username <span class="required">*</span></label>
+                                    <input class="form-control" ng-disabled='admin._id' ng-model="admin.username" name="username" id="username" required  value="">
+                                    <label class="control-label" ng-show="add_admin_form.username.$dirty && add_admin_form.username.$error.required">Username is required.</label>
+                                    <label class="control-label" ng-show="errordetail['username']" ng-bind="errordetail['username']"></label>
+                                </div>
+				                <div class="form-group" ng-class="{'has-error':add_admin_form.password.$dirty && (add_admin_form.password.$error.required || errordetail['password'])}">
+                                    <label>Password <span class="required">*</span></label>
+                                    <input class="form-control" ng-model="admin.password" name="password" id="password" required  value="">
+            						<label class="control-label" ng-show="add_admin_form.password.$dirty && add_admin_form.password.$error.required">Password is required.</label>
+            						<label class="control-label" ng-show="errordetail['password']" ng-bind="errordetail['password']"></label>
+                                </div>
+				                <div class="form-group">
+                                    <label>Surgeries</label>
+                                    <div class="checkbox" data-ng-repeat="surgery in surgeries">
+                                        <label>
+                                            <input type="checkbox" checklist-model="admin.surgery" checklist-value="surgery._id">{{surgery.name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error':add_admin_form.first_name.$dirty && add_admin_form.first_name.$error.required}">
+                                    <label>Firstname <span class="required">*</span></label>
+                                    <input class="form-control" required autocomplete="off" ng-model="admin.first_name" name="first_name" id="first_name" value="">
+                                    <label class="control-label" ng-show="add_admin_form.first_name.$dirty && add_admin_form.first_name.$error.required">First name is required.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Lastname</label>
+                                    <input class="form-control" autocomplete="off" ng-model="admin.last_name" name="last_name" id="last_name" autocomplete="off" value="">
+                                </div>
+                                <div class="form-group" ng-class="{'has-error': add_admin_form.email.$dirty && (add_admin_form.email.$error.required || add_admin_form.email.$error.email) }">
+                                    <label>Email <span class="required">*</span></label>
+                                    <input class="form-control" autocomplete="off" ng-model="admin.email" name="email" id="email" required type="email" value="">
+                                    <label class="control-label" ng-show="add_admin_form.email.$dirty && add_admin_form.email.$error.required">Email is required.</label>
+                                    <label class="control-label" ng-show="add_admin_form.email.$dirty && add_admin_form.email.$error.email">Invalid email.</label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error': (add_admin_form.phone.$dirty && (add_admin_form.phone.$error.required || add_admin_form.phone.$error.number)) || errordetail['phone'] }">
+                                    <label>Phone <span class="required">*</span></label>
+                                    <input class="form-control" autocomplete="off" type="text" required ng-model="admin.phone" name="phone" id="phone" value="">
+                                    <label class="control-label" ng-show="add_admin_form.phone.$dirty && add_admin_form.phone.$error.required">Phone is required.</label>
+                                    <label class="control-label" ng-show="errordetail['phone']" ng-bind="errordetail['phone']"></label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error': errordetail['mobile'] }">
+                                    <label>Mobile</label>
+                                    <input class="form-control" autocomplete="off" type="text" ng-model="admin.mobile" name="mobile" id="mobile" value="">
+                                    <label class="control-label" ng-show="errordetail['mobile']" ng-bind="errordetail['mobile']"></label>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error': add_admin_form.address1.$dirty && add_admin_form.address1.$error.required }">
+                                    <label>Address 1 <span class="required">*</span></label>
+                                    <input class="form-control" autocomplete="off" ng-model="admin.address1" name="address1" required id="address1" value="">
+                                    <label class="control-label" ng-show="add_admin_form.address1.$dirty && add_admin_form.address1.$error.required">Address is required.</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Address 2</label>
+                                    <input class="form-control" autocomplete="off" ng-model="admin.address2" name="address2" id="address2" value="">
+                                </div>
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                        </div>
+                        <!-- /.row (nested) -->
+                        <div class="row">
+                            <div class="col-lg-12" style="text-align:center">
+                                <button type="submit" class="btn btn-success" ng-disabled="add_admin_form.$invalid" ng-bind="form_heading"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </form>
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>
