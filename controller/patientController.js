@@ -119,7 +119,8 @@ dateToTimeStamp = function(myDate){
 }
 
 updatePatientDetail = function(req, res){
-    //console.log(req.body);
+    
+    //console.log('date_of_birth = ',moment(req.body.date_of_birth, 'MM/DD/YYYY').unix());
     //Code to create JSON object data
     var update_data = {};
     if(typeof req.body.username != "undefined"){
@@ -138,13 +139,16 @@ updatePatientDetail = function(req, res){
         update_data.email = req.body.email;
     }
     if(typeof req.body.date_of_birth != "undefined"){
-        update_data.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
+        //update_data.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
+        update_data.date_of_birth = moment(req.body.date_of_birth, 'MM/DD/YYYY').unix();
     }
     if(typeof req.body.dos != "undefined"){
-        update_data.dos = dateToTimeStamp(req.body.dos);
+        update_data.dos = moment(req.body.dos, 'MM/DD/YYYY').unix();
+        //update_data.dos = dateToTimeStamp(req.body.dos);
     }
     if(typeof req.body.dohd != "undefined"){
-        update_data.dohd = dateToTimeStamp(req.body.dohd);
+        update_data.dohd = moment(req.body.dohd, 'MM/DD/YYYY').unix();
+        //update_data.dohd = dateToTimeStamp(req.body.dohd);
     }
     if(typeof req.body.address1 != "undefined"){
         update_data.address1 = req.body.address1;
@@ -229,16 +233,14 @@ updatePatientDetail = function(req, res){
         update_data.time_of_discharge   = moment().unix();/*d.getTime();*/
     }
 
-    update_data.modified = Date.now();
-    //console.log(update_data);
-    //End of code to create object data
+    update_data.modified = moment().unix();/*Date.now(); */
     
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
-        //console.log(data);
+            //console.log(data);
             if (err) {
                 if (err.errors) {
                     var error_detail = [];
