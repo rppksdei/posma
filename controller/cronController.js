@@ -140,7 +140,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         }
                     }
                 }
-                console.log(patientsData);
+                //console.log(patientsData);
                 //res.jsonp(patientsData);
             }
         }
@@ -161,19 +161,18 @@ getlisting = function(){
 
     search.dohd = {$lte: currentTimeStamp};
     var patParams = {username:1,pathway:1,time_of_discharge:1};
-    //console.log(search);
+    
     patientModel.getAllPatient(search, function(err, patientsData){
         if(err){
             console.log(err);
             //res.json(err);
         }
         else{
-            // console.log(patientsData.length);
+            //console.log('No. of Patients : ',patientsData.length);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
-            //console.log(pd);
+            
             for(var i=0; i<patientsData.length; i++){
-                // console.log(patientsData[i].pathway.questionnaire);
                 cbTofindQuestionnaires(patientsData,pd,patientsData.length,i);
             }
 
