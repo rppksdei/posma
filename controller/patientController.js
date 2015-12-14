@@ -119,7 +119,7 @@ dateToTimeStamp = function(myDate){
 }
 
 updatePatientDetail = function(req, res){
-    
+    console.log('\nreq.body = \n', req.body);
     //console.log('date_of_birth = ',moment(req.body.date_of_birth, 'MM/DD/YYYY').unix());
     //Code to create JSON object data
     var update_data = {};
@@ -234,6 +234,10 @@ updatePatientDetail = function(req, res){
     }
 
     update_data.modified = moment().unix();/*Date.now(); */
+    console.log('\n', moment().format('x')); // full 13 digits timestamp in ms
+    console.log('\n', moment().format('X')); // 10 digits timestamp in s
+    console.log('\n', moment().unix()); // 10 digits timestamp in s
+    console.log('\nupdate_data ==',update_data); //return;
     
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
