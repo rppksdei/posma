@@ -1,4 +1,4 @@
-//angular.module('MyAppService', ['ngResource']);
+//angular.module('MyAppService', ['ngResource']); 
 var myapp = angular.module("posma",['ang-drag-drop', '720kb.datepicker','angularjs-dropdown-multiselect','ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model",'angular-accordion','angularMoment']);
 function checkloggedIn($rootScope, $http, $location) {
     $http.get('/login/checkloggedin').success(function(data) {

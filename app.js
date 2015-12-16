@@ -185,7 +185,7 @@ require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express,supportCrossOriginScript);
 require('./routes/notification')(app,express,supportCrossOriginScript);
 require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
-require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
+require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin,supportCrossOriginScript);
 require('./routes/front_patient')(app,express, supportCrossOriginScript);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
