@@ -1,4 +1,4 @@
-module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin){
+module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin,supportCrossOriginScript){
     var router = express.Router();
     var patientController = require("./../controller/patientController");
     var patientObj = new patientController();
@@ -28,5 +28,10 @@ module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin){
     router.post('/detail', function(req, res){
         patientObj.getPatientDetail(req, res);
     });
+    
+    router.post('/updatepassword',supportCrossOriginScript, function(req, res){
+        patientObj.updatePatientDetail(req, res);
+    });
+    
     app.use('/patient',router);
 }

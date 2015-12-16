@@ -49,6 +49,7 @@ var patientSchema = ({
 var Patient = mongoose.model('Patient', patientSchema);
 
 exports.getAllPatient = function(search_criteria, next){
+    //console.log(search_criteria);
     Patient.find(search_criteria, next).populate('surgery').populate('clinic').populate('pathway').lean();
 }
 
