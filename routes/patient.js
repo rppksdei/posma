@@ -32,6 +32,6 @@ module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin,support
     router.post('/updatepassword',supportCrossOriginScript, function(req, res){
         patientObj.updatePatientDetail(req, res);
     });
-    
+
     app.use('/patient',router);
 }

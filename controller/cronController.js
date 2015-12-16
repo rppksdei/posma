@@ -14,7 +14,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
     var search_questionnaier = {_id:{$in:patientsData[currentIndex].pathway.questionnaire}};
     var params = {name:1,type:1,execute_time:1,recur_type:1,time_slots:1,start_day:1,total_days:1,days:1,};
     questionnaireModel.find(search_questionnaier, params, function(err, qdata){
-         //console.log('.........................Qdata...........................\n',qdata);
+        //console.log('.........................Qdata...........................\n',qdata);
         if(qdata.length > 0){
             // var pdd1 = new Date(patientsData[currentIndex].dohd);
             // var pdd2 = moment.utc(patientsData[currentIndex].dohd, 'X').utcOffset('+0530').format('YYYY-MM-DD HH:mm:ss');

@@ -8,7 +8,7 @@ module.exports = function(app,express){
     setInterval(function(){ 
 	console.log('Cron Job');
 	cronObj.getlisting();
-    },60000); // 5 0s
+    },600000); // 5 0s
 
     app.use('/cron',router);
 }

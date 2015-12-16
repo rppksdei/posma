@@ -19,8 +19,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             console.log(data);
             console.log(data.length);
             for (var i = 0; i < data.length; i++) {
-                $scope.patients[i].dos    = moment.unix(data[i].dos).format('MM/DD/YYYY');
-                $scope.patients[i].dohd   = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+                $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
+                $scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
             }
         console.log('$scope.patients = ',$scope.patients);
             

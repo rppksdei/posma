@@ -24,7 +24,7 @@ login = function(req, res, next){
                 //console.log(user);
                 //res.location('/questionnaire');
                 //res.send(201, null);
-                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id, 'password':user.password});
+                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id,'password':user.password});
             }
             return; 
         });
