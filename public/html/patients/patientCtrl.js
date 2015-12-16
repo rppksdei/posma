@@ -62,7 +62,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
-    console.log(patientData);
+            console.log(patientData);
         Patient.addPatient().save(patientData, function(data){
             console.log(data);
             if(data.success){
