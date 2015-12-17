@@ -204,7 +204,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             Patient.update().save(update_object, function(data){
                 console.log(data);
                 if (data.success) {
-                    $scope.tableParams.data[index].dohd = data.update_data.dohd;
+                    $scope.tableParams.data[index].dohd = moment.unix(data.update_data.dohd).format('MM/DD/YYYY HH:mm:ss');
                     //$scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
                     Flash.create('success', 'Patient discharged status has been changed successfully.', 'alert alert-success');
                 }
