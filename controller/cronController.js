@@ -14,7 +14,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
     var search_questionnaier = {_id:{$in:patientsData[currentIndex].pathway.questionnaire}};
     var params = {name:1,type:1,execute_time:1,recur_type:1,time_slots:1,start_day:1,total_days:1,days:1,};
     questionnaireModel.find(search_questionnaier, params, function(err, qdata){
-        // console.log('.........................Qdata...........................\n',qdata);
+        //console.log('.........................Qdata...........................\n',qdata);
         if(qdata.length > 0){
             // var pdd1 = new Date(patientsData[currentIndex].dohd);
             // var pdd2 = moment.utc(patientsData[currentIndex].dohd, 'X').utcOffset('+0530').format('YYYY-MM-DD HH:mm:ss');
@@ -30,9 +30,11 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     // var execution_time = addHours(pdd, qdata[j].execute_time);
                     var execution_time = moment(pdd).add(qdata[j].execute_time, 'h').unix();//addHours
                     // var nd = moment.utc(execution_time, 'X').format('YYYY-MM-DD');
-                    // console.log('single execution_time = ',execution_time);
-                    if(execution_time < query.endTimeStamp){
-                    // if((execution_time >= query.currentTimeStamp) && (execution_time < query.endTimeStamp)){
+                     console.log('\n-single execution_time = ',execution_time);
+		     console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
+		     console.log('\n-endTimeStamp = ',query.endTimeStamp);
+                    //if(execution_time < query.endTimeStamp){
+                    if((execution_time >= query.currentTimeStamp) && (execution_time < query.endTimeStamp)){
                         tempObj.datetime 			= execution_time;
                         tempObj.questionnaire 		= qdata[j]._id;
                         tempObj.questionnaire_name 	= qdata[j].name;
@@ -157,8 +159,9 @@ getlisting = function(){
     var pd = {};
     var current_date        = new Date();
     var currentTimeStamp    = moment().unix();
-    var endTimeStamp        = addMinutes(current_date, 40);
-
+    var endTimeStamp        = addMinutes(current_date, 1); // val = 10 mins
+console.log('\ncurrentTimeStamp = ', currentTimeStamp);
+console.log('\nendTimeStamp = ', endTimeStamp);
     search.dohd = {$lte: currentTimeStamp};
     var patParams = {username:1,pathway:1,time_of_discharge:1};
     
@@ -168,7 +171,7 @@ getlisting = function(){
             //res.json(err);
         }
         else{
-            //console.log('No. of Patients : ',patientsData.length);
+            console.log('No. of Patients : ',patientsData.length);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
             

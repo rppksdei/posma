@@ -53,7 +53,18 @@ exports.getAllPatient = function(search_criteria, next){
 }
 
 exports.getPatient = function(search_criteria, next){
+    //console.log(search_criteria);
     Patient.findOne(search_criteria, next).populate('surgery').populate('clinic').populate('pathway');
+}
+
+exports.getPatientDetail = function(search_criteria, fields, next){
+    //console.log(search_criteria);
+    if(typeof fields !== 'undefined'){
+        Patient.findOne(search_criteria, fields, next);
+    } else {
+        Patient.findOne(search_criteria, next);
+    }
+    
 }
 
 exports.updatePatient = function(search_criteria, new_data, next){
