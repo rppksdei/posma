@@ -2,6 +2,14 @@ var questionnaireModel = require("./../model/questionnaireModel");
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
     var sort_order = {created: -1 };
+    var search = {is_deleted:0,clinic:req.user._id};
+    var sort_order = {created: -1 };
+    if(typeof req.query.search_cre != "undefined"){
+        search = JSON.parse(req.query.search_cre);
+        search.is_deleted = 0;
+        search.clinic = req.user._id;
+        sort_order = req.query.sort_order;
+    }
     questionnaireModel.getAllQuestionnaire(search, sort_order, function(err, questionDetail){
         if(err){
             res.json(err);
@@ -32,11 +40,11 @@ getQuestionnaireDetail = function(req, res){
 
 addQuestionnaire = function(req, res, next){
     var questionnaireDetail = req.body;
+    questionnaireDetail.clinic = req.user._id;
     questionnaireDetail.created = Date.now();
     questionnaireModel.addQuestionnaire(questionnaireDetail, function(err, data){
         var return_val = {};
         if (err) {
-            console.log(err);
             var error_detail = [];
             for (var errName in err.errors) {
                 error_detail.push(err.errors[errName].message);
@@ -44,7 +52,6 @@ addQuestionnaire = function(req, res, next){
             return_val.error = error_detail;
             res.json(return_val);
         } else{
-            console.log(data);
             return_val.success = "Questionnaire has been saved successfully.";
             res.json(return_val);
         }
@@ -96,7 +103,6 @@ updateQuestionnaireDetail = function(req, res){
     update_data.modified = Date.now();
     //End of code to create object data
 
-    console.log(req.body.selected_questions);
 
     if(typeof req.body.selected_questions != "undefined"){
         update_data.question = req.body.selected_questions;
@@ -107,6 +113,7 @@ updateQuestionnaireDetail = function(req, res){
         var search_criteria = {};
         var search_criteria = {_id:req.body._id};
         //code
+        update_data.clinic = req.user._id;
         questionnaireModel.updateQuestionnaire(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";

@@ -52,14 +52,12 @@ getQuestionDetail = function(req, res){
 addQuestion = function(req, res, next){
     var questionDetail = req.body;
     questionDetail.clinic = req.user._id;
-    console.log(questionDetail);
     questionDetail.created = Date.now();
     questionModel.addQuestion(questionDetail, function(err, data){
         var return_val = {};
         if (err) {
             var error_detail = [];
             // go through all the errors...
-            console.log(err);
             for (var errName in err.errors) {
                 error_detail.push(err.errors[errName].message);
             }
