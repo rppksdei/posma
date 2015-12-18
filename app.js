@@ -123,7 +123,6 @@ isSurgeon = function (req, res, next) {
       else{
         res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
       }
-      
     }
     else{
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  

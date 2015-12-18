@@ -12,8 +12,10 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
     }
     $scope.getSurgery = function(){
         Surgery.getDetail().query({}, function(data){
-            $scope.surgeries = data;
-            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.surgeries});
+            console.log("fdds");
+            console.log(data);
+        /*    $scope.surgeries = data;
+            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.surgeries}); */
         });    
     }
 
