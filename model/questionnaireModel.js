@@ -38,9 +38,9 @@ var Questionnaire = mongoose.model('Questionnaire', questionnaireSchema);
 
 Questionnaire.getAllQuestionnaire = function(search_criteria, sort_order, next){
     if(!sort_order) {
-        Questionnaire.find(search_criteria, next);
+        Questionnaire.find(search_criteria, next).populate('clinic');
     } else {
-        Questionnaire.find(search_criteria, next).sort(sort_order);
+        Questionnaire.find(search_criteria, next).sort(sort_order).populate('clinic');
     }
 }
 

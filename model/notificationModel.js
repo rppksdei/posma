@@ -24,7 +24,6 @@ db.notifications.insert({
 var Notification = mongoose.model('Notification', notificationSchema);
 
 Notification.getAll = function(search_criteria, sort_order, next){
-    console.log('model');
     if(!sort_order || sort_order == '-') {
         Notification.find(search_criteria, next).populate('questionnaire');
     } else {
@@ -33,7 +32,7 @@ Notification.getAll = function(search_criteria, sort_order, next){
 }
 
 Notification.getOne = function(search_criteria, next){
-    Notification.findOne(search_criteria, next);
+    Notification.findOne(search_criteria, next).populate('questionnaire');
 }
 
 Notification.add = function(submit_data, next){
