@@ -200,5 +200,3 @@ myapp.config(['$routeProvider',
             });    
     }          
 ]);
-
-

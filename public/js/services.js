@@ -2,7 +2,7 @@ angular.module('PosmaService', ['ngResource'])
     .factory('Login', function($resource){
         var serviceObj = {};
         serviceObj.admin = function(){
-            return $resource('/login');  
+            return $resource('/login', {}, {save: {method: 'POST',headers: { 'auth-token': 'test' }}});  
         }
         serviceObj.logout = function(){
             return $resource('/login/loggedout');

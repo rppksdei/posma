@@ -5,6 +5,7 @@ var questionnaireSchema = ({
     name:{type:String, required:"Questionnaire name is required"},
     type:{type:String, default:'recursive',required:"Type is required"}, //single="Single", recursive="Recurrace"    
     question:[{type:Schema.Types.ObjectId, ref:"Question"}],
+    clinic:{type:Schema.Types.ObjectId, ref:'Clinic'},
     execute_time:{type:Number, default:0}, // if single
     recur_type:{type:String}, // d=daily, w=weekly, m=monthly
     
@@ -37,9 +38,9 @@ var Questionnaire = mongoose.model('Questionnaire', questionnaireSchema);
 
 Questionnaire.getAllQuestionnaire = function(search_criteria, sort_order, next){
     if(!sort_order) {
-        Questionnaire.find(search_criteria, next);
+        Questionnaire.find(search_criteria, next).populate('clinic');
     } else {
-        Questionnaire.find(search_criteria, next).sort(sort_order);
+        Questionnaire.find(search_criteria, next).sort(sort_order).populate('clinic');
     }
 }
 
