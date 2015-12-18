@@ -70,7 +70,7 @@ passport.use('local', new LocalStrategy(
                 return done(err);
             }
             if (!user){
-                return done(null, false, { message: 'Incorrect username or password RAMAN.' });
+                return done(null, false, { message: 'Incorrect username or password.' });
             }
             return done(null,user);
         });
