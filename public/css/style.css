@@ -60,3 +60,7 @@ ul .que_ans{
 /*.lbl-error{color: #ff0000;font-size: 12px;font-weight: normal;}*/
 .discharged{color: #dfdfdf;}
 /* gurpreet added */
+.multiselect-parent button{
+    white-space: normal !important;
+    text-align: left !important;
+}

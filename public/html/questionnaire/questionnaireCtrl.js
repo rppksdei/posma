@@ -51,7 +51,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
     $scope.add = function(){
         var time_slots = [];
         for(i=0;i<$scope.selectedTime.length;i++){
-            time_slots.push($scope.selectedTime[i].id);
+            time_slots.push($scope.selectedTime[i].time_slot);
         }
         $scope.questionnaire.time_slots = time_slots;
         Questionnaire.add().save($scope.questionnaire, function(data){
@@ -75,7 +75,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
         if(!$scope.questionnaire){
             Questionnaire.getDetail().save({'_id':$routeParams.id}, function(data) {
                 $scope.questionnaire = data;
-                console.log($scope.questionnaire.time_slots);
                 for(var ts = 0; ts < $scope.questionnaire.time_slots.length; ts++){
                     $scope.selectedTime[ts] = {time_slot:$scope.questionnaire.time_slots[ts]};
                 }
