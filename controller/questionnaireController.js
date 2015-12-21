@@ -2,7 +2,7 @@ var questionnaireModel = require("./../model/questionnaireModel");
 getlisting = function(req, res, next){
     var search = {is_deleted:0};
     var sort_order = {created: -1 };
-    var search = {is_deleted:0,clinic:req.user._id};
+    var search = {is_deleted:0/*,clinic:req.user._id*/};
     var sort_order = {created: -1 };
     if(typeof req.query.search_cre != "undefined"){
         search = JSON.parse(req.query.search_cre);
@@ -10,6 +10,7 @@ getlisting = function(req, res, next){
         search.clinic = req.user._id;
         sort_order = req.query.sort_order;
     }
+console.log('search = ',search);
     questionnaireModel.getAllQuestionnaire(search, sort_order, function(err, questionDetail){
         if(err){
             res.json(err);
