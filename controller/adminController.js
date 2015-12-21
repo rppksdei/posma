@@ -5,22 +5,14 @@ getlisting = function(req, res, next){
     var search = {is_deleted:0};
     if (req.user.user_type == "1") {
         search.user_type = 0;
-    }
-    else if (req.user.user_type == "0"){
+    } else if (req.user.user_type == "0"){
         search.user_type = 2;
+        search.parent_id = req.user._id;
     }
-
-    search_surgery = {is_deleted:0};
     if(typeof req.query.conditions != 'undefined'){
         search = JSON.parse(req.query.conditions);
+        console.log('---',search);
     }
-    if (req.user.user_type == "2") {
-        search.clinic = req.user.parent_id;
-    } else if (req.user.user_type == "0"){
-        search.clinic = req.user._id;
-    }
-
-
     adminModel.getAllAdmin(search, function(err, adminDetail){
         if(err){
             res.json(err);

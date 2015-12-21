@@ -83,6 +83,7 @@ savePatientAns = function(req, res, next){
     // console.log(JSON.parse(req.body.postData)); //return;
     var patient_data = JSON.parse(req.body.postData);
     var return_val = {}; var patientQues = {}; var i = 0; var temp = new Array();
+
     patientQues.created = Date.now();
     patientQues.patient = patient_data.patient;
     patientQues.questionnaire = patient_data.questionnaire; // this is notification id. need to update is_filled according to it.

@@ -236,11 +236,10 @@ updatePatientDetail = function(req, res){
     }
 
     update_data.modified = moment().unix();/*Date.now(); */
-    console.log('\n', moment().format('x')); // full 13 digits timestamp in ms
-    console.log('\n', moment().format('X')); // 10 digits timestamp in s
-    console.log('\n', moment().unix()); // 10 digits timestamp in s
-    console.log('\nupdate_data ==',update_data); //return;
-    
+    //console.log('\n', moment().format('x')); // full 13 digits timestamp in ms
+    //console.log('\n', moment().format('X')); // 10 digits timestamp in s
+    //console.log('\n', moment().unix()); // 10 digits timestamp in s
+    //console.log('\nupdate_data ==',update_data); //return;
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
