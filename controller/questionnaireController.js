@@ -10,6 +10,7 @@ getlisting = function(req, res, next){
         search.clinic = req.user._id;
         sort_order = req.query.sort_order;
     }
+    console.log(search);
     questionnaireModel.getAllQuestionnaire(search, sort_order, function(err, questionDetail){
         if(err){
             res.json(err);

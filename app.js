@@ -39,16 +39,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/',function(req, res, next) {
-  var headerDetail = req.headers['auth-token'];
-  if (typeof headerDetail != "undefined" && headerDetail == "test") {
-    next();
-  }
-  else{
-    res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
-  }
+// app.use('/',function(req, res, next) {
+//   var headerDetail = req.headers['auth-token'];
+//   if (typeof headerDetail != "undefined" && headerDetail == "test") {
+//     next();
+//   }
+//   else{
+//     res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+//   }
   
-});
+// });
 /*
 app.get('/superadmin',function(req, res, next) {
   //console.log('CLINIC');
