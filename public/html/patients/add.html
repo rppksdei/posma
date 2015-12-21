@@ -13,6 +13,7 @@
                     Patient Details <span class="required pull-right">* Fields are required.</span>
                 </div>
                 <div class="panel-body">
+                    <!--{{patient}}-->
                     <div class="row">
                         <form name="add_patient_form" id="add_patient_form" role="form" ng-submit="add();">
                             <div class="col-lg-6">
@@ -44,8 +45,9 @@
                                 <div class="form-group col-lg-12" style="padding:0px;">
                                     <div class="col-lg-8" style="padding:0px;" ng-class="{'has-error':add_patient_form.date_of_birth.$dirty && (add_patient_form.date_of_birth.$error.required || errordetail.date_of_birth)}">
                                         <label>Date Of Birth <span class="required">*</span></label>
+                                        <!--{{pattern}} {{date_min}} {{dob_date_max | date:'MM/dd/yyyy'}} {{default_date | date:'MM/dd/yyyy'}} {{ patient.date_of_birth | date:'yyyy.MM.dd' }}-->
                                         <datepicker date-format="{{pattern}}" date-min-limit="{{date_min}}" date-max-limit="{{dob_date_max | date:'MM/dd/yyyy'}}" date-set="{{default_date | date:'MM/dd/yyyy'}}">
-                                          <input class="form-control angular-datepicker-input" type="text" ng-model="patient.date_of_birth" name="date_of_birth" id="date_of_birth" ng-change="getAge()" required value="">
+                                          <input class="form-control angular-datepicker-input" type="text" ng-model="patient.date_of_birth" name="date_of_birth" id="date_of_birth" ng-change="getAge()" required value="{{ patient.date_of_birth }}">
                                         </datepicker>
                                         
                                         <label class="control-label" ng-show="add_patient_form.date_of_birth.$dirty && (add_patient_form.date_of_birth.$error.required || errordetail.date_of_birth)">Date Of Birth is required.</label>

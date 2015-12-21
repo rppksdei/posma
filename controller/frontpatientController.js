@@ -24,7 +24,7 @@ login = function(req, res, next){
                 //console.log(user);
                 //res.location('/questionnaire');
                 //res.send(201, null);
-                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id});
+                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id,'password':user.password});
             }
             return; 
         });
@@ -83,7 +83,7 @@ savePatientAns = function(req, res, next){
     // console.log(JSON.parse(req.body.postData)); //return;
     var patient_data = JSON.parse(req.body.postData);
     var return_val = {}; var patientQues = {}; var i = 0; var temp = new Array();
-    
+
     patientQues.created = Date.now();
     patientQues.patient = patient_data.patient;
     patientQues.questionnaire = patient_data.questionnaire; // this is notification id. need to update is_filled according to it.
@@ -180,4 +180,3 @@ module.exports = function(){
     this.savePatientAns = savePatientAns;
     this.getDetail = getDetail;
 }
-

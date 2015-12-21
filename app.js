@@ -38,6 +38,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// app.use('/',function(req, res, next) {
+//   var headerDetail = req.headers['auth-token'];
+//   if (typeof headerDetail != "undefined" && headerDetail == "test") {
+//     next();
+//   }
+//   else{
+//     res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+//   }
+  
+// });
 /*
 app.get('/superadmin',function(req, res, next) {
   //console.log('CLINIC');
@@ -185,7 +196,7 @@ require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express,supportCrossOriginScript);
 require('./routes/notification')(app,express,supportCrossOriginScript);
 require('./routes/pathway')(app, express, isClinicOrSurgeon, isClinicAdmin);
-require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin);
+require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin,supportCrossOriginScript);
 require('./routes/front_patient')(app,express, supportCrossOriginScript);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);

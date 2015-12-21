@@ -103,7 +103,8 @@ dateToTimeStamp = function(myDate){
     return dateTimeStamp;
 }
 updatePatientDetail = function(req, res){
-    //console.log(req.body);
+    console.log('\nreq.body = \n', req.body);
+    //console.log('date_of_birth = ',moment(req.body.date_of_birth, 'MM/DD/YYYY').unix());
     //Code to create JSON object data
     if(typeof req.body.post_patientData !== "undefined") {
         if(typeof req.body.post_patientData == "string") {
@@ -140,14 +141,18 @@ updatePatientDetail = function(req, res){
     if(typeof req.body.email != "undefined") {
         update_data.email = req.body.email;
     }
-    if(typeof req.body.date_of_birth != "undefined") {
-        update_data.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
+
+    if(typeof req.body.date_of_birth != "undefined"){
+        //update_data.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
+        update_data.date_of_birth = moment(req.body.date_of_birth, 'MM/DD/YYYY').unix();
     }
-    if(typeof req.body.dos != "undefined") {
-        update_data.dos = dateToTimeStamp(req.body.dos);
+    if(typeof req.body.dos != "undefined"){
+        update_data.dos = moment(req.body.dos, 'MM/DD/YYYY').unix();
+        //update_data.dos = dateToTimeStamp(req.body.dos);
     }
-    if(typeof req.body.dohd != "undefined") {
-        update_data.dohd = dateToTimeStamp(req.body.dohd);
+    if(typeof req.body.dohd != "undefined"){
+        update_data.dohd = moment(req.body.dohd, 'MM/DD/YYYY').unix();
+        //update_data.dohd = dateToTimeStamp(req.body.dohd);
     }
     if(typeof req.body.address1 != "undefined") {
         update_data.address1 = req.body.address1;
@@ -229,9 +234,12 @@ updatePatientDetail = function(req, res){
         update_data.dohd                = moment().unix();/*Date.now();*/
         update_data.time_of_discharge   = moment().unix();/*d.getTime();*/
     }
-    update_data.modified = Date.now();
-    //console.log(update_data);
-    //End of code to create object data
+
+    update_data.modified = moment().unix();/*Date.now(); */
+    //console.log('\n', moment().format('x')); // full 13 digits timestamp in ms
+    //console.log('\n', moment().format('X')); // 10 digits timestamp in s
+    //console.log('\n', moment().unix()); // 10 digits timestamp in s
+    //console.log('\nupdate_data ==',update_data); //return;
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){

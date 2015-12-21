@@ -5,9 +5,13 @@ getlisting = function(req, res, next){
     var search = {is_deleted:0};
     if (req.user.user_type == "1") {
         search.user_type = 0;
-    }
-    else if (req.user.user_type == "0"){
+    } else if (req.user.user_type == "0"){
         search.user_type = 2;
+        search.parent_id = req.user._id;
+    }
+    if(typeof req.query.conditions != 'undefined'){
+        search = JSON.parse(req.query.conditions);
+        console.log('---',search);
     }
     adminModel.getAllAdmin(search, function(err, adminDetail){
         if(err){
@@ -34,7 +38,6 @@ getAdminDetail = function(req, res){
                 res.json(return_val);
             }
             else{
-                console.log(data.password);
                 data.password = common.decrypt(data.password);
                 res.json(data);
             }
@@ -170,7 +173,6 @@ updateAdminDetail = function(req, res, emailService){
     }
     update_data.modified = Date.now();
     //End of code to create object data
-    //console.log(req.body);
     if(send_email == 1){
         var userDetails = {};
         var emailTemplate = 'update_details.html';

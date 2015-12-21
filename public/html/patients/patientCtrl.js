@@ -1,4 +1,4 @@
-myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert){
+myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert, moment){
     $scope.patients = [];
     $scope.success = "";
     $scope.patient = "";
@@ -16,6 +16,14 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     $scope.list = function(){
         Patient.getList().query({}, function(data){
             $scope.patients = data;
+            console.log(data);
+            console.log(data.length);
+            for (var i = 0; i < data.length; i++) {
+                $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
+                $scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+            }
+        console.log('$scope.patients = ',$scope.patients);
+            
             $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
         });    
     }
@@ -96,11 +104,14 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                 });
 
                 $scope.patient = data;
-                $scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
-                $scope.patient.dos              = $scope.timeStampToDate(data.dos);
-                $scope.patient.dohd             = $scope.timeStampToDate(data.dohd);
+            //console.log('data = ',data);
+                //console.log('dob = ', moment.unix(data.date_of_birth).format('MM/DD/YYYY'));
+                //$scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
                 //$scope.patient.surgery          = $scope.patient.surgery._id;
-                
+                $scope.patient.date_of_birth    = moment.unix(data.date_of_birth).format('MM/DD/YYYY');
+                $scope.patient.dos              = moment.unix(data.dos).format('MM/DD/YYYY');
+                $scope.patient.dohd             = moment.unix(data.dohd).format('MM/DD/YYYY');
+            console.log('data = ',$scope.patient);
             }
         });
     }
@@ -133,9 +144,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     $scope.getBMI = function(){
         var height = $scope.patient.height;
         var weight = $scope.patient.weight;
-        //console.log(dob);
         $scope.patient.bmi = $scope.calculateBmi(height, weight);
-        //console.log($scope.patient);
+        
         // var date = new Date(timeStamp);
         // var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
         // return dateString;
@@ -194,7 +204,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             Patient.update().save(update_object, function(data){
                 console.log(data);
                 if (data.success) {
-                    $scope.tableParams.data[index].dohd = data.update_data.dohd;
+                    $scope.tableParams.data[index].dohd = moment.unix(data.update_data.dohd).format('MM/DD/YYYY HH:mm:ss');
                     //$scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
                     Flash.create('success', 'Patient discharged status has been changed successfully.', 'alert alert-success');
                 }
