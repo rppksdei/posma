@@ -71,8 +71,14 @@ passport.use('local', new LocalStrategy(
             }
             if (!user){
                 return done(null, false, { message: 'Incorrect username or password.' });
+            } else {
+                if(user.is_active == 0){
+                    return done(null, false, { message: 'Your account is inactive, please contact administrator.'});
+                } else {
+                    return done(null,user);
+                }
             }
-            return done(null,user);
+            
         });
     }
 ));
