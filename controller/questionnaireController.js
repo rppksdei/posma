@@ -140,6 +140,7 @@ updateQuestionnaireDetail = function(req, res){
     //End of code to update clinic detail
 }
 
+
 module.exports = function(){
     this.getlisting = getlisting;
     this.getQuestionnaireDetail = getQuestionnaireDetail;
