@@ -100,13 +100,13 @@ angular.module('PosmaService', ['ngResource'])
         var serviceObj = {};
 
         serviceObj.getList = function(){
-            return $resource('/question/');  
+            return $resource('/question/');
         }
         serviceObj.addQuestion = function(){
-            return $resource('/question/add');  
+            return $resource('/question/add');
         }
         serviceObj.updateQuestion = function(){
-            return $resource('/question/update');  
+            return $resource('/question/update');
         }
         serviceObj.getDetail = function(){
             return $resource('/question/getDetail');  
@@ -146,7 +146,7 @@ angular.module('PosmaService', ['ngResource'])
             }
         };
     })
-    .factory('SweetAlert', [ function ( ) {
+    .factory('SweetAlert', [function( ){
         var swal = window.swal;
         //public methods
         var self = {
@@ -173,4 +173,3 @@ angular.module('PosmaService', ['ngResource'])
             return $filter('filter')(data, filter)
         }
     });
-
