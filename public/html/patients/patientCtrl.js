@@ -16,14 +16,13 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     $scope.list = function(){
         Patient.getList().query({}, function(data){
             $scope.patients = data;
-            console.log(data);
-            console.log(data.length);
+            //console.log(data);
+            //console.log(data.length);
             for (var i = 0; i < data.length; i++) {
                 $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
                 $scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
             }
         console.log('$scope.patients = ',$scope.patients);
-            
             $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
         });    
     }
@@ -62,9 +61,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
-            console.log(patientData);
-        Patient.addPatient().save(patientData, function(data){
-            console.log(data);
+        //console.log('$scope.patient =============\n ',$scope.patient); return;
+            Patient.addPatient().save(patientData, function(data){
             if(data.success){
                 if($scope.patient._id){
                     Flash.create('success', 'Patient has been updated successfully.', 'alert alert-success');
@@ -87,34 +85,35 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
             }
         });
     }
+    
     $scope.edit = function(){
         $scope.error = [];
         var patientId = $routeParams.id;
         $scope.patient.neoadjuvant_chemotherapy = 'na';
         $scope.patient.tumor_laterality = 'na';
-        Patient.getDetailId().save({'id': patientId}, function(data){
+        Patient.getDetailId().save({'id': patientId,'field':{'dohd':0,'time_of_discharge':0}}, function(data){
             if(data){
                 Surgery.getDetail().query({}, function(sdata){
                     $scope.surgeries = sdata;
                     var surgery_id = $scope.patient.surgery._id;
                     Patient.getDetail().query({'surgery': surgery_id}, function(pdata){
                         $scope.pathways = pdata;
-                        // console.log(pdata); console.log($scope.patient);
                     });
                 });
-
+            console.log('data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> \n',data);
+            
                 $scope.patient = data;
-            //console.log('data = ',data);
                 //console.log('dob = ', moment.unix(data.date_of_birth).format('MM/DD/YYYY'));
                 //$scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
                 //$scope.patient.surgery          = $scope.patient.surgery._id;
                 $scope.patient.date_of_birth    = moment.unix(data.date_of_birth).format('MM/DD/YYYY');
                 $scope.patient.dos              = moment.unix(data.dos).format('MM/DD/YYYY');
-                $scope.patient.dohd             = moment.unix(data.dohd).format('MM/DD/YYYY');
-            console.log('data = ',$scope.patient);
+                //$scope.patient.dohd             = moment.unix(data.dohd).format('MM/DD/YYYY');
+            console.log('$scope.patient .............................\n ',$scope.patient);
             }
         });
     }
+    
     $scope.timeStampToDate = function(timeStamp){
         var date = new Date(timeStamp);
         var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
