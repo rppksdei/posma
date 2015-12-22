@@ -22,14 +22,14 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
     /*code to make time dropdown*/
     $scope.dropDownTimeArr = new Array();
     $p = 0;
-    for($i=5;$i<24;$i++){
+    for($i=1;$i<24;$i++){
         $j=0;
         while($j<59){
             $scope.dropDownTimeArr[$p] = {};
             $scope.dropDownTimeArr[$p].id = $i+":"+$j;
             $scope.dropDownTimeArr[$p].label = ($i>9?""+$i:"0"+$i)+":"+($j>9?""+$j:"0"+$j);
             $p++;
-            $j += 2;
+            $j += 30;
         }
     }
     $scope.selectedTime = [];
