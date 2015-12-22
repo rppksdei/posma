@@ -24,15 +24,17 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
             // console.log(query);
             // var pdd4 = moment.utc(patientsData[currentIndex].dohd, 'X').format();
             var tempVals = new Array(); var cnt = 0; 
+
             for(var j=0; j<qdata.length; j++){
+                //console.log('------------',qdata[j]);
                 var tempObj = {};
                 if(qdata[j].type=='single'){
                     // var execution_time = addHours(pdd, qdata[j].execute_time);
                     var execution_time = moment(pdd).add(qdata[j].execute_time, 'h').unix();//addHours
                     // var nd = moment.utc(execution_time, 'X').format('YYYY-MM-DD');
                      console.log('\n-single execution_time = ',execution_time);
-		     console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
-		     console.log('\n-endTimeStamp = ',query.endTimeStamp);
+		              console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
+		              console.log('\n-endTimeStamp = ',query.endTimeStamp);
                     //if(execution_time < query.endTimeStamp){
                     if((execution_time >= query.currentTimeStamp) && (execution_time < query.endTimeStamp)){
                         tempObj.datetime 			= execution_time;
@@ -63,12 +65,15 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     */
                     var is_time_slot_in = false;
                     if(qdata[j].recur_type == 'd'){
+                        //console.log("currentTimeStamp =" ,query.currentTimeStamp,"recur_execut_date_ts = ",recur_execut_date_ts, "recur_execut_end_date_ts = ",recur_execut_end_date_ts);
                         if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
+                            //console.log('here');
                             if(qdata[j].time_slots.length > 0){
                                 for (var k = 0; k < qdata[j].time_slots.length; k++) {
                                     var newD = moment(current_date.format('YYYY-MM-DD')+' '+qdata[j].time_slots[k]).unix();
-                                    // console.log('\nnewD...daily',newD);
+                                    //console.log('\nnewD...daily',newD);
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
+                                        //console.log('inside');
                                         is_time_slot_in = true;
                                         tempObj.datetime = newD;
                                         break;
@@ -84,7 +89,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                                 }
                             }
                         }
-                    }else if(qdata[j].recur_type == 'w'){
+                    }/*else if(qdata[j].recur_type == 'w'){
                         if(qdata[j].days.indexOf(current_day) >= 0){
                             if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
                                 if(qdata[j].time_slots.length > 0){
@@ -108,7 +113,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
                 if((j+1)==qdata.length){
                     // console.log('\ntempVals-----> ',tempVals);

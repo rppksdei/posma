@@ -29,7 +29,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             $scope.dropDownTimeArr[$p].id = $i+":"+$j;
             $scope.dropDownTimeArr[$p].label = ($i>9?""+$i:"0"+$i)+":"+($j>9?""+$j:"0"+$j);
             $p++;
-            $j += 30;
+            $j += 2;
         }
     }
     $scope.selectedTime = [];
@@ -56,7 +56,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
         $scope.questionnaire.time_slots = time_slots;
         Questionnaire.add().save($scope.questionnaire, function(data){
            if (data.success) {
-                Flash.create('success', 'Questionnaire has been saved successfully.', 'alert alert-success');
+               Flash.create('success', 'Questionnaire has been saved successfully.', 'alert alert-success');
                 $location.path('/questionnaires');
             } else{
                 if (data.error.errors){
