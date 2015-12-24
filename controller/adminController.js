@@ -11,7 +11,6 @@ getlisting = function(req, res, next){
     }
     if(typeof req.query.conditions != 'undefined'){
         search = JSON.parse(req.query.conditions);
-        console.log('---',search);
     }
     adminModel.getAllAdmin(search, function(err, adminDetail){
         if(err){

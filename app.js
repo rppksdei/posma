@@ -26,6 +26,26 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
   console.log('Database connected');
 });
+/*
+
+var moment = require('moment-timezone');
+console.log('--------My System Time---------',new Date().toString());
+var dt = new Date().toString();
+
+console.log('-------America/Los_Angeles----------',Date.parse(moment(new Date()).format()),'----------------------');
+
+//moment().tz("America/Los_Angeles").format();
+
+console.log('-------America/Los_Angeles----------',moment(new Date()).tz("America/Los_Angeles").format(),'----------------------');
+console.log('-------America/Los_Angeles----------',Date.parse(moment(new Date()).tz("America/Los_Angeles").format()),'----------------------');
+
+          */
+/* var time = require('time');
+var a = new time.Date(new Date().toString());
+console.log('MY SYSTEM',new Date());
+a.setTimezone('America/Los_Angeles');
+console.log('America/Los_Angeles', a.toString());
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -84,8 +104,7 @@ isLoggedIn = function (req, res, next) {
   checksession(req, res,function(response){
     if(response){
       next();
-    }
-    else{
+    } else{
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
     }
   });
@@ -96,13 +115,10 @@ isSuperAdmin = function (req, res, next) {
     if(response){
       if (req.user.user_type == 1) {
         next();
-      }
-      else{
+      } else{
         res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
       }
-      
-    }
-    else{
+    } else{
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
     }
   });
@@ -113,13 +129,10 @@ isClinicAdmin = function (req, res, next) {
     if(response){
       if (req.user.user_type == 0) {
         next();
-      }
-      else{
+      } else{
         res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
       }
-      
-    }
-    else{
+    } else{
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
     }
   });
