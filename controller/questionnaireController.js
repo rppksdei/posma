@@ -1,7 +1,5 @@
 var questionnaireModel = require("./../model/questionnaireModel");
 getlisting = function(req, res, next){
-    var search = {is_deleted:0};
-    var sort_order = {created: -1 };
     var search = {is_deleted:0,clinic:req.user._id};
     var sort_order = {created: -1 };
     if(typeof req.query.search_cre != "undefined"){
@@ -142,7 +140,6 @@ updateQuestionnaireDetail = function(req, res){
     }
     //End of code to update clinic detail
 }
-
 module.exports = function(){
     this.getlisting = getlisting;
     this.getQuestionnaireDetail = getQuestionnaireDetail;
