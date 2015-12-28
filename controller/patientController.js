@@ -18,8 +18,9 @@ getlisting = function(req, res, next){
 }
 getPatientDetail = function(req, res){
     var patient_id = req.body.id;
-    var search_patient = {_id:patient_id};
-    patientModel.getPatient(search_patient, function(err, data){
+    var search_patient  = {_id:patient_id};
+    var fields          = req.body.field;
+    patientModel.getPatient(search_patient, fields, function(err, data){
         var return_val = {};
         if (err){
             return_val.error = err;
@@ -64,10 +65,13 @@ addPatient = function(req, res, next){
             if (data.success) {
                 //add Admin cum clinic
                 var patientDetail = req.body;
-                patientDetail.created = Date.now();
+                patientDetail.created = moment().unix();
+                //patientDetail.created = Date.now();
                 patientDetail.clinic = req.user._id;
-                patientDetail.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
-                patientDetail.dos = dateToTimeStamp(req.body.dos);
+                //patientDetail.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
+                patientDetail.date_of_birth = moment(req.body.date_of_birth, 'MM/DD/YYYY').unix();
+                patientDetail.dos = moment(req.body.dos, 'MM/DD/YYYY').unix();
+                //patientDetail.dos = dateToTimeStamp(req.body.dos);
                 //patientDetail.dohd = dateToTimeStamp(req.body.dohd);
                 patientDetail.is_active = 1;
                 //console.log(patientDetail);
@@ -103,7 +107,7 @@ dateToTimeStamp = function(myDate){
     return dateTimeStamp;
 }
 updatePatientDetail = function(req, res){
-    console.log('\nreq.body = \n', req.body);
+    console.log('\nreq.body +++++++++++++++++++++++++++++++++++++ \n', req.body);
     //console.log('date_of_birth = ',moment(req.body.date_of_birth, 'MM/DD/YYYY').unix());
     //Code to create JSON object data
     if(typeof req.body.post_patientData !== "undefined") {
@@ -239,7 +243,9 @@ updatePatientDetail = function(req, res){
     //console.log('\n', moment().format('x')); // full 13 digits timestamp in ms
     //console.log('\n', moment().format('X')); // 10 digits timestamp in s
     //console.log('\n', moment().unix()); // 10 digits timestamp in s
-    //console.log('\nupdate_data ==',update_data); //return;
+
+    console.log('\nupdate_data ----------------------------------------- \n',update_data); //return;
+    
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){

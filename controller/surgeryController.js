@@ -34,7 +34,7 @@ getSurgeryDetail = function(req, res){
             res.json(return_val);
         }else{
             if (data == null) {
-                return_val.error = "surgery doesn't exists";
+                return_val.error = "Surgery doesn't exist.";
                 res.json(return_val);
             }
             else{
@@ -55,7 +55,7 @@ addSurgery = function(req, res){
             res.json(return_val);
         }
         else{
-            return_val.success = "Surgery added Successfully";
+            return_val.success = "Surgery has been added successfully.";
             res.json(return_val);
         }
     });
@@ -81,7 +81,6 @@ updateSurgeryDetail = function(req, res){
     }
     update_data.modified = Date.now();
     //End of code to create object data
-    
     // Code to update clinic Details
     if(typeof req.body._id != "undefined"){
         var search_criteria = {};
@@ -95,7 +94,7 @@ updateSurgeryDetail = function(req, res){
                 res.json(return_val);
             }
             else{
-                return_data.success = "Surgery updated Successfully";
+                return_data.success = "Surgery has been updated successfully.";
                 res.json(return_data);
             }
         });

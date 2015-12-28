@@ -22,14 +22,15 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
     /*code to make time dropdown*/
     $scope.dropDownTimeArr = new Array();
     $p = 0;
-    for($i=1;$i<24;$i++){
+    for($i=00;$i<24;$i++){
         $j=0;
         while($j<59){
             $scope.dropDownTimeArr[$p] = {};
             $scope.dropDownTimeArr[$p].id = $i+":"+$j;
             $scope.dropDownTimeArr[$p].label = ($i>9?""+$i:"0"+$i)+":"+($j>9?""+$j:"0"+$j);
             $p++;
-            $j += 2;
+            // $j += 2;
+            $j += 15;
         }
     }
     $scope.selectedTime = [];
@@ -78,7 +79,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
                 for(var ts = 0; ts < $scope.questionnaire.time_slots.length; ts++){
                     $scope.selectedTime[ts] = {time_slot:$scope.questionnaire.time_slots[ts]};
                 }
-                
             });
         } else {
             for(i=0;i<$scope.selectedTime.length;i++){
@@ -101,7 +101,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
         if(!$scope.ques_quesnaire){
             Questionnaire.getDetail().save({'_id':$routeParams.id}, function(data) {
                 $scope.ques_quesnaire = data;
-
                 console.log($scope.ques_quesnaire.question);
                 if($scope.ques_quesnaire.question){
                     for(var k=0; k< $scope.ques_quesnaire.question.length; k++){
@@ -128,7 +127,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
                     });
                 }*/
             });
-        } else { 
+        } else {
             var questionnairedata = {};
             questionnairedata._id = $routeParams.id;
             var cnt = 0;
@@ -151,8 +150,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
     }
     //$scope.selectQuestion = function(qindex){
     $scope.selectQuestion = function(ques_id){
-        //$scope.selected_questions.push($scope.questionnair_ques[qindex]);
-        //$scope.questionnair_ques.splice(qindex,1);
         var qq = 0;
         for(qq; qq < $scope.questionnair_ques.length; qq++){
             if($scope.questionnair_ques[qq]._id == ques_id){
@@ -195,7 +192,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
                 }
             }
         }
-        console.log($scope.selected_questions);
     };
     $scope.changeStatus = function(index, existingStatus) {
         var newStatus = 'inactivate';
@@ -228,7 +224,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             });
         });
     };
-    $scope.deleteQuestionnaire = function(id,qname) {
+    $scope.deleteQuestionnaire = function(id,qname){
         SweetAlert.swal({
         title: "Confirmation",
         text: "Are you sure you want to delete '"+qname+"'?",
