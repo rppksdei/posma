@@ -21,11 +21,7 @@ login = function(req, res, next){
             // Should not cause any errors
             if (err){
                 next(err);
-            }
-            else{
-                //console.log(user);
-                //res.location('/questionnaire');
-                //res.send(201, null);
+            } else{
                 res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id,'password':user.password});
             }
             return; 
@@ -55,8 +51,7 @@ userCookieLogin = function(req, res, next){
 checkloggedin = function(req, res, next){
   if(!req.isAuthenticated()){
     res.status(200).json( { 'code':401, 'error':'Unauthorized'} );
-  }
-  else {
+  } else {
     res.status(200).json(req.user);
   }  
 }
@@ -86,18 +81,25 @@ setQuestiondata = function(key,qData, fn){
             quData.ques_name        = questionDetail.name;
             quData.answer_type      = questionDetail.answer_type;
             quData.gender           = questionDetail.gender;
+
             if(questionDetail.answer_type == 'text'){
+
                 quData.max_length       = questionDetail.max_length;
+
             } else if(questionDetail.answer_type == 'number'){
+
                 quData.min_range        = questionDetail.min_range;
                 quData.max_range        = questionDetail.max_range;
+
             } else {
                 var cntr = 0;
                 while(cntr < questionDetail.answer.length){
                     if(questionDetail.answer[cntr]._id == qData.answer){
+
                         quData.answer_name = questionDetail.answer[cntr].name;
                         quData.answer_out_of_range = questionDetail.answer[cntr].out_of_range;
                         break;
+
                     }
                     cntr++;
                 }
@@ -107,31 +109,31 @@ setQuestiondata = function(key,qData, fn){
     });
 }
 
-setQuestionAnswers = function(req, res, next){
-    var search_question = {_id:key};
+setQuestionAnswers = function(key,ansData,fun){
+    var search_question = {_id:key}; 
     questionModel.getQuestion(search_question, function(err, quesdata){
         if(quesdata){
             qData.question_name = quesdata.name;
             /**** to get all questions and selected answer information to store ********/
-            // qData.ques_name        = quesdata.name;
-            // qData.answer_type      = quesdata.answer_type;
-            // qData.gender           = quesdata.gender;
-            // var cntr = 0;
-            // var answers_selected = new Array();
-            // while(cntr < quesdata.answer.length){
-            //     for (sel_ans in patient_data.ansData[key]) {
-            //         answers_selected[sel_ans] = {};
-            //         if(quesdata.answer[cntr]._id == sel_ans){
-            //             answers_selected[sel_ans].answer_name = quesdata.answer[cntr].name;
-            //             answers_selected[sel_ans].answer_out_of_range = quesdata.answer[cntr].out_of_range;
-            //         }
-            //     }
-            //     cntr++;
-            // }
-            // qData.selected_answers = answers_selected;
+            qData.ques_name        = quesdata.name;
+            qData.answer_type      = quesdata.answer_type;
+            qData.gender           = quesdata.gender;
+            var cntr = 0;
+            var answers_selected = new Array();
+            while(cntr < quesdata.answer.length){
+                for (sel_ans in ansData[key]) {
+                    answers_selected[sel_ans] = {};
+                    if(quesdata.answer[cntr]._id == sel_ans){
+                        answers_selected[sel_ans].answer_name = quesdata.answer[cntr].name;
+                        answers_selected[sel_ans].answer_out_of_range = quesdata.answer[cntr].out_of_range;
+                    }
+                }
+                cntr++;
+            }
+            qData.selected_answers = answers_selected;
             /**** END OF to get all questions and selected answer information to store ********/
         }
-       
+        fun(errr,answers_selected);
     });
 }
 
@@ -142,16 +144,10 @@ savePatientAns = function(req, res, next){
     var patient_full_data = JSON.parse(req.body.postFullData);
     var patient_data = patient_full_data.postData;
     var admin_alerts = patient_full_data.admin_alerts;
-    //console.log('---------ADMIN ALERTS---------',admin_alerts,'-----ADMIN ALERTS-----');
-    // var return_val = {}; 
-    // var patientQues = {}; 
-    // var i = 0; 
-    // var temp = new Array();
+
     patientModel.getPatient({'_id':patient_data.patient},function(err, user) {
         if (err) {
-            
-        } else{
-            //console.log('---PATIENT --',user,'----PATIENT----');
+        } else {
             admin_alerts.patient_first_name     = user.first_name;
             admin_alerts.patient_last_name      = user.last_name;
             admin_alerts.patient_email          = user.email;
@@ -177,9 +173,7 @@ savePatientAns = function(req, res, next){
             patientQues.clinic_email            = user.clinic.email;
             patientQues.clinic_username         = user.clinic.username;
             patientQues.clinic_mobile           = user.clinic.mobile;
-
         }
-        //console.log('---------NEW ADMIN ALERTS---------',admin_alerts,'-----NEW ADMIN ALERTS-----');
     });
 
     patientQues.created = Date.now();
@@ -198,24 +192,32 @@ savePatientAns = function(req, res, next){
         qData.question      = key;
         qData.question_type = 0;
         qData.answer        = patient_data.quesData[key];
-        setQuestiondata(key,qData,function(errrtu, quReturnData){
+        /*setQuestiondata(key,qData,function(errQues, quReturnData){
+
             qData.ques_name = quReturnData.ques_name;
             qData.answer_type = quReturnData.answer_type;
             qData.gender = quReturnData.gender;
             qData.answer_name = quReturnData.answer_name;
             qData.answer_out_of_range = quReturnData.answer_out_of_range;
-        });
-         temp[i] = qData;
+            temp[i] = qData;
+
+        });*/
+        temp[i] = qData;
         //patientQues.questions = temp;
         i++;
     }
-    //console.log('------TEMP----',temp);
+    //console.log('------TEMP----',temp,'----------------');
     if(patient_data.ansData!=null){
-        // console.log('in ansdata >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
         for(key in patient_data.ansData){
             var qData = {};
             qData.question = key;
-            //setQuestionAnswers
+            /*setQuestionAnswers(key,patient_data.ansData,function(errAns, quasReturnData){
+                qData.ques_name = quasReturnData.ques_name;
+                qData.answer_type = quasReturnData.answer_type;
+                qData.gender = quasReturnData.gender;
+                qData.answer_name = quasReturnData.answer_name;
+                qData.answer_out_of_range = quasReturnData.answer_out_of_range;
+            });*/
             var ans_keys = new Array(); var y = 0;
             for (key2 in patient_data.ansData[key]) {
                 ans_keys[y++] = key2;
@@ -224,17 +226,18 @@ savePatientAns = function(req, res, next){
             temp[i++] = qData;
         }
     }
+    //console.log(patientQues);
     patientQues.questions = temp;
-    console.log(patientQues);
+    //console.log(patientQues);
     patientAnsModel.addPatientAns(patientQues, function(err, data){
         if (err) {
             if (err) {
                 res.json(err);
-            } else{
+            } else {
                 return_val.error = err;
                 res.json(return_val);
             }
-        } else{
+        } else {
             console.log('admin_alerts',admin_alerts);
             if(typeof admin_alerts != "undefined"){
                 for(alert in admin_alerts){
@@ -256,7 +259,7 @@ savePatientAns = function(req, res, next){
                     if (err) {
                         res.json(err);
                     } else{
-                        return_val.success = "Patient Answers added Successfully";
+                        return_val.success = "Answers has been saved successfully.";
                         res.json(return_val);
                     }
                 });
