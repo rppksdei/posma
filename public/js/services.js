@@ -96,6 +96,16 @@ angular.module('PosmaService', ['ngResource'])
         }
         return serviceObj;
     })
+    .factory('Alerts', function($resource){
+        var serviceObj = {};
+        // serviceObj.getDetail = function(){
+        //     return $resource('/questionnaire/getDetail');
+        // }
+        serviceObj.list = function(){
+            return $resource('/alerts/');
+        }
+        return serviceObj;
+    })
     .factory('Questions', function($resource){
         var serviceObj = {};
 

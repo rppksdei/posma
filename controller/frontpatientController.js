@@ -144,22 +144,23 @@ savePatientAns = function(req, res, next){
     var patient_full_data = JSON.parse(req.body.postFullData);
     var patient_data = patient_full_data.postData;
     var admin_alerts = patient_full_data.admin_alerts;
+    //var adminAlert = {};
 
     patientModel.getPatient({'_id':patient_data.patient},function(err, user) {
         if (err) {
         } else {
-            admin_alerts.patient_first_name     = user.first_name;
-            admin_alerts.patient_last_name      = user.last_name;
-            admin_alerts.patient_email          = user.email;
-            admin_alerts.patient_username       = user.username;
-            admin_alerts.patient_mobile         = user.mobile;
-            admin_alerts.patient_surgery        = user.surgery.name;
-            admin_alerts.clinic_name            = user.clinic.clinic_name;
-            admin_alerts.clinic_first_name      = user.clinic.first_name;
-            admin_alerts.clinic_last_name       = user.clinic.last_name;
-            admin_alerts.clinic_email           = user.clinic.email;
-            admin_alerts.clinic_username        = user.clinic.username;
-            admin_alerts.clinic_mobile          = user.clinic.mobile;
+            /*adminAlert.patient.patient_first_name     = user.first_name;
+            adminAlert.patient.patient_last_name      = user.last_name;
+            adminAlert.patient.patient_email          = user.email;
+            adminAlert.patient.patient_username       = user.username;
+            adminAlert.patient.patient_mobile         = user.mobile;
+            adminAlert.patient.patient_surgery        = user.surgery.name;
+            adminAlert.patient.clinic_name            = user.clinic.clinic_name;
+            adminAlert.patient.clinic_first_name      = user.clinic.first_name;
+            adminAlert.patient.clinic_last_name       = user.clinic.last_name;
+            adminAlert.patient.clinic_email           = user.clinic.email;
+            adminAlert.patient.clinic_username        = user.clinic.username;
+            adminAlert.patient.clinic_mobile          = user.clinic.mobile;*/
 
             patientQues.patient_first_name      = user.first_name;
             patientQues.patient_last_name       = user.last_name;
@@ -238,10 +239,13 @@ savePatientAns = function(req, res, next){
                 res.json(return_val);
             }
         } else {
-            console.log('admin_alerts',admin_alerts);
+            
             if(typeof admin_alerts != "undefined"){
+                console.log(admin_alerts,'\n');
                 for(alert in admin_alerts){
+                    //admin_alerts[alert] = adminAlert.patient;
                     admin_alerts[alert].created = Date.now();
+                    console.log('------------------',admin_alerts[alert]);
                     alertModel.addAlerts(admin_alerts[alert], function(erralerts, dataalerts){
                         /*if (err) {
                             res.json(err);
@@ -251,19 +255,22 @@ savePatientAns = function(req, res, next){
                         }*/
                     });
                 }
-                var search_criteria = {_id : patient_data.notification_id};
-                var update_data     = {is_filled:1};
-                notificationModel.updateNotification(search_criteria, update_data, function(err, data){
-                    var return_data = {};
-                    var message = "";
-                    if (err) {
-                        res.json(err);
-                    } else{
-                        return_val.success = "Answers has been saved successfully.";
-                        res.json(return_val);
-                    }
-                });
             }
+            console.log('-------------search_criteria',patient_data);
+            var search_criteria = {_id : patient_data.notification_id};
+            console.log(search_criteria);
+            var update_data     = {is_filled:1};
+            notificationModel.updateNotification(search_criteria, update_data, function(err, data){
+                var return_data = {};
+                var message = "";
+                if (err) {
+                    res.json(err);
+                } else{
+                    return_val.success = "Answers has been saved successfully.";
+                    res.json(return_val);
+                }
+            });
+            
             /* update notification table 'is_filled' value */
         }
     });

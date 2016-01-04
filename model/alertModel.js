@@ -18,4 +18,7 @@ Alert.addAlerts = function(submit_data, next){
     var add_alert = new Alert(submit_data);
     add_alert.save(next);
 }
+Alert.getList = function(search_criteria, next){
+    Alert.find(search_criteria, next).populate('patient').populate('question');
+}
 module.exports = Alert;

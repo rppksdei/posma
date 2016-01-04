@@ -1,11 +1,11 @@
-myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Questions, myService, $http, $location ,Flash, orderByFilter, ngTableParams, $rootScope, $routeParams, SweetAlert){
+myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Questions, myService, $http, $location, Flash, orderByFilter, ngTableParams, $rootScope, $routeParams, SweetAlert){
     $scope.success = "";
     $scope.ass_quqes = {};
     $scope.listAdmin = "";
     $scope.errordetail = [];
     $scope.form_heading = 'Add Questionnaire';
     $scope.sel_days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    var flag = '';
+    var flag = ''; var rec_cnt = 10;
     $scope.questionnair_ques = [];
     $scope.selected_questions = [];
     $scope.selected_ques={};
@@ -14,7 +14,6 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
     $scope.ques_quesnaire = '';
     $scope.questionnaires = {};
     $scope.TimeDropdownmodel = [];
-    var rec_cnt = 10;
     $scope.questionnaire.recur_type = 'd';
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
@@ -34,7 +33,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
         }
     }
     $scope.selectedTime = [];
-    $scope.TimeDropdownTexts = {buttonDefaultText: 'Select time slots'};
+    $scope.TimeDropdownTexts = {buttonDefaultText: 'Select time slots.'};
     $scope.TimeDropdownsettings = {
         scrollableHeight: '200px',
         scrollable: true, 
@@ -46,6 +45,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
             return itemText;
         }
     };
+
     /*End of code */
     $scope.selectedSingleTime = [];
     //End of code to make time dropdown

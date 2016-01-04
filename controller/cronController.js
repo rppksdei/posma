@@ -70,7 +70,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                             //console.log('here');
                             if(qdata[j].time_slots.length > 0){
                                 for (var k = 0; k < qdata[j].time_slots.length; k++) {
-                                    var newD = moment(current_date.format('YYYY-MM-DD')+' '+qdata[j].time_slots[k]).unix();
+                                    var newD = moment(current_date.format('YYYY-MM-DD')+' '+qdata[j].time_slots[k],'MM/DD/YYYY').unix();
                                     //console.log('\nnewD...daily',newD);
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
                                         //console.log('inside');

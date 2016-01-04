@@ -41,6 +41,7 @@ Notification.add = function(submit_data, next){
 }
 
 Notification.updateNotification = function(search_criteria, new_data, next){
+    console.log('HERE');
     Notification.update(search_criteria, {$set:new_data}, next);
 }
 
