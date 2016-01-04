@@ -113,6 +113,7 @@ updateQuestionnaireDetail = function(req, res){
         var search_criteria = {};
         var search_criteria = {_id:req.body._id};
         //code
+        console.log(req.user);
         update_data.clinic = req.user._id;
         questionnaireModel.updateQuestionnaire(search_criteria, update_data, function(err, data){
             var return_data = {};
