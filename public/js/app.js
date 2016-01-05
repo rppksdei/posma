@@ -20,6 +20,7 @@ myapp.config(['$routeProvider',
             .when('/dashboard',{
                 templateUrl:'/html/dashboard/dashboard.html',
                 controller:'dashboardCtrl',
+                flag:'listalerts',
                 resolve:{'logged_in':checkloggedIn}
             })
             .when('/edit_profile',{

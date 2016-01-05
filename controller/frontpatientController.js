@@ -73,33 +73,49 @@ getDetail = function(req, res, next){
     });
 }
 
-setQuestiondata = function(key,qData, fn){
+setQuestiondata = function(admin_alert, fn){
     var quData = {};
-    questionModel.getQuestion({'_id':key}, function(err, questionDetail) {
+    questionModel.getQuestion({'_id':admin_alert.question}, function(err, questionDetail) {
         if (err) {
+
         } else{
             quData.ques_name        = questionDetail.name;
             quData.answer_type      = questionDetail.answer_type;
             quData.gender           = questionDetail.gender;
-
-            if(questionDetail.answer_type == 'text'){
-
-                quData.max_length       = questionDetail.max_length;
-
-            } else if(questionDetail.answer_type == 'number'){
-
+            quData.question         = admin_alert.question;
+            quData.multians         = admin_alert.multians;
+            quData.questionnaire    = admin_alert.questionnaire;
+            quData.datetime         = admin_alert.datetime;
+            quData.clinic           = admin_alert.clinic;
+            /*if(send_serach.anstype == 'text'){
+                 quData.max_length       = questionDetail.max_length;
+            } else if(send_serach.anstype == 'number'){
                 quData.min_range        = questionDetail.min_range;
                 quData.max_range        = questionDetail.max_range;
-
+            } else */if(admin_alert.anstype == 'cb') {
+                var sel_cntr = 0;
+                answer_nameArr = new Array();
+                answer_out_of_rangeArr = new Array();
+                while(sel_cntr < admin_alert.multians.length){
+                    var cntr = 0;
+                    while(cntr < questionDetail.answer.length){
+                        if(questionDetail.answer[cntr]._id == admin_alert.multians[sel_cntr]){
+                            answer_nameArr[sel_cntr]           = questionDetail.answer[cntr].name;
+                            answer_out_of_rangeArr[sel_cntr]   = questionDetail.answer[cntr].out_of_range;
+                        }
+                        cntr++;
+                    }
+                    quData.answer_name          = answer_nameArr;
+                    quData.answer_out_of_range  = answer_out_of_rangeArr;
+                    sel_cntr++;
+                }
             } else {
                 var cntr = 0;
                 while(cntr < questionDetail.answer.length){
-                    if(questionDetail.answer[cntr]._id == qData.answer){
-
-                        quData.answer_name = questionDetail.answer[cntr].name;
+                    if(questionDetail.answer[cntr]._id == admin_alert.ans){
+                        quData.answer_name         = questionDetail.answer[cntr].name;
                         quData.answer_out_of_range = questionDetail.answer[cntr].out_of_range;
                         break;
-
                     }
                     cntr++;
                 }
@@ -140,131 +156,97 @@ setQuestionAnswers = function(key,ansData,fun){
 savePatientAns = function(req, res, next){
     // var patient_data = JSON.parse(req.body.postData);
     var return_val = {}; var patientQues = {}; var i = 0; var temp = new Array();
-
     var patient_full_data = JSON.parse(req.body.postFullData);
+    console.log('patient_full_data:',patient_full_data);
     var patient_data = patient_full_data.postData;
     var admin_alerts = patient_full_data.admin_alerts;
 
-    patientModel.getPatient({'_id':patient_data.patient},function(err, user) {
-        if (err) {
-        } else {
-            admin_alerts.patient_first_name     = user.first_name;
-            admin_alerts.patient_last_name      = user.last_name;
-            admin_alerts.patient_email          = user.email;
-            admin_alerts.patient_username       = user.username;
-            admin_alerts.patient_mobile         = user.mobile;
-            admin_alerts.patient_surgery        = user.surgery.name;
-            admin_alerts.clinic_name            = user.clinic.clinic_name;
-            admin_alerts.clinic_first_name      = user.clinic.first_name;
-            admin_alerts.clinic_last_name       = user.clinic.last_name;
-            admin_alerts.clinic_email           = user.clinic.email;
-            admin_alerts.clinic_username        = user.clinic.username;
-            admin_alerts.clinic_mobile          = user.clinic.mobile;
-
-            patientQues.patient_first_name      = user.first_name;
-            patientQues.patient_last_name       = user.last_name;
-            patientQues.patient_email           = user.email;
-            patientQues.patient_username        = user.username;
-            patientQues.patient_mobile          = user.mobile;
-            patientQues.patient_surgery         = user.surgery.name;
-            patientQues.clinic_name             = user.clinic.clinic_name;
-            patientQues.clinic_first_name       = user.clinic.first_name;
-            patientQues.clinic_last_name        = user.clinic.last_name;
-            patientQues.clinic_email            = user.clinic.email;
-            patientQues.clinic_username         = user.clinic.username;
-            patientQues.clinic_mobile           = user.clinic.mobile;
-        }
-    });
 
     patientQues.created = Date.now();
     patientQues.patient = patient_data.patient;
-    patientQues.questionnaire = patient_data.questionnaire; 
-    var sel_fields = {'recur_type':1,'name':1};
-    // questionnaireModel.getQuestionnaireinfo({'_id':patientQues.questionnaire},sel_fields, function(err, questionnaireDetail) {
-    //     if (err) {
-    //     } else{
-    //         //console.log('------------------',questionnaireDetail,'------------------------');
-    //     }
-    // });
-    for (key in patient_data.quesData) {
-        //getQuestionDetail(patient_data.quesData, i, key);
-        var qData = {};
-        qData.question      = key;
-        qData.question_type = 0;
-        qData.answer        = patient_data.quesData[key];
-        /*setQuestiondata(key,qData,function(errQues, quReturnData){
-
-            qData.ques_name = quReturnData.ques_name;
-            qData.answer_type = quReturnData.answer_type;
-            qData.gender = quReturnData.gender;
-            qData.answer_name = quReturnData.answer_name;
-            qData.answer_out_of_range = quReturnData.answer_out_of_range;
-            temp[i] = qData;
-
-        });*/
-        temp[i] = qData;
-        //patientQues.questions = temp;
-        i++;
-    }
-    //console.log('------TEMP----',temp,'----------------');
-    if(patient_data.ansData!=null){
-        for(key in patient_data.ansData){
-            var qData = {};
-            qData.question = key;
-            /*setQuestionAnswers(key,patient_data.ansData,function(errAns, quasReturnData){
-                qData.ques_name = quasReturnData.ques_name;
-                qData.answer_type = quasReturnData.answer_type;
-                qData.gender = quasReturnData.gender;
-                qData.answer_name = quasReturnData.answer_name;
-                qData.answer_out_of_range = quasReturnData.answer_out_of_range;
-            });*/
-            var ans_keys = new Array(); var y = 0;
-            for (key2 in patient_data.ansData[key]) {
-                ans_keys[y++] = key2;
-            }
-            qData.answer_opts = ans_keys;
-            temp[i++] = qData;
-        }
-    }
-    //console.log(patientQues);
-    patientQues.questions = temp;
-    //console.log(patientQues);
-    patientAnsModel.addPatientAns(patientQues, function(err, data){
+    patientQues.questionnaire = patient_data.questionnaire;
+    patientModel.getPatient({'_id':patient_data.patient},function(err, user) {
         if (err) {
-            if (err) {
-                res.json(err);
-            } else {
-                return_val.error = err;
-                res.json(return_val);
-            }
+            /* SEND ERROR MESSAGE */
         } else {
-            console.log('admin_alerts',admin_alerts);
-            if(typeof admin_alerts != "undefined"){
-                for(alert in admin_alerts){
-                    admin_alerts[alert].created = Date.now();
-                    alertModel.addAlerts(admin_alerts[alert], function(erralerts, dataalerts){
-                        /*if (err) {
-                            res.json(err);
-                        } else{
-                            return_val.error = err;
-                            res.json(return_val);
-                        }*/
-                    });
+            for (key in patient_data.quesData) {
+                var qData = {};
+                qData.question      = key;
+                qData.question_type = 0;
+                qData.answer        = patient_data.quesData[key];
+                temp[i] = qData;
+                i++;
+            }
+            if(patient_data.ansData!=null){
+                for(key in patient_data.ansData){
+                    var qData = {};
+                    qData.question = key;
+                    var ans_keys = new Array(); var y = 0;
+                    for (key2 in patient_data.ansData[key]) {
+                        ans_keys[y++] = key2;
+                    }
+                    qData.answer_opts = ans_keys;
+                    temp[i++] = qData;
                 }
-                var search_criteria = {_id : patient_data.notification_id};
-                var update_data     = {is_filled:1};
-                notificationModel.updateNotification(search_criteria, update_data, function(err, data){
-                    var return_data = {};
-                    var message = "";
+            }
+            patientQues.questions = temp;
+
+            patientAnsModel.addPatientAns(patientQues, function(err, data){
+                if (err) {
                     if (err) {
                         res.json(err);
-                    } else{
-                        return_val.success = "Answers has been saved successfully.";
+                    } else {
+                        return_val.error = err;
                         res.json(return_val);
                     }
-                });
-            }
-            /* update notification table 'is_filled' value */
+                } else {
+                    console.log('-------------search_criteria',patient_data);
+                    var search_criteria = {_id : patient_data.notification_id};
+                    console.log(search_criteria);
+                    var update_data     = {is_filled:1};
+                    notificationModel.updateNotification(search_criteria, update_data, function(err, data){
+                        var return_data = {};
+                        var message = "";
+                        if (err) {
+                            res.json(err);
+                        } else{
+                            for(alert in admin_alerts){
+                                setQuestiondata(admin_alerts[alert],function(errQues, quReturnData){
+                                    var savealerts = {};
+                                    savealerts = quReturnData;
+                                    savealerts.patient_first_name      = user.first_name;
+                                    savealerts.patient_last_name       = user.last_name;
+                                    savealerts.patient_email           = user.email;
+                                    savealerts.patient_username        = user.username;
+                                    savealerts.patient_mobile          = user.mobile;
+                                    savealerts.patient_surgery         = user.surgery.name;
+                                    savealerts.clinic_name             = user.clinic.clinic_name;
+                                    savealerts.clinic_first_name       = user.clinic.first_name;
+                                    savealerts.clinic_last_name        = user.clinic.last_name;
+                                    savealerts.clinic_email            = user.clinic.email;
+                                    savealerts.clinic_username         = user.clinic.username;
+                                    savealerts.clinic_mobile           = user.clinic.mobile;
+                                    console.log('\n----------\n',savealerts,'\n----------\n');
+                                    alertModel.addAlerts(savealerts, function(erralerts, dataalerts){
+                                        /*if (err) {
+                                            res.json(err);
+                                        } else{
+                                            return_val.error = err;
+                                            res.json(return_val);
+                                        }*/
+                                    });
+                                });
+                            }
+                            return_val.success = "Answers has been saved successfully.";
+                            res.json(return_val);
+                        }
+                    });
+                    
+                    /* update notification table 'is_filled' value */
+                }
+            });
+
+            
         }
     });
 }
@@ -296,10 +278,10 @@ passport.deserializeUser(function(id, done) {
 });
 
 module.exports = function(){
-    this.login = login;
+    this.login           = login;
     this.userCookieLogin = userCookieLogin;
-    this.checkloggedin = checkloggedin;
-    this.loggedout = loggedout;
-    this.savePatientAns = savePatientAns;
-    this.getDetail = getDetail;
+    this.checkloggedin   = checkloggedin;
+    this.loggedout       = loggedout;
+    this.savePatientAns  = savePatientAns;
+    this.getDetail       = getDetail;
 }

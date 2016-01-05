@@ -205,6 +205,7 @@ require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
 //require('./routes/admin')(app,express);
 require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin, emailService);
+require('./routes/alert')(app,express,isClinicAdmin);
 require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
 require('./routes/questionnaire')(app,express,supportCrossOriginScript);
