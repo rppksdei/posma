@@ -77,10 +77,12 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                         $scope.errordetail[errName] = data.error.errors[errName].message;
                     }
                     console.log($scope.errordetail);
+                    Flash.create('error', $scope.errordetail, 'alert alert-danger');
                 }
                 else{
                     $scope.errordetail[data.error.path] = data.error.message;
                     console.log($scope.errordetail);
+                    Flash.create('error', $scope.errordetail, 'alert alert-danger');
                 }
             }
         });
@@ -141,9 +143,16 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     }
 
     $scope.getBMI = function(){
-        var height = $scope.patient.height;
-        var weight = $scope.patient.weight;
-        $scope.patient.bmi = $scope.calculateBmi(height, weight);
+        $scope.patient.bmi = 0;
+        if ($scope.patient.height != 'undefined' && $scope.patient.weight != 'undefined') {
+            var height = $scope.patient.height;
+            var weight = $scope.patient.weight;
+            if (typeof height != 'undefined' && typeof weight != 'undefined'){
+                //if (typeof height != 'undefined' && height.toString().length > 2 && height.toString().length < 4) {
+                    $scope.patient.bmi = $scope.calculateBmi(height, weight);
+                //}
+            }
+        }
         
         // var date = new Date(timeStamp);
         // var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
@@ -151,7 +160,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     }
 
     $scope.calculateBmi = function(height, weight){        
-        var finalBmi = '';
+        var finalBmi = 0;
         if(weight > 0 && height > 0){   
             finalBmi = weight/(height/100*height/100);
         }

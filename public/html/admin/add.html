@@ -49,11 +49,15 @@
 						<label class="control-label" ng-show="add_admin_form.email.$dirty && add_admin_form.email.$error.required">Email is required.</label>
 						<label class="control-label" ng-show="add_admin_form.email.$dirty && add_admin_form.email.$error.email">Invalid email.</label>
                                         </div>
-                                        <div class="form-group" ng-class="{'has-error': (add_admin_form.phone.$dirty && (add_admin_form.phone.$error.required || add_admin_form.phone.$error.number)) || errordetail['phone'] }">
+                                        <div class="form-group" ng-class="{'has-error': (add_admin_form.phone.$dirty && (add_admin_form.phone.$error.required || add_admin_form.phone.$error.number || add_admin_form.phone.$error.minlength || add_admin_form.phone.$error.maxlength)) || errordetail['phone'] }">
                                             <label>Phone <span class="required">*</span></label>
-                                            <input class="form-control" autocomplete="off" type="text" required ng-model="admin.phone" name="phone" id="phone" value="">
+                                            <input class="form-control" autocomplete="off" type="number" required ng-model="admin.phone" name="phone" id="phone" ng-maxlength="10" ng-minlength="10">
 						<label class="control-label" ng-show="add_admin_form.phone.$dirty && add_admin_form.phone.$error.required">Phone is required.</label>
+						<label class="control-label" ng-show="add_admin_form.phone.$dirty && (add_admin_form.phone.$error.number)">Only numbers allowed.</label>
+						<label class="control-label" ng-show="add_admin_form.phone.$dirty && (add_admin_form.phone.$error.minlength || add_admin_form.phone.$error.maxlength)">Only 10 digits required.</label>
 						<label class="control-label" ng-show="errordetail['phone']" ng-bind="errordetail['phone']"></label>
+						<!--<label class="control-label" ng-show="add_admin_form.phone.$dirty && add_admin_form.phone.$error.required">Phone is required.</label>
+						<label class="control-label" ng-show="errordetail['phone']" ng-bind="errordetail['phone']"></label>-->
                                         </div>
                                         <div class="form-group" ng-class="{'has-error': errordetail['mobile'] }">
                                             <label>Mobile</label>

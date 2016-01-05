@@ -12,6 +12,7 @@
                 <div class="panel-heading">
                     Patient Details <span class="required pull-right">* Fields are required.</span>
                 </div>
+                <div flash-message="5000" ></div>
                 <div class="panel-body">
                     <!--{{patient}}-->
                     <div class="row">
@@ -65,16 +66,22 @@
                                         <option value = "F">Female</option>
                                     </select>
                                 </div>
+                                
+                                <div class="form-group" ng-class="{'has-error': (add_patient_form.phone.$dirty && (add_patient_form.phone.$error.required || add_patient_form.phone.$error.number || add_patient_form.phone.$error.minlength || add_patient_form.phone.$error.maxlength)) || errordetail.phone }">
+                                    <label>Phone<span class="required">*</span></label>
+                                    <input class="form-control" ng-model="patient.phone" type="number" required name="phone" id="phone" ng-maxlength="10" ng-minlength="10">
+                                    <label class="control-label" ng-show="add_patient_form.phone.$dirty && add_patient_form.phone.$error.required">Phone is required.</label>
+				    <label class="control-label" ng-show="add_patient_form.phone.$dirty && (add_patient_form.phone.$error.number)">Only numbers allowed.</label>
+                                    <label class="control-label" ng-show="add_patient_form.phone.$dirty && (add_patient_form.phone.$error.minlength || add_patient_form.phone.$error.maxlength)">Only 10 digits required.</label>
+				    <label class="control-label" ng-show="errordetail.phone" ng-bind="errordetail.phone"></label>
+                                </div>
                                 <div class="form-group" ng-class="{'has-error':add_patient_form.mobile.$dirty && (add_patient_form.mobile.$error.required || errordetail.mobile || add_patient_form.mobile.$error.number)}">
                                     <label>Mobile <span class="required">*</span></label>
                                     <input class="form-control" ng-model="patient.mobile" name="mobile" id="mobile" required value="" type="number">
                                     <label class="control-label" ng-show="add_patient_form.mobile.$dirty && (add_patient_form.mobile.$error.required || errordetail.mobile)">Mobile is required.</label>
                                     <label class="control-label" ng-show="add_patient_form.mobile.$dirty &&add_patient_form.mobile.$error.number">Mobile should be numeric 10 digits.</label>
                                 </div>
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input class="form-control" ng-model="patient.phone" type="number">
-                                </div>
+                                
                                 <div class="form-group" ng-class="{'has-error':add_patient_form.address1.$dirty && (add_patient_form.address1.$error.required || errordetail.address1)}">
                                     <label>Address <span class="required">*</span></label>
                                     <input class="form-control" ng-model="patient.address1" name="address1" id="address1" required value="">
@@ -82,7 +89,7 @@
                                 </div>
                                 <div class="form-group" ng-class="{'has-error':add_patient_form.height.$dirty && (add_patient_form.height.$error.required || errordetail.height || add_patient_form.height.$error.number)}">
                                     <label>Height (cm)<span class="required">*</span></label>
-                                    <input class="form-control" ng-model="patient.height" ng-change="getBMI()" name="height" id="height" required value="" type="number">
+                                    <input class="form-control" ng-model="patient.height" ng-change="getBMI()" name="height" id="height" required type="number" maxlength="3">
                                     <label class="control-label" ng-show="add_patient_form.height.$dirty && (add_patient_form.height.$error.required || errordetail.height)">Height is required.</label>
                                     <label class="control-label" ng-show="add_patient_form.height.$dirty &&add_patient_form.height.$error.number">Height should be numeric.</label>
                                 </div>
