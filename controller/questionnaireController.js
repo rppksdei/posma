@@ -1,6 +1,5 @@
 var questionnaireModel = require("./../model/questionnaireModel");
 getlisting = function(req, res, next){
-
     var search = {is_deleted:0,clinic:req.user._id};
     var sort_order = {created: -1 };
 

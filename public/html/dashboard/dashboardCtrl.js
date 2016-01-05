@@ -8,10 +8,11 @@ myapp.controller('dashboardCtrl', function($scope, $route, Alerts, $location, $r
     $scope.alerts = function(){
     	Alerts.list().query({}, function(data){
             $scope.alerts = data;
+            console.log(data);
            	$scope.total_alerts = $scope.alerts.length;
-           	$scope.num_rows = 2;
-           	$scope.num_cols = 4;
-           	rec_cnt = $scope.num_rows*$scope.num_cols;
+           	//$scope.num_rows = 2;
+           	//$scope.num_cols = 4;
+           	rec_cnt = 4;
             $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.alerts});
         });
     }

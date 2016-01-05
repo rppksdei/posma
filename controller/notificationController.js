@@ -2,6 +2,7 @@ var notificationModel = require("./../model/notificationModel");
 
 getNotification = function(req, res, next){
     search_condition = {is_filled:0};
+    sortby = {created:-1};
     //var userDetail = {'username':username, 'password':password};
     if(typeof req.body != 'undefined'){
         //search_condition = JSON.parse(req.query.conditions);
@@ -14,7 +15,7 @@ getNotification = function(req, res, next){
        /* search_condition.is_filled = req.body.isFilled;
         search_condition.patient = req.body.;*/
     }
-    notificationModel.getAll(search_condition,'', function(err, details){
+    notificationModel.getAll(search_condition,sortby, function(err, details){
         if(err){
             res.json(err);
         } else{
