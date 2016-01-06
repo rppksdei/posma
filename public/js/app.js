@@ -29,6 +29,12 @@ myapp.config(['$routeProvider',
                 flag:'listalerts',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/alerts/detail/:id',{
+                templateUrl:'/html/dashboard/detail.html',
+                controller:'dashboardCtrl',
+                flag:'alert_detail',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .when('/edit_profile',{
                 templateUrl:'/html/profile/edit_profile.html',
                 controller:'profileCtrl',
