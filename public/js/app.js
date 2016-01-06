@@ -3,7 +3,7 @@ var myapp = angular.module("posma",['ang-drag-drop', '720kb.datepicker','angular
 function checkloggedIn($rootScope, $http, $location) {
     $http.get('/login/checkloggedin').success(function(data) {
         if (data.error) {
-            $location.path('/');
+            $location.path('/login');
         }
         else{
             $rootScope.user = data;
@@ -13,9 +13,15 @@ function checkloggedIn($rootScope, $http, $location) {
 myapp.config(['$routeProvider',
     function ($routeProvider){
         $routeProvider
-            .when ('/', {
+            .when ('/login', {
                 templateUrl:'/html/authenticate/login.html',
                 controller:'loginCtrl',
+            })
+            .when ('/', {
+                templateUrl:'/html/dashboard/dashboard.html',
+                controller:'dashboardCtrl',
+                flag:'listalerts',
+                resolve:{'logged_in':checkloggedIn}
             })
             .when('/dashboard',{
                 templateUrl:'/html/dashboard/dashboard.html',

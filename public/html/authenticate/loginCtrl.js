@@ -14,14 +14,13 @@ myapp.controller('loginCtrl', function($scope, $route, Login, $location, $rootSc
     }
     if (logout == true) {
         Login.logout().get({}, function(data){
-           if(data.success == true){
-              $cookies.remove('user_id');
-              $rootScope.user = {};
-              $location.path('/');
-           }
-           else{
-             $location.path('/dashboard');
-           }
+            if(data.success == true){
+                $cookies.remove('user_id');
+                $rootScope.user = {};
+                $location.path('/login');
+            } else{
+                $location.path('/dashboard');
+            }
         });
     }
     
@@ -29,6 +28,8 @@ myapp.controller('loginCtrl', function($scope, $route, Login, $location, $rootSc
     var cookie_id = $cookies.get('user_id');
     if (cookie_id && logout == false) {
         Login.cookieLogin().save({'cookie_id':cookie_id}, function(data){
+
+                //alert(location.path());
             if (!data.error) {
                 $location.path('/dashboard');
             }

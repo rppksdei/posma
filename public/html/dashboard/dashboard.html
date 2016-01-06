@@ -1,4 +1,8 @@
-
+<style type="text/css">
+	table{
+		width: 100% !important;
+	}
+</style>
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
@@ -9,21 +13,20 @@
 		<table ng-table="tableParams" class="">
 			<tr>
 				<td>
-					<div ng-repeat="alert in $data" class="col-lg-3">
+					<div ng-repeat="alert in $data" class="col-lg-4">
 						<div class="panel panel-red">
 							<div class="panel-heading">
-								{{alert.patient_first_name}} {{alert.patient_last_name}} <br/>
-								<span style="font-size:12px;">({{alert.patient_mobile}})</span>
+								<b>{{alert.patient_first_name}} {{alert.patient_last_name}} </b> on {{alert.datetime}} <span>({{alert.patient_mobile}})</span>
 							</div>
-							<div class="panel-body">
-								<p>{{alert.ques_name}}</p>
+							<div class="panel-body" style="height:150px;overflow-x:hidden;overflow-y:scroll;">
+								<p >{{alert.ques_name}}</p>
 								<p><b>Answer:</b></p>
 								<ul>
 									<li ng-repeat="alt in alert.answer_name">{{alt}} </li>
 								</ul>
 							</div>
 							<div class="panel-footer">
-								<a href="rp_alert_detail.html">View Details</a>
+								<a href="#">View Details</a>
 							</div>
 						</div>
 					</div>
