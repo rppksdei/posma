@@ -28,15 +28,20 @@ var alertSchema = new Schema({
     clinic_username:        {type:String},
     clinic_mobile:          {type:Number},
     created:                {type:Number},
+    notes:                  {type:String},
+    is_noted:               {type:Number, default:0}, //no note added by admin, 1: note added by admin
     modified:               {type:Number} 
 });
 
 var Alert = mongoose.model('Alert', alertSchema);
+Alert.getAlert = function(search_criteria, next){
+    Alert.findOne(search_criteria, next);
+}
+Alert.getList = function(search_criteria, sort_order, next){
+    Alert.find(search_criteria, next).sort(sort_order);
+}
 Alert.addAlerts = function(submit_data, next){
     var add_alert = new Alert(submit_data);
     add_alert.save(next);
-}
-Alert.getList = function(search_criteria, next){
-    Alert.find(search_criteria, next).sort({'created':-1});
 }
 module.exports = Alert;

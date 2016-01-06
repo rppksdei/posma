@@ -28,8 +28,6 @@ myapp.controller('loginCtrl', function($scope, $route, Login, $location, $rootSc
     var cookie_id = $cookies.get('user_id');
     if (cookie_id && logout == false) {
         Login.cookieLogin().save({'cookie_id':cookie_id}, function(data){
-
-                //alert(location.path());
             if (!data.error) {
                 $location.path('/dashboard');
             }

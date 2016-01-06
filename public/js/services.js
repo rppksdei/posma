@@ -98,11 +98,14 @@ angular.module('PosmaService', ['ngResource'])
     })
     .factory('Alerts', function($resource){
         var serviceObj = {};
-        // serviceObj.getDetail = function(){
-        //     return $resource('/questionnaire/getDetail');
-        // }
+        serviceObj.getDetail = function(){
+            return $resource('/alerts/getDetail');
+        }
         serviceObj.list = function(){
             return $resource('/alerts/');
+        }
+        serviceObj.addNote = function(){
+            return $resource('/alerts/add_notes');
         }
         return serviceObj;
     })

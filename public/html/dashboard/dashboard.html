@@ -14,7 +14,7 @@
 			<tr>
 				<td>
 					<div ng-repeat="alert in $data" class="col-lg-4">
-						<div class="panel panel-red">
+						<div class= "panel panel-red" ng-class="{'panel-yellow': (alert.is_noted == 1)}">
 							<div class="panel-heading">
 								<b>{{alert.patient_first_name}} {{alert.patient_last_name}} </b> on {{alert.datetime}} <span>({{alert.patient_mobile}})</span>
 							</div>
@@ -26,7 +26,7 @@
 								</ul>
 							</div>
 							<div class="panel-footer">
-								<a href="#">View Details</a>
+								<a href="#/alerts/detail/{{alert._id}}">View Details</a>
 							</div>
 						</div>
 					</div>

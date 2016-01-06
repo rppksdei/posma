@@ -1,0 +1,63 @@
+<div id="page-wrapper" style="min-height: 261px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{heading}}</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Question</strong>
+                </div>
+                <div class="panel-body">
+                    {{alert.ques_name}}
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+        
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Patient Answer</strong>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                    	<li ng-repeat="ans in alert.answer_name">{{ans}}</li>
+                    </ul>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Patient Details</strong>
+                </div>
+                <form name="add_notes" id="add_notes" ng-submit="add();">
+	                <div class="panel-body">
+	                    {{alert.patient_first_name}} {{alert.patient_last_name}} {{alert.patient_email}}<br>
+	                    {{alert.patient_mobile}}
+	                    <div class="form-group"  ng-class="{'has-error':add_notes.notes.$dirty && (add_notes.notes.$error.required || errordetail['notes'])}">
+	                        <label>Notes</label>
+	                        <textarea rows="3" class="form-control" name="notes" id ="notes" required ng-model="alert_data.notes"></textarea>
+							<label class="control-label" ng-show="add_notes.notes.$dirty && add_notes.notes.$error.required">Add notes.</label>
+							<label class="control-label" ng-show="errordetail['notes']" ng-bind="errordetail['notes']"></label>
+	                    </div>
+	                    <!-- <button type="button" class="btn btn-success">Save</button> -->
+	                    <a class="btn btn-success"  ng-click="add();" type="submit"  ng-disabled="add_notes.$invalid" >Add Notes</a>
+	                </div>
+	                <!-- /.panel-body -->
+	            </form>
+            </div>
+            <!-- /.panel -->
+        </div>
+
+        <!-- /.col-lg-4 -->
+    </div>
+</div>
