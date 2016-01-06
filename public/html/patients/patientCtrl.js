@@ -71,18 +71,19 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                 }
                 $location.path('/patients');
             }else{
+                console.log('Error Data = ', data);
                 if (data.error.errors){
-                     $scope.errordetail = [];
+                    $scope.errordetail = [];
                     for (var errName in data.error.errors) {
                         $scope.errordetail[errName] = data.error.errors[errName].message;
                     }
-                    console.log($scope.errordetail);
-                    Flash.create('error', $scope.errordetail, 'alert alert-danger');
+                    //console.log($scope.errordetail);
+                    Flash.create('danger', $scope.errordetail, 'alert alert-danger');
                 }
                 else{
-                    $scope.errordetail[data.error.path] = data.error.message;
-                    console.log($scope.errordetail);
-                    Flash.create('error', $scope.errordetail, 'alert alert-danger');
+                    //$scope.errordetail[data.error.path] = data.error.message;
+                    Flash.create('danger', data.error, 'alert alert-danger');
+                    $("html").scrollTop(0);
                 }
             }
         });

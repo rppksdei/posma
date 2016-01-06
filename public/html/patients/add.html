@@ -12,8 +12,13 @@
                 <div class="panel-heading">
                     Patient Details <span class="required pull-right">* Fields are required.</span>
                 </div>
-                <div flash-message="5000" ></div>
+                
                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div flash-message="5000" ></div>
+                        </div>
+                    </div>
                     <!--{{patient}}-->
                     <div class="row">
                         <form name="add_patient_form" id="add_patient_form" role="form" ng-submit="add();">
