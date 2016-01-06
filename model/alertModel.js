@@ -40,4 +40,8 @@ Alert.getAlert = function(search_criteria, next){
 Alert.getList = function(search_criteria, sort_order, next){
     Alert.find(search_criteria, next).sort(sort_order);
 }
+Alert.addAlerts = function(submit_data, next){
+    var add_alert = new Alert(submit_data);
+    add_alert.save(next);
+}
 module.exports = Alert;
