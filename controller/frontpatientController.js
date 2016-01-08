@@ -200,7 +200,6 @@ savePatientAns = function(req, res, next){
                         res.json(return_val);
                     }
                 } else {
-                    console.log('-------------search_criteria',patient_data);
                     var search_criteria = {_id : patient_data.notification_id};
                     console.log(search_criteria);
                     var update_data     = {is_filled:1};
@@ -226,7 +225,6 @@ savePatientAns = function(req, res, next){
                                     savealerts.clinic_email            = user.clinic.email;
                                     savealerts.clinic_username         = user.clinic.username;
                                     savealerts.clinic_mobile           = user.clinic.mobile;
-                                    console.log('\n----------\n',savealerts,'\n----------\n');
                                     alertModel.addAlerts(savealerts, function(erralerts, dataalerts){
                                         /*if (err) {
                                             res.json(err);
