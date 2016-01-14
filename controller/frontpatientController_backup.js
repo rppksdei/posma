@@ -75,7 +75,7 @@ getDetail = function(req, res, next){
 
 setQuestiondata = function(key,selectedans, fn){
     var quData = {};
-    questionModel.getQuestion({'_id':key}, function(err, questionDetail) {
+    questionModel.getQuestion({'_id':key},'','', function(err, questionDetail) {
         if (err) {
         } else{
             quData.ques_name        = questionDetail.name;
@@ -107,7 +107,7 @@ setQuestiondata = function(key,selectedans, fn){
 
 setQuestionAnswers = function(key,ansData,fun){
     var search_question = {_id:key}; 
-    questionModel.getQuestion(search_question, function(err, quesdata){
+    questionModel.getQuestion(search_question,'','', function(err, quesdata){
         if(quesdata){
             qData.question_name = quesdata.name;
             /**** to get all questions and selected answer information to store ********/
@@ -273,7 +273,7 @@ getDetail = function(req, res, next){
 
 setQuestiondata = function(key,qData, fn){
     var quData = {};
-    questionModel.getQuestion({'_id':key}, function(err, questionDetail) {
+    questionModel.getQuestion({'_id':key},'','', function(err, questionDetail) {
         if (err) {
         } else{
             quData.ques_name        = questionDetail.name;
@@ -309,7 +309,7 @@ setQuestiondata = function(key,qData, fn){
 
 setQuestionAnswers = function(key,ansData,fun){
     var search_question = {_id:key}; 
-    questionModel.getQuestion(search_question, function(err, quesdata){
+    questionModel.getQuestion(search_question,'','', function(err, quesdata){
         if(quesdata){
             qData.question_name = quesdata.name;
             /**** to get all questions and selected answer information to store ********/

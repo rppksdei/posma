@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var alertSchema = new Schema({
     question:               {type:Schema.Types.ObjectId},
+    patientanswer:          {type:Schema.Types.ObjectId},
     ques_name:              {type:String},
     answer_type:            {type:String},
     anstype:                {type:String},

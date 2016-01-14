@@ -1,4 +1,4 @@
-angular.module('PosmaService', ['ngResource'])
+    angular.module('PosmaService', ['ngResource'])
     .factory('Login', function($resource){
         var serviceObj = {};
         serviceObj.admin = function(){
@@ -106,6 +106,16 @@ angular.module('PosmaService', ['ngResource'])
         }
         serviceObj.addNote = function(){
             return $resource('/alerts/add_notes');
+        }
+        return serviceObj;
+    })
+    .factory('Report', function($resource){
+        var serviceObj = {};
+        serviceObj.list = function(){
+            return $resource('/reports');
+        }
+        serviceObj.getalert = function(){
+            return $resource('/alerts/getPatientalert');
         }
         return serviceObj;
     })

@@ -215,6 +215,7 @@ require('./routes/patient')(app,express, isClinicOrSurgeon, isClinicAdmin,suppor
 require('./routes/front_patient')(app,express, supportCrossOriginScript);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
+require('./routes/report')(app, express, isClinicOrSurgeon, isClinicAdmin);
 
 
 

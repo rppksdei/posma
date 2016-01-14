@@ -1,11 +1,12 @@
-var patientModel = require("./../model/patientModel");
-var questionnaireModel = require("./../model/questionnaireModel");
-var notificationModel = require("./../model/notificationModel");
-var moment = require('moment');
+var patientModel        = require("./../model/patientModel");
+var questionnaireModel  = require("./../model/questionnaireModel");
+var notificationModel   = require("./../model/notificationModel");
+var patientAnsModel     = require("./../model/patientAnswerModel");
+var questionModel       = require("./../model/questionModel");
+var moment              = require('moment');
 
 var pc = 0; /* pc = no. of discharged patients count . */
 var testvar = 0; var resdata = {}; var patient_data = [];
-
 
 /* callback functions for incrementing and to get questionnaire details */
 cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){    
@@ -165,8 +166,8 @@ getlisting = function(){
     var current_date        = new Date();
     var currentTimeStamp    = moment().unix();
     var endTimeStamp        = addMinutes(current_date, 1); // val = 10 mins
-console.log('\ncurrentTimeStamp = ', currentTimeStamp);
-console.log('\nendTimeStamp = ', endTimeStamp);
+    console.log('\ncurrentTimeStamp = ', currentTimeStamp);
+    console.log('\nendTimeStamp = ', endTimeStamp);
     search.dohd = {$lte: currentTimeStamp};
     var patParams = {username:1,pathway:1,time_of_discharge:1};
     
@@ -190,11 +191,9 @@ console.log('\nendTimeStamp = ', endTimeStamp);
 /*
 amit = function(req,res,next){
     var search = {is_deleted:0, pathway:{$ne: null}};
-    
     var current_date        = new Date();
     var currentTimeStamp    = moment().unix();
     var endTimeStamp        = addMinutes(current_date, 40);
-
     search.dohd = {$lte: currentTimeStamp};
     patientModel.getAllPatient(search, function(err, patientsData){
         if(err){
@@ -210,8 +209,6 @@ amit = function(req,res,next){
     })
 }
 */
-
-
 
 addDays = function(d, days){
     var newdate = d.setDate(d.getDate()+days);
@@ -344,14 +341,84 @@ updatepatientDetail = function(req, res){
     //End of code to update clinic detail
 }
 
+updatePatientAnswers = function(){
+    patientAnsModel.getList({is_detailed:0},{created:-1}, function(err, data){
+        for(pa in data){
+            var quesansData = {};
+            var questionsArr = new Array();
+            var total_ques = data[pa].questions.length;
+            var totalcalls = 0;
+            for(var i = 0; i < total_ques; i++){
+                questionModel.getQuestion({'_id':data[pa].questions[i].question},{"_id":1,"name":1,"answer_type":1,'answer':1},i,function(err, ansDetail) {
+                    var ansDetail_data = ansDetail.data;
+                    var new_i = ansDetail.indexVal;
+                    questionsArr[totalcalls] = ansDetail_data;
+                    if(ansDetail_data.answer_type == 'rb' || ansDetail_data.answer_type == 'dd'){
+                            var newAns = new Array();
+                            for(aw = 0;aw < ansDetail_data.answer.length;aw++){
+                                if(ansDetail_data.answer[aw]._id == data[pa].questions[new_i].answer){
+                                    newAns.push(ansDetail_data.answer[aw]);
+                                }
+                            }
+                            ansDetail_data.answer = newAns;
+                            questionsArr[totalcalls].answer = ansDetail_data.answer;
+                    } else if(ansDetail_data.answer_type == 'cb'){
+                        var newAns = new Array();
+                        for(aw = 0;aw < ansDetail_data.answer.length;aw++){
+                            if(data[pa].questions[new_i].answer_opts.indexOf(ansDetail_data.answer[aw]._id) != -1){
+                                newAns.push(ansDetail_data.answer[aw]);
+                            }
+                        }
+                        ansDetail_data.answer = newAns;
+                        questionsArr[totalcalls].answer = ansDetail_data.answer;
+                    } else {
+                        ansDetail_data.text_answer = data[pa].questions[new_i].answer;
+                    }
+                    totalcalls++;
+                    if(totalcalls == total_ques){;
+                        patientAnsModel.updatePA({'_id':data[pa]._id},{'questionDetails':questionsArr}, function(err, data){
 
+                        });
+                        var questionnaireArr = {};
+                        questionnaireModel.getQuestionnaire({'_id':data[pa].questionnaire},function(err, questionnaireDet) {
+                            questionnaireArr.questionnaire_name         = questionnaireDet.name;
+                            questionnaireArr.questionnaire_recur_type   = questionnaireDet.recur_type;
+                            patientAnsModel.updatePA({'_id':data[pa]._id},questionnaireArr, function(err, data){
+                                
+                            });
+                        });
 
-module.exports = function(){
-    this.getlisting = getlisting;
-    // this.amit = amit;
-    this.getpatientDetail = getpatientDetail;
-    this.addPathway = addPathway;
-    this.updatepatientDetail = updatepatientDetail;
+                        var patientData = {};
+                        patientModel.getPatient({'_id':data[pa].patient},function(err, user) {
+                            patientData.patient_first_name          = user.first_name;
+                            patientData.patient_last_name           = user.last_name;
+                            patientData.patient_email               = user.email;
+                            patientData.patient_username            = user.username;
+                            patientData.patient_mobile              = user.mobile;
+                            patientData.patient_surgery             = user.surgery.name;
+                            patientData.clinic_name                 = user.clinic.clinic_name;
+                            patientData.clinic_first_name           = user.clinic.first_name;
+                            patientData.clinic_last_name            = user.clinic.last_name;
+                            patientData.clinic_email                = user.clinic.email;
+                            patientData.clinic_username             = user.clinic.username;
+                            patientData.clinic_mobile               = user.clinic.mobile;
+                            patientData.is_detailed                 = 1;
+                            patientAnsModel.updatePA({'_id':data[pa]._id},patientData, function(err, data){
+                                console.log('cron Done');
+                            });
+                        });
+                    }
+                });
+            }
+        }
+    });
 }
 
-
+module.exports = function(){
+    this.getlisting             = getlisting;
+    // this.amit                = amit;
+    this.getpatientDetail       = getpatientDetail;
+    this.addPathway             = addPathway;
+    this.updatepatientDetail    = updatepatientDetail;
+    this.updatePatientAnswers   = updatePatientAnswers;
+}
