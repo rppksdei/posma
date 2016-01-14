@@ -238,6 +238,10 @@ updatePatientDetail = function(req, res){
         update_data.dohd                = moment().unix();/*Date.now();*/
         update_data.time_of_discharge   = moment().unix();/*d.getTime();*/
     }
+    if(typeof req.body.device_id != "undefined") {
+        update_data.device_id = req.body.device_id;
+    }
+    
 
     update_data.modified = moment().unix();/*Date.now(); */
     //console.log('\n', moment().format('x')); // full 13 digits timestamp in ms

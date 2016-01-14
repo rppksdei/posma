@@ -43,7 +43,8 @@ var patientSchema = ({
     sbl:{type:String},
     degfr:{type:String},
     discharge_hemoglobin:{type:String},
-    blood_transfusion:{type:String} 
+    blood_transfusion:{type:String},
+    device_id:{type:String}
 });
 
 var Patient = mongoose.model('Patient', patientSchema);
