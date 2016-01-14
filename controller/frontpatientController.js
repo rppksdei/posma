@@ -75,14 +75,16 @@ getDetail = function(req, res, next){
 
 setQuestiondata = function(admin_alert, fn){
     var quData = {};
-    questionModel.getQuestion({'_id':admin_alert.question}, function(err, questionDetail) {
+    questionModel.getQuestion({'_id':admin_alert.question},'','', function(err, questionDetail) {
         if (err) {
 
         } else{
+            questionDetail = questionDetail.data;
             quData.ques_name        = questionDetail.name;
             quData.answer_type      = questionDetail.answer_type;
             quData.gender           = questionDetail.gender;
             quData.question         = admin_alert.question;
+            quData.ans              = admin_alert.ans;
             quData.multians         = admin_alert.multians;
             quData.questionnaire    = admin_alert.questionnaire;
             quData.datetime         = admin_alert.datetime;
@@ -92,28 +94,34 @@ setQuestiondata = function(admin_alert, fn){
             } else if(send_serach.anstype == 'number'){
                 quData.min_range        = questionDetail.min_range;
                 quData.max_range        = questionDetail.max_range;
-            } else */if(admin_alert.anstype == 'cb') {
+            } else */
+            if(admin_alert.anstype == 'cb') {
                 var sel_cntr = 0;
                 answer_nameArr = new Array();
                 answer_out_of_rangeArr = new Array();
-                while(sel_cntr < admin_alert.multians.length){
-                    var cntr = 0;
-                    while(cntr < questionDetail.answer.length){
-                        if(questionDetail.answer[cntr]._id == admin_alert.multians[sel_cntr]){
-                            answer_nameArr[sel_cntr]           = questionDetail.answer[cntr].name;
-                            answer_out_of_rangeArr[sel_cntr]   = questionDetail.answer[cntr].out_of_range;
+                if(typeof admin_alert.multians != 'undefined'){
+                    while(sel_cntr < admin_alert.multians.length){
+                        var cntr = 0;
+                        if(typeof questionDetail.answer != 'undefined'){
+                            while(cntr < questionDetail.answer.length){
+                                if(questionDetail.answer[cntr]._id == admin_alert.multians[sel_cntr]){
+                                    answer_nameArr[sel_cntr]           = questionDetail.answer[cntr].name;
+                                    answer_out_of_rangeArr[sel_cntr]   = questionDetail.answer[cntr].out_of_range;
+                                }
+                                cntr++;
+                            }
+                            quData.answer_name          = answer_nameArr;
+                            quData.answer_out_of_range  = answer_out_of_rangeArr;
                         }
-                        cntr++;
+                        sel_cntr++;
                     }
-                    quData.answer_name          = answer_nameArr;
-                    quData.answer_out_of_range  = answer_out_of_rangeArr;
-                    sel_cntr++;
                 }
-            } else {
+            } else if(admin_alert.anstype == 'rb' || admin_alert.anstype == 'dd') {
                 var cntr = 0;
                 while(cntr < questionDetail.answer.length){
                     if(questionDetail.answer[cntr]._id == admin_alert.ans){
                         quData.answer_name         = questionDetail.answer[cntr].name;
+                        quData.ans                 = questionDetail.answer[cntr]._id;
                         quData.answer_out_of_range = questionDetail.answer[cntr].out_of_range;
                         break;
                     }
@@ -127,7 +135,7 @@ setQuestiondata = function(admin_alert, fn){
 
 setQuestionAnswers = function(key,ansData,fun){
     var search_question = {_id:key}; 
-    questionModel.getQuestion(search_question, function(err, quesdata){
+    questionModel.getQuestion(search_question,'','', function(err, quesdata){
         if(quesdata){
             qData.question_name = quesdata.name;
             /**** to get all questions and selected answer information to store ********/
@@ -156,12 +164,9 @@ setQuestionAnswers = function(key,ansData,fun){
 savePatientAns = function(req, res, next){
     // var patient_data = JSON.parse(req.body.postData);
     var return_val = {}; var patientQues = {}; var i = 0; var temp = new Array();
-    var patient_full_data = JSON.parse(req.body.postFullData);
-    console.log('patient_full_data:',patient_full_data);
+    var patient_full_data   = JSON.parse(req.body.postFullData);
     var patient_data = patient_full_data.postData;
     var admin_alerts = patient_full_data.admin_alerts;
-
-
     patientQues.created = Date.now();
     patientQues.patient = patient_data.patient;
     patientQues.questionnaire = patient_data.questionnaire;
@@ -190,7 +195,7 @@ savePatientAns = function(req, res, next){
                 }
             }
             patientQues.questions = temp;
-
+            patientQues.datetime = admin_alerts.datetime,
             patientAnsModel.addPatientAns(patientQues, function(err, data){
                 if (err) {
                     if (err) {
@@ -200,10 +205,11 @@ savePatientAns = function(req, res, next){
                         res.json(return_val);
                     }
                 } else {
+                    var lastInsertedId = data._id;
                     var search_criteria = {_id : patient_data.notification_id};
-                    console.log(search_criteria);
                     var update_data     = {is_filled:1};
                     notificationModel.updateNotification(search_criteria, update_data, function(err, data){
+                        var patanserId = lastInsertedId;
                         var return_data = {};
                         var message = "";
                         if (err) {
@@ -213,6 +219,7 @@ savePatientAns = function(req, res, next){
                                 setQuestiondata(admin_alerts[alert],function(errQues, quReturnData){
                                     var savealerts = {};
                                     savealerts = quReturnData;
+                                    savealerts.patientanswer = patanserId;
                                     savealerts.patient_first_name      = user.first_name;
                                     savealerts.patient_last_name       = user.last_name;
                                     savealerts.patient_email           = user.email;
@@ -239,12 +246,9 @@ savePatientAns = function(req, res, next){
                             res.json(return_val);
                         }
                     });
-                    
                     /* update notification table 'is_filled' value */
                 }
             });
-
-            
         }
     });
 }

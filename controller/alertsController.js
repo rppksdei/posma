@@ -20,23 +20,65 @@ getlisting = function(req, res, next){
 }
 
 getAlert = function(req, res, next){
-    var alert_id = req.body.id;
-    var search_alert = {_id:alert_id};
-    alertModel.getAlert(search_alert, function(err, data){
-        var return_val = {};
-        if (err){
-            return_val.error = err;
-            res.json(return_val);
-        } else{
-            if (data == null) {
-                return_val.error = "Alert doesn't exists";
+    var search_alert = {};
+    if(typeof req.body.id != 'undefined'){
+        var alert_id = req.body.id;
+        search_alert = {_id:alert_id};
+        alertModel.getAlert(search_alert, function(err, data){
+            var return_val = {};
+            if (err){
+                return_val.error = err;
                 res.json(return_val);
             } else{
-                res.json(data);
-            }
-        }  
-    });
+                if (data == null) {
+                    return_val.error = "Alert doesn't exists";
+                    res.json(return_val);
+                } else{
+                    res.json(data);
+                }
+            }  
+        });
+    } else if(typeof req.body.search != 'undefined') {
+        var searchAl = req.body.search;
+        var i = req.body.i;
+        var j = req.body.j;
+        var k = req.body.k;
+
+        if(typeof searchAl.patient_answer != 'undefined'){
+            search_alert.patientanswer = searchAl.patient_answer;
+        }
+        if(typeof searchAl.question != 'undefined'){
+            search_alert.question = searchAl.question;
+        }
+        if(typeof searchAl.ans != 'undefined'){
+            search_alert.ans = searchAl.ans;
+        } else if(searchAl.answer_opts != 'undefined'){
+            search_alert.multians = {'$in': searchAl.answer_opts};
+        }
+        alertModel.getPatientAlert(search_alert, function(err, data){
+            var return_val = {};
+            if (err){
+                return_val.error = err;
+                res.json(return_val);
+            } else{
+                if (data == null) {
+                    return_val.error = "Alert doesn't exists";
+                    res.json(return_val);
+                } else{
+                    var return_data = {};
+                    return_data.data = data;
+                    return_data.i = i;
+                    return_data.j = j;
+                    return_data.k = k;
+                    res.json(return_data);
+                }
+            }  
+        });
+    }
+    
 }
+
+
 
 addNotes = function(req, res, next){
     var alert_data = req.body;

@@ -28,7 +28,7 @@ var questionSchema = new Schema({
 var Question = mongoose.model('Question', questionSchema);
 
 
-exports.getAllQuestion = function(search_criteria, sort_order, next){
+Question.getAllQuestion = function(search_criteria, sort_order, next){
     if(!sort_order || sort_order == '-') {
         Question.find(search_criteria, next);
     } else {
@@ -36,15 +36,26 @@ exports.getAllQuestion = function(search_criteria, sort_order, next){
     }
 }
 
-exports.getQuestion = function(search_criteria, next){
-    Question.findOne(search_criteria, next);
+Question.getQuestion = function(search_criteria,fields_sel,i, next){
+    if(typeof fields_sel == 'undefined' && typeof i == 'undefined') {
+        Question.findOne(search_criteria, next);
+    } else {
+        Question.findOne(search_criteria, fields_sel, function(err, data){
+            var response = {};
+            response.indexVal = i;
+            response.data = data;
+            next(err, response);
+        });
+    }
 }
 
-exports.updateQuestion = function(search_criteria, new_data, next){
+Question.updateQuestion = function(search_criteria, new_data, next){
      Question.update(search_criteria, {$set:new_data}, next);
 }
 
-exports.addQuestion = function(questionDetail, next){
+Question.addQuestion = function(questionDetail, next){
     var add_question = new Question(questionDetail);
     add_question.save(next);
 }
+
+module.exports = Question;

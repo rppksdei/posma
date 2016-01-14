@@ -22,12 +22,17 @@ myapp.config(['$routeProvider',
                 controller:'dashboardCtrl',
                 flag:'listalerts',
                 resolve:{'logged_in':checkloggedIn}
+
             })
             .when('/dashboard',{
                 templateUrl:'/html/dashboard/dashboard.html',
                 controller:'dashboardCtrl',
                 flag:'listalerts',
                 resolve:{'logged_in':checkloggedIn}
+                //templateUrl:'/html/reports/index.html',
+                //controller:'reportsCtrl',
+                //flag:'report',
+                //resolve:{'logged_in':checkloggedIn}
             })
             .when('/alerts/detail/:id',{
                 templateUrl:'/html/dashboard/detail.html',
@@ -83,6 +88,12 @@ myapp.config(['$routeProvider',
                 flag:'add_surgeon',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/reports',{
+                templateUrl:'/html/reports/index.html',
+                controller:'reportsCtrl',
+                flag:'report',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .when('/logout',{
                 templateUrl:'/html/authenticate/login.html',
                 controller:'loginCtrl',
@@ -91,7 +102,6 @@ myapp.config(['$routeProvider',
             .when('/ngtables',{
                 templateUrl:'/html/questions/ngtable.html',
                 controller:'demoController as ',
-
             })
             .when('/questions',{
                 templateUrl:'/html/questions/index.html',
