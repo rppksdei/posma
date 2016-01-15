@@ -4,6 +4,7 @@ var notificationModel   = require("./../model/notificationModel");
 var patientAnsModel     = require("./../model/patientAnswerModel");
 var questionModel       = require("./../model/questionModel");
 var moment              = require('moment');
+//var gcm 		= require('android-gcm');
 
 var pc = 0; /* pc = no. of discharged patients count . */
 var testvar = 0; var resdata = {}; var patient_data = [];
@@ -33,9 +34,9 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     // var execution_time = addHours(pdd, qdata[j].execute_time);
                     var execution_time = moment(pdd).add(qdata[j].execute_time, 'h').unix();//addHours
                     // var nd = moment.utc(execution_time, 'X').format('YYYY-MM-DD');
-                     console.log('\n-single execution_time = ',execution_time);
-		              console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
-		              console.log('\n-endTimeStamp = ',query.endTimeStamp);
+			console.log('\n-single execution_time = ',execution_time);
+			console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
+		        console.log('\n-endTimeStamp = ',query.endTimeStamp);
                     //if(execution_time < query.endTimeStamp){
                     if((execution_time >= query.currentTimeStamp) && (execution_time < query.endTimeStamp)){
                         tempObj.datetime 			= execution_time;
@@ -90,7 +91,8 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                                 }
                             }
                         }
-                    }/*else if(qdata[j].recur_type == 'w'){
+                    }
+		    /*else if(qdata[j].recur_type == 'w'){
                         if(qdata[j].days.indexOf(current_day) >= 0){
                             if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
                                 if(qdata[j].time_slots.length > 0){
@@ -137,12 +139,13 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         	notification_data.datetime      = patientsData[l].pathway.questionnaires[m].datetime;
                             notification_data.questionnaire = patientsData[l].pathway.questionnaires[m].questionnaire;
                             // console.log('\nnotification_data ==\n', notification_data);
+			    sendToAndroid(patientsData[l].device_id, 'New Questionnaire Available.');
                             notificationModel.add(notification_data, function(err2, ndata){
                             	if(err2){
                             		console.log('Notification add error : ',err2);
                             	}
                             	if(ndata){
-                            		console.log('Notification add msg-- : ',ndata);
+                            		console.log('Notification add success--------------------->\n',ndata);
                             	}
                             });
                         }
@@ -153,6 +156,28 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
             }
         }
     })
+}
+
+/* function to send Notification to Android. */
+sendToAndroid = function(token, message) {
+	var gcm 	= require('android-gcm');
+	var serverKey	= "AIzaSyDYsAkLDonjshinmt0i3T6bs0tEQWjHE28";
+	var senderId 	= "707879217713";
+	
+	// initialize new androidGcm object
+	var gcmObject = new gcm.AndroidGcm(serverKey);
+	// create new message
+	var finalmessage = new gcm.Message({
+	    registration_ids: [token],
+	    data: {
+		key1: message,
+		// key2: 'key 2'
+	    }
+	});
+	// send the message
+	gcmObject.send(finalmessage, function(err, response) {
+	    console.log("\nGCM Response ---------------------------------------------------\n", err, response);
+	});
 }
 
 getlisting = function(){
@@ -166,8 +191,8 @@ getlisting = function(){
     var current_date        = new Date();
     var currentTimeStamp    = moment().unix();
     var endTimeStamp        = addMinutes(current_date, 1); // val = 10 mins
-    console.log('\ncurrentTimeStamp = ', currentTimeStamp);
-    console.log('\nendTimeStamp = ', endTimeStamp);
+    //console.log('\ncurrentTimeStamp = ', currentTimeStamp);
+    //console.log('\nendTimeStamp = ', endTimeStamp);
     search.dohd = {$lte: currentTimeStamp};
     var patParams = {username:1,pathway:1,time_of_discharge:1};
     
@@ -177,7 +202,8 @@ getlisting = function(){
             //res.json(err);
         }
         else{
-            console.log('No. of Patients : ',patientsData.length);
+            console.log('\nNo. of Patients : ',patientsData.length);
+	    console.log('\n\nPatients Data : \n',patientsData);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
             
@@ -416,7 +442,7 @@ updatePatientAnswers = function(){
 
 module.exports = function(){
     this.getlisting             = getlisting;
-    // this.amit                = amit;
+    this.sendToAndroid          = sendToAndroid;
     this.getpatientDetail       = getpatientDetail;
     this.addPathway             = addPathway;
     this.updatepatientDetail    = updatepatientDetail;
