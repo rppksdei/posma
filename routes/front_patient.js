@@ -26,6 +26,7 @@ module.exports = function(app, express,supportCrossOriginScript){
     });
     router.post('/update', supportCrossOriginScript, function(req, res, next) {
         //res.json({'msg':'HELLEIO'});
+	//console.log('req=',req.body);
         adminpatientFrontObj.updatePatientDetail(req, res, next);
     });
 

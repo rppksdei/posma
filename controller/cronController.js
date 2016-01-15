@@ -34,8 +34,8 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     var execution_time = moment(pdd).add(qdata[j].execute_time, 'h').unix();//addHours
                     // var nd = moment.utc(execution_time, 'X').format('YYYY-MM-DD');
                      console.log('\n-single execution_time = ',execution_time);
-		              console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
-		              console.log('\n-endTimeStamp = ',query.endTimeStamp);
+		              //console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
+		              //console.log('\n-endTimeStamp = ',query.endTimeStamp);
                     //if(execution_time < query.endTimeStamp){
                     if((execution_time >= query.currentTimeStamp) && (execution_time < query.endTimeStamp)){
                         tempObj.datetime 			= execution_time;
@@ -57,12 +57,12 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     var current_date = moment.unix(query.currentTimeStamp);
                     /*
                     // console.log('1 = ', recur_execut_date);
-                    console.log('2 = ', recur_execut_date_full); // e.g {2015-11-26T11:53:18+05:30}
-                    console.log('3 = ', recur_execut_date_ts); // 1448518998
+                    //console.log('2 = ', recur_execut_date_full); // e.g {2015-11-26T11:53:18+05:30}
+                    //console.log('3 = ', recur_execut_date_ts); // 1448518998
                     // console.log('4 = ', recur_execut_end_date); // 
-                    console.log('5 = ', recur_execut_end_date_full); // {2015-12-03T11:53:18+05:30}
-                    console.log('currentTimeStamp', query.currentTimeStamp);
-                    console.log('endTimeStamp', query.endTimeStamp);
+                    //console.log('5 = ', recur_execut_end_date_full); // {2015-12-03T11:53:18+05:30}
+                    //console.log('currentTimeStamp', query.currentTimeStamp);
+                    //console.log('endTimeStamp', query.endTimeStamp);
                     */
                     var is_time_slot_in = false;
                     if(qdata[j].recur_type == 'd'){
@@ -166,8 +166,8 @@ getlisting = function(){
     var current_date        = new Date();
     var currentTimeStamp    = moment().unix();
     var endTimeStamp        = addMinutes(current_date, 1); // val = 10 mins
-    console.log('\ncurrentTimeStamp = ', currentTimeStamp);
-    console.log('\nendTimeStamp = ', endTimeStamp);
+    //console.log('\ncurrentTimeStamp = ', currentTimeStamp);
+    //console.log('\nendTimeStamp = ', endTimeStamp);
     search.dohd = {$lte: currentTimeStamp};
     var patParams = {username:1,pathway:1,time_of_discharge:1};
     
