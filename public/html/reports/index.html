@@ -26,7 +26,6 @@
                                     		<b>{{ques.name}} </b>
                                     		<div ng-repeat="ans in ques.answer" ng-if="ques.answer_type != 'text'">
 	                                    		{{ans.name}}
-
 	                                    		<div ng-if="(ques.answer_type == 'rb' || ques.answer_type == 'dd') && ans.is_noted == 1">
 	                                    			<b>Notes: </b> {{ans.notes}} 
 	                                    		</div>
@@ -40,8 +39,6 @@
 		                                    	</div>
 	                                    	</div>
                                     	</div>
-
-                                		
                                     </td>
                                 </tr>
                         </table>

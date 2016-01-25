@@ -2,26 +2,26 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var patientSchema = ({
-    username:{type:String, required:"Username is required"},
-    password:{type:String, required:"Password is required"},
-    first_name:{type:String, required:"First Name is Required"},
+    username:{type:String, index: true, required:"Username is required."},
+    password:{type:String, required:"Password is required."},
+    first_name:{type:String, required:"First Name is required."},
     last_name:{type:String},
-    email:{type:String, required:"Email is required"},
-    date_of_birth:{type:Number, required:"Date of Birth is required"},
-    gender:{type:String, required:"Gender is required"},
-    address1:{type:String, required:"Address is Required"},
+    email:{type:String, required:"Email is required."},
+    date_of_birth:{type:Number, required:"Date of birth is required."},
+    gender:{type:String, required:"Gender is required."},
+    address1:{type:String, required:"Address is required."},
     address2:{type:String},
     phone:{type:Number},
-    mobile:{type:Number, required:"Number is Required"},
-    surgery:{type:Schema.Types.ObjectId, ref:"Surgery", required:"Surgery is Required"},
-    clinic:{type:Schema.Types.ObjectId, ref:"Admin", required:"Clinic is Required"},
+    mobile:{type:Number, required:"Number is required."},
+    surgery:{type:Schema.Types.ObjectId, ref:"Surgery", required:"Surgery is required."},
+    clinic:{type:Schema.Types.ObjectId, ref:"Admin", required:"Clinic is required."},
     pathway:{type:Schema.Types.ObjectId, ref:"Pathway"/*, required:"Pathway is Required"*/},
     is_deleted:{type:Number, default:0},
     is_active:{type:Number, default:0},
     created:{type:Number},
     modified:{type:Number},
-    age: {type: Number, required:"Age is required"},
-    dos:{type:Number, required:"Date of Surgery is required"},
+    age: {type: Number, required:"Age is required."},
+    dos:{type:Number, required:"Date of Surgery is required."},
     dohd:{type:Number},
     time_of_discharge:{type:String},
     cci:{type:Number},
@@ -48,6 +48,8 @@ var patientSchema = ({
 });
 
 var Patient = mongoose.model('Patient', patientSchema);
+
+//Patient.index({ username: 1,email:1});
 
 exports.getAllPatient = function(search_criteria, next){
     Patient.find(search_criteria, next).populate('surgery').populate('clinic').populate('pathway').lean();

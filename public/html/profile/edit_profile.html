@@ -23,37 +23,44 @@
                             <label>Username <span class="required">*</span></label>
                             <input class="form-control" disabled  ng-model="profileData.username" name="username" id="username" value="">
                         </div>
-                        <div class="form-group" ng-show='user.user_type == 0' ng-class="{'has-error': edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required }">
+                        <div class="form-group" ng-show='user.user_type == 0' ng-class="{'has-error':edit_profile.clinic_name.$dirty && (edit_profile.clinic_name.$error.required || edit_profile.clinic_name.$error.pattern)}">
                             <label>Institution Name <span class="required">*</span></label>
-                            <input class="form-control" autocomplete="off" ng-model="profileData.clinic_name" ng-required='user.user_type == 0' name="clinic_name" id="clinic_name" value="">
+                            <input class="form-control" autocomplete="off" ng-pattern="/^[a-zA-Z0-9 ]*$/" ng-model="profileData.clinic_name" ng-required='user.user_type == 0' name="clinic_name" id="clinic_name" value="">
                             <label class="control-label" ng-show="edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.required">Institution name is required.</label>
+                            <label class="control-label" ng-show="edit_profile.clinic_name.$dirty && edit_profile.clinic_name.$error.pattern">Invalid institution name.</label>
                         </div>
-                        <div class="form-group">
+                        <!--div class="form-group">
                             <label>Firstname</label>
                             <input class="form-control" autocomplete="off" ng-model="profileData.first_name" name="first_name" id="first_name" value="">
+                        </div-->
+                        <div class="form-group" ng-class="{'has-error':edit_profile.first_name.$dirty && (edit_profile.first_name.$error.required || edit_profile.first_name.$error.pattern)}">
+                            <label>First name <span class="required">*</span></label>
+                            <input class="form-control" required autocomplete="off" ng-model="profileData.first_name" ng-pattern="/^[a-zA-Z0-9]*$/" name="first_name" id="first_name" value="">
+                            <label class="control-label" ng-show="edit_profile.first_name.$dirty && edit_profile.first_name.$error.required">First name is required.</label>
+                            <label class="control-label" ng-show="edit_profile.first_name.$dirty && edit_profile.first_name.$error.pattern">Invalid first name.</label>
                         </div>
-                        <div class="form-group">
-                            <label>Lastname</label>
-                            <input class="form-control" autocomplete="off" ng-model="profileData.last_name" name="last_name" id="last_name" autocomplete="off" value="">
+                        <div class="form-group" ng-class="{'has-error':edit_profile.last_name.$dirty && (edit_profile.last_name.$error.required || edit_profile.last_name.$error.pattern)}">
+                            <label>Last name <span class="required">*</span></label>
+                            <input class="form-control" required autocomplete="off" ng-model="profileData.last_name" ng-pattern="/^[a-zA-Z0-9 ]*$/" name="last_name" id="last_name" value="">
+                            <label class="control-label" ng-show="edit_profile.last_name.$dirty && edit_profile.last_name.$error.required">Last name is required.</label>
+                            <label class="control-label" ng-show="edit_profile.last_name.$dirty && edit_profile.last_name.$error.pattern">Invalid last name.</label>
                         </div>
                         <div class="form-group" ng-class="{'has-error': edit_profile.email.$dirty && (edit_profile.email.$error.required || edit_profile.email.$error.email) }">
                             <label>Email <span class="required">*</span></label>
                             <input class="form-control" autocomplete="off" ng-model="profileData.email" name="email" id="email" required type="email" value="">
-    			    <label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.required">Email is required.</label>
-    			    <label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.email">Invalid Email.</label>
+                            <label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.required">Email is required.</label>
+                            <label class="control-label" ng-show="edit_profile.email.$dirty && edit_profile.email.$error.email">Invalid email.</label>
                         </div>
                         <div class="form-group" ng-class="{'has-error': (edit_profile.phone.$dirty && (edit_profile.phone.$error.required || edit_profile.phone.$error.number || edit_profile.phone.$error.minlength || edit_profile.phone.$error.maxlength)) || error['phone'] }">
                             <label>Phone <span class="required">*</span></label>
                             <input class="form-control" autocomplete="off" type="number" required ng-model="profileData.phone" name="phone" id="phone" ng-maxlength="10" ng-minlength="10">
-    			    <label class="control-label" ng-show="edit_profile.phone.$dirty && edit_profile.phone.$error.required">Phone is required.</label>
-			    <label class="control-label" ng-show="edit_profile.phone.$dirty && (edit_profile.phone.$error.number)">Only numbers allowed.</label>
-			    <label class="control-label" ng-show="edit_profile.phone.$dirty && (edit_profile.phone.$error.minlength || edit_profile.phone.$error.maxlength)">Only 10 digits required.</label>
-			    <label class="control-label" ng-show="errordetail['phone']" ng-bind="error['phone']"></label>
+                            <label class="control-label" ng-show="edit_profile.phone.$dirty && edit_profile.phone.$error.required">Phone is required.</label>
+                            <label class="control-label" ng-show="edit_profile.phone.$dirty && (edit_profile.phone.$error.number || edit_profile.phone.$error.minlength || edit_profile.phone.$error.maxlength)">Enter a valid phone number of 10 digits.</label>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': error['mobile'] }">
+                        <div class="form-group" ng-class="{'has-error': (edit_profile.mobile.$error.number || edit_profile.mobile.$error.minlength || edit_profile.mobile.$error.maxlength)}">
                             <label>Mobile</label>
-                            <input class="form-control" autocomplete="off" type="text" ng-model="profileData.mobile" name="mobile" id="mobile" value="">
-                            <label class="control-label" ng-show="error['mobile']" ng-bind="error['mobile']"></label>
+                            <input class="form-control" autocomplete="off" type="text" ng-model="profileData.mobile" name="mobile" type="number" ng-maxlength="10" ng-minlength="10" id="mobile" value="">
+                            <label class="control-label" ng-show="(edit_profile.mobile.$error.number || edit_profile.mobile.$error.minlength || edit_profile.mobile.$error.maxlength)">Enter a valid mobile number of 10 digits.</label>
                         </div>
                         <div class="form-group" ng-class="{'has-error': edit_profile.address1.$dirty && edit_profile.address1.$error.required }">
                             <label>Address 1 <span class="required">*</span></label>
@@ -63,6 +70,20 @@
                         <div class="form-group">
                             <label>Address 2</label>
                             <input class="form-control" autocomplete="off" ng-model="profileData.address2" name="address2" id="address2" value="">
+                        </div>
+                        <div class="form-group" ng-class="">
+                            <label>State <span class="required">*</span></label>
+                            <select ng-model="admin.state" class="form-control" ng-change="getCities()" name="state" id="state" required>
+                                <option value="">--Select a state--</option>
+                                <option ng-repeat="index in states" value ="{{index._id}}">{{index.state}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-class="">
+                            <label>City - Zipcode<span class="required">*</span></label>
+                            <select ng-model="admin.city" class="form-control" name="city" id="city" required>
+                                <option value="">--Select a city - zipcode--</option>
+                                <option ng-repeat="city_index in cities" value ="{{city_index._id}}">{{city_index.city}} - {{city_index.zip}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-12" style="text-align:left">

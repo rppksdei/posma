@@ -121,7 +121,7 @@ updateUserDetail = function(req, res){
         }
         else{
             console.log(data);
-            return_data.success = "Profile updated Successfully";
+            return_data.success = "Details have been updated successfully.";
             res.json(return_data);
         }
     });

@@ -7,7 +7,6 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
-
     $scope.list = function(){
         Report.list().query({}, function(data){
             if(data){
@@ -55,7 +54,6 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
                                     });
                                 }
                             } else {
-
                             }
                         }
                     }
@@ -65,7 +63,6 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
             $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.alerts});
         });
     }
-
     if (flag == "report") {
         $scope.list();
     }

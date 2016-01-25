@@ -58,18 +58,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+var basic_auth_token = '1234567890po23sm45a56';
 
-
-// app.use('/',function(req, res, next) {
-//   var headerDetail = req.headers['auth-token'];
-//   if (typeof headerDetail != "undefined" && headerDetail == "test") {
-//     next();
-//   }
-//   else{
-//     res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
-//   }
-  
-// });
+app.use('/',function(req, res, next) {
+  var headerDetail = req.headers['auth-token'];
+  if (typeof headerDetail != "undefined" && headerDetail == basic_auth_token) {
+    next();
+  }
+  else{
+    res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+  }
+});
 /*
 app.get('/superadmin',function(req, res, next) {
   //console.log('CLINIC');
@@ -205,6 +204,7 @@ require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
 //require('./routes/admin')(app,express);
 require('./routes/admin')(app,express, isSuperAdmin, isClinicOrAdmin, emailService);
+require('./routes/state')(app,express);
 require('./routes/alert')(app,express,isClinicAdmin);
 require('./routes/surgery')(app,express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/question')(app,express, isClinicAdmin);
