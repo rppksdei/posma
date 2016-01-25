@@ -349,7 +349,7 @@ updatePatientAnswers = function(){
             var total_ques = data[pa].questions.length;
             var totalcalls = 0;
             for(var i = 0; i < total_ques; i++){
-                questionModel.getQuestion({'_id':data[pa].questions[i].question},{"_id":1,"name":1,"answer_type":1,'answer':1},i,function(err, ansDetail) {
+                questionModel.getFieldsQuestion({'_id':data[pa].questions[i].question},{"_id":1,"name":1,"answer_type":1,'answer':1},i,function(err, ansDetail) {
                     var ansDetail_data = ansDetail.data;
                     var new_i = ansDetail.indexVal;
                     questionsArr[totalcalls] = ansDetail_data;
