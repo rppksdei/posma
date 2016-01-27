@@ -139,7 +139,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         	notification_data.datetime      = patientsData[l].pathway.questionnaires[m].datetime;
                             notification_data.questionnaire = patientsData[l].pathway.questionnaires[m].questionnaire;
                             // console.log('\nnotification_data ==\n', notification_data);
-			    sendToAndroid(patientsData[l].device_id, 'New Questionnaire Available.');
+			    //sendToAndroid(patientsData[l].device_id, 'New Questionnaire Available.');
                             notificationModel.add(notification_data, function(err2, ndata){
                             	if(err2){
                             		console.log('Notification add error : ',err2);
