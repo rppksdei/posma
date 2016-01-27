@@ -4,6 +4,7 @@ var notificationModel   = require("./../model/notificationModel");
 var patientAnsModel     = require("./../model/patientAnswerModel");
 var questionModel       = require("./../model/questionModel");
 var moment              = require('moment');
+//var gcm 		= require('android-gcm');
 
 var pc = 0; /* pc = no. of discharged patients count . */
 var testvar = 0; var resdata = {}; var patient_data = [];
@@ -21,7 +22,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
             // var pdd2 = moment.utc(patientsData[currentIndex].dohd, 'X').utcOffset('+0530').format('YYYY-MM-DD HH:mm:ss');
             var pdd3 = moment.unix(patientsData[currentIndex].time_of_discharge);
             var pdd = pdd3._d; // full date format e.g.{Wed Nov 25 2015 11:53:18 GMT+0530 (IST)}
-            // console.log('pdd = ', pdd);
+            //console.log('pdd = ', pdd);
             // console.log(query);
             // var pdd4 = moment.utc(patientsData[currentIndex].dohd, 'X').format();
             var tempVals = new Array(); var cnt = 0; 
@@ -33,12 +34,13 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     // var execution_time = addHours(pdd, qdata[j].execute_time);
                     var execution_time = moment(pdd).add(qdata[j].execute_time, 'h').unix();//addHours
                     // var nd = moment.utc(execution_time, 'X').format('YYYY-MM-DD');
-                     console.log('\n-single execution_time = ',execution_time);
-		              //console.log('\n-currentTimeStamp = ',query.currentTimeStamp);
-		              //console.log('\n-endTimeStamp = ',query.endTimeStamp);
+                     //console.log('\n+single execution_time = ',execution_time);
+	             //console.log('\n-- currentTimeStamp = ',query.currentTimeStamp);
+	             //console.log('\n-- endTimeStamp = ',query.endTimeStamp);
                     //if(execution_time < query.endTimeStamp){
                     if((execution_time >= query.currentTimeStamp) && (execution_time < query.endTimeStamp)){
-                        tempObj.datetime 			= execution_time;
+			console.log('\n............In Single.........');
+                        tempObj.datetime 		= execution_time;
                         tempObj.questionnaire 		= qdata[j]._id;
                         tempObj.questionnaire_name 	= qdata[j].name;
                         tempVals[cnt++] = tempObj;
@@ -54,7 +56,11 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     var recur_execut_end_date_ts  = moment(recur_execut_end_date).unix();
                     var current_day = moment.unix(query.currentTimeStamp).format('E');
                     // console.log('current_day = ',current_day);
-                    var current_date = moment.unix(query.currentTimeStamp);
+                    var current_date = moment.unix(query.currentTimeStamp)/*.utc('+05:30')*/;
+		    //console.log('***\ncurrentTimeStamp : ', query.currentTimeStamp);
+		    //console.log('***\ncurrent_date : ', current_date);
+		    //console.log('---', current_date.format('YYYY/MM/DD'));
+		    
                     /*
                     // console.log('1 = ', recur_execut_date);
                     //console.log('2 = ', recur_execut_date_full); // e.g {2015-11-26T11:53:18+05:30}
@@ -69,10 +75,17 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         //console.log("currentTimeStamp =" ,query.currentTimeStamp,"recur_execut_date_ts = ",recur_execut_date_ts, "recur_execut_end_date_ts = ",recur_execut_end_date_ts);
                         if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
                             //console.log('here');
+				console.log('time_slots = ', j, '\n',qdata[j].time_slots);				
                             if(qdata[j].time_slots.length > 0){
+				//console.log('\n query.currentTimeStamp...daily',query.currentTimeStamp);
+				//console.log('\n query.endTimeStamp...daily',query.endTimeStamp);
                                 for (var k = 0; k < qdata[j].time_slots.length; k++) {
-                                    var newD = moment(current_date.format('YYYY-MM-DD')+' '+qdata[j].time_slots[k],'MM/DD/YYYY').unix();
-                                    //console.log('\nnewD...daily',newD);
+				    var newD = '';
+				    var tempDate = new Date(current_date.format('YYYY/MM/DD')+' '+qdata[j].time_slots[k]);
+					//console.log('>>>>tempDate = ', tempDate);
+                                    newD = moment(tempDate).unix();
+                                    console.log('..newD = ',newD);
+				    
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
                                         //console.log('inside');
                                         is_time_slot_in = true;
@@ -81,16 +94,18 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                                         // qdata[j].datetime = newD;
                                     }
                                 };
-                                // console.log('is_time_slot_in daily = ',is_time_slot_in);
+                                //console.log('is_time_slot_in daily = ',is_time_slot_in);
                                 if(is_time_slot_in==true){
-                                    tempObj.questionnaire 		= qdata[j]._id;
+                                    tempObj.questionnaire 	= qdata[j]._id;
                                     tempObj.questionnaire_name 	= qdata[j].name;
+				console.log('tempObj => ',tempObj);
                                     tempVals[cnt++] = tempObj;
                                     // tempVals[cnt++] = qdata[j];
                                 }
                             }
                         }
-                    }/*else if(qdata[j].recur_type == 'w'){
+                    }
+		    /*else if(qdata[j].recur_type == 'w'){
                         if(qdata[j].days.indexOf(current_day) >= 0){
                             if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
                                 if(qdata[j].time_slots.length > 0){
@@ -117,12 +132,13 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     }*/
                 }
                 if((j+1)==qdata.length){
-                    // console.log('\ntempVals-----> ',tempVals);
+                    //console.log('\ntempVals-----> Yes');
                     patientsData[currentIndex].pathway.questionnaires = tempVals;
                 }
             }
+//console.log('\n currentIndex = ', currentIndex, '\t length = ', length, '\n');
             if((currentIndex+1)==length){
-                // console.log(patientsData);
+                //console.log(patientsData);
                 /*** add patients with related questionnaires into notifications table ***/
                 if(patientsData.length > 0){
                     for(var l=0; l<patientsData.length; l++){
@@ -134,15 +150,24 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         notification_data.is_filled     = 0;
 
                         for(var m=0; m<patientsData[l].pathway.questionnaires.length; m++){
-                        	notification_data.datetime      = patientsData[l].pathway.questionnaires[m].datetime;
+                            notification_data.datetime      = patientsData[l].pathway.questionnaires[m].datetime;
                             notification_data.questionnaire = patientsData[l].pathway.questionnaires[m].questionnaire;
-                            // console.log('\nnotification_data ==\n', notification_data);
+			    notification_data.questionnaire_name = patientsData[l].pathway.questionnaires[m].questionnaire_name;
+			    
+			    notification_data.device_id     = patientsData[l].device_id;
+			    //console.log('device id = ', patientsData[l].device_id);
+			    console.log('-----------notification_data--------------------\n', notification_data);
                             notificationModel.add(notification_data, function(err2, ndata){
                             	if(err2){
-                            		console.log('Notification add error : ',err2);
+                            	    console.log('Notification add error : ',err2);
                             	}
                             	if(ndata){
-                            		console.log('Notification add msg-- : ',ndata);
+                            	    //console.log('Notification add success--------------------->\n',ndata);
+				    if(ndata.device_id != '' && ndata.device_id != 'null' && typeof ndata.device_id != 'undefined'){
+					var titl_time = moment.utc(ndata.datetime, 'X').format('HH:mm a');
+					var titl = ndata.questionnaire_name+"' Available at "+titl_time;
+					sendNotification(ndata.device_id, titl, 'There is a new questionnaire available for you. Please fill relevant data and submit. Wish you a speedy recovery.');
+				    }
                             	}
                             });
                         }
@@ -155,6 +180,31 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
     })
 }
 
+/* function to send Notification to Android. */
+sendNotification = function(deviceId, title, msg) {
+	//console.log(deviceId);
+	var gcm 	= require('android-gcm');
+	var serverKey	= "AIzaSyBFtOhKI6zT_zG6rUcIS0wirmphj8vRmaU"; // type : server
+	var senderId 	= "707879217713";
+	
+	// initialize new androidGcm object
+	var gcmObject = new gcm.AndroidGcm(serverKey);
+	// create new message
+	var finalmessage = new gcm.Message({
+	    registration_ids: [deviceId],
+	    data: {
+		key1: 'This is key1',
+		title: title,
+		message: msg
+		// key2: 'key 2'
+	    }
+	});
+	// send the message
+	gcmObject.send(finalmessage, function(err, response) {
+	    console.log("\nGCM Response ---------------------------------------------------\n", err, response);
+	});
+}
+
 getlisting = function(){
     var search = {is_deleted:0, pathway:{$ne: null}};
     /*if (req.user.user_type == "2") {
@@ -165,7 +215,7 @@ getlisting = function(){
     var pd = {};
     var current_date        = new Date();
     var currentTimeStamp    = moment().unix();
-    var endTimeStamp        = addMinutes(current_date, 1); // val = 10 mins
+    var endTimeStamp        = addMinutes(current_date, 5); // val = 10 mins
     //console.log('\ncurrentTimeStamp = ', currentTimeStamp);
     //console.log('\nendTimeStamp = ', endTimeStamp);
     search.dohd = {$lte: currentTimeStamp};
@@ -177,7 +227,8 @@ getlisting = function(){
             //res.json(err);
         }
         else{
-            console.log('No. of Patients : ',patientsData.length);
+            //console.log('\nNo. of Patients : ',patientsData.length);
+	    //console.log('\n\nPatients Data : \n',patientsData);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
             
@@ -416,7 +467,7 @@ updatePatientAnswers = function(){
 
 module.exports = function(){
     this.getlisting             = getlisting;
-    // this.amit                = amit;
+    this.sendNotification       = sendNotification;
     this.getpatientDetail       = getpatientDetail;
     this.addPathway             = addPathway;
     this.updatepatientDetail    = updatepatientDetail;

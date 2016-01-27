@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "android-gcm": "^0.1.5",
     "angular-moment": "^0.10.3",
     "bcryptjs": "^2.3.0",
     "body-parser": "~1.13.2",

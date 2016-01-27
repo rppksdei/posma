@@ -4,11 +4,13 @@ var Schema = mongoose.Schema;
 var notificationSchema = new Schema({
     patient:{type:Schema.Types.ObjectId, ref:"Patient"},
     questionnaire:{type:Schema.Types.ObjectId, ref:"Questionnaire"},
+    questionnaire_name:{type:String},
     datetime:{type:Number},
     message:{type:String},
     is_filled:{type:Number, default:0},
     created:{type:Number},
-    modified:{type:Number} 
+    modified:{type:Number},
+    device_id:{type:String}
 });
 /*
 db.notifications.insert({
@@ -41,7 +43,7 @@ Notification.add = function(submit_data, next){
 }
 
 Notification.updateNotification = function(search_criteria, new_data, next){
-    console.log('HERE');
+    //console.log('HERE');
     Notification.update(search_criteria, {$set:new_data}, next);
 }
 
