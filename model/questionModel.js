@@ -9,7 +9,6 @@ var answerSchema = new Schema({
     modified:{type:Number}
 });
 
-
 var questionSchema = new Schema({
     name:{type:String, required:"Question name is required. "},
     answer_type:{type:String, default:'text'}, //0=Text, 1=Number
@@ -27,7 +26,6 @@ var questionSchema = new Schema({
 
 var Question = mongoose.model('Question', questionSchema);
 
-
 Question.getAllQuestion = function(search_criteria, sort_order, next){
     if(!sort_order || sort_order == '-') {
         Question.find(search_criteria, next);
@@ -36,7 +34,11 @@ Question.getAllQuestion = function(search_criteria, sort_order, next){
     }
 }
 
-Question.getQuestion = function(search_criteria,fields_sel,i, next){
+Question.getQuestion = function(search_criteria, next){
+    Question.findOne(search_criteria, next);
+}
+
+Question.getFieldsQuestion = function(search_criteria,fields_sel,i, next){
     if(typeof fields_sel == 'undefined' && typeof i == 'undefined') {
         Question.findOne(search_criteria, next);
     } else {

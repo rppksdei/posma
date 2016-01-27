@@ -75,11 +75,9 @@ getDetail = function(req, res, next){
 
 setQuestiondata = function(admin_alert, fn){
     var quData = {};
-    questionModel.getQuestion({'_id':admin_alert.question},'','', function(err, questionDetail) {
+    questionModel.getQuestion({'_id':admin_alert.question}, function(err, questionDetail) {
         if (err) {
-
         } else{
-            questionDetail = questionDetail.data;
             quData.ques_name        = questionDetail.name;
             quData.answer_type      = questionDetail.answer_type;
             quData.gender           = questionDetail.gender;
@@ -135,7 +133,7 @@ setQuestiondata = function(admin_alert, fn){
 
 setQuestionAnswers = function(key,ansData,fun){
     var search_question = {_id:key}; 
-    questionModel.getQuestion(search_question,'','', function(err, quesdata){
+    questionModel.getQuestion(search_question, function(err, quesdata){
         if(quesdata){
             qData.question_name = quesdata.name;
             /**** to get all questions and selected answer information to store ********/

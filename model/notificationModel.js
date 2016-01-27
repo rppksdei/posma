@@ -12,8 +12,7 @@ var notificationSchema = new Schema({
     modified:{type:Number},
     device_id:{type:String}
 });
-/*
-db.notifications.insert({
+/* db.notifications.insert({
     'patient' : ObjectId("562f00ae852fa25c123871a0"),
     'questionnaire': ObjectId("563c51e84f2c779c4ed8473e"),
     'datetime': 1448002780943,
@@ -21,7 +20,7 @@ db.notifications.insert({
     'is_filled': 0,
     'created': 1448002780943,
     'modified': 1448002780943
-});*/
+}); */
 
 var Notification = mongoose.model('Notification', notificationSchema);
 
@@ -43,8 +42,6 @@ Notification.add = function(submit_data, next){
 }
 
 Notification.updateNotification = function(search_criteria, new_data, next){
-    //console.log('HERE');
     Notification.update(search_criteria, {$set:new_data}, next);
 }
-
 module.exports = Notification;

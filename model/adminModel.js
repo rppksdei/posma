@@ -13,6 +13,8 @@ var adminSchema = new Schema({
     mobile:{type:Number},
     address1:{type:String},
     address2:{type:String},
+    state:{type:Schema.Types.ObjectId},
+    city:{type:Schema.Types.ObjectId},
     parent_id:{type:Schema.Types.ObjectId}, // if it is surgeon then it will be clinic id otherwise it will be 0
     surgery:[{type:Schema.Types.ObjectId}],
     is_deleted:{type:Number, default:0},

@@ -1,7 +1,9 @@
 //angular.module('MyAppService', ['ngResource']); 
 var myapp = angular.module("posma",['ang-drag-drop', '720kb.datepicker','angularjs-dropdown-multiselect','ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model",'angular-accordion','angularMoment']);
+var authScope = '1234567890po23sm45a56';
+
 function checkloggedIn($rootScope, $http, $location) {
-    $http.get('/login/checkloggedin').success(function(data) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
         if (data.error) {
             $location.path('/login');
         }

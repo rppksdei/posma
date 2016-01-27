@@ -170,6 +170,12 @@ updateAdminDetail = function(req, res, emailService){
     if(typeof req.body.is_active != "undefined"){
         update_data.is_active = req.body.is_active;
     }
+    if(typeof req.body.state != "undefined"){
+        update_data.state = req.body.state;
+    }
+    if(typeof req.body.city != "undefined"){
+        update_data.city = req.body.city;
+    }
     update_data.modified = Date.now();
     //End of code to create object data
     if(send_email == 1){
