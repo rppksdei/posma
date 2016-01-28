@@ -54,22 +54,12 @@ myapp.controller('surgeryCtrl', function($scope, $route, Surgery, $location, Fla
                 $scope.surgery.clinic_name = $rootScope.user.clinic_name;
             }
         });
-
-        // Surgery.editSurgery().save({'id': surgeryId}, function(data){
-        //     if (data.success) {
-        //        // $rootScope.user = $scope.profileData;
-        //         $scope.success_message = data.success;
-        //     }else{
-        //         $scope.error[data.error.path] = data.error.message;
-        //         console.log($scope.error);
-        //     }
-        // });
     }
     
-    $scope.deleteSurgery = function(id) {
+    $scope.deleteSurgery = function(id,surName) {
         SweetAlert.swal({
-        title: "Are you sure?",
-        text: "You will not be able to recover surgery!",
+        title: "Are you sure you want to delete '"+surName+"'?",
+        text: "You will not be able to recover it!",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
