@@ -60,7 +60,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 var basic_auth_token = '1234567890po23sm45a56';
 
-app.use('/',function(req, res, next) {
+/*app.use('/',function(req, res, next) {
   var headerDetail = req.headers['auth-token'];
     if (typeof headerDetail != "undefined" && headerDetail == basic_auth_token) {
       next();
@@ -69,7 +69,7 @@ app.use('/',function(req, res, next) {
     } else{
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
     }
-});
+});*/
 /*
 app.get('/superadmin',function(req, res, next) {
   //console.log('CLINIC');
