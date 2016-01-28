@@ -28,5 +28,5 @@ module.exports = function(app,express,supportCrossOriginScript){
     });
     //End of code to get one Questionnaire detail
     
-    app.use('/questionnaire',router);
+    app.use('/questionnaires',router);
 }

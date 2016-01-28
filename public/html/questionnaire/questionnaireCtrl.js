@@ -253,7 +253,7 @@ myapp.controller('questionnaireCtrl', function($scope, $route, Questionnaire, Qu
         });
     };
     $scope.listQuestionnaire = function(){
-        Questionnaire.list().query({}, function(data){
+        Questionnaire.list().query(function(data){
             $scope.questionnaires = data;
             $scope.tableParams = new ngTableParams({count:rec_cnt}, {counts:{}, data:$scope.questionnaires});
         });
