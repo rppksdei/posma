@@ -1,0 +1,21 @@
+{
+    "fitbit": {
+        "timeout": 10000,
+        "creds": {
+            "clientID": "227F3W",
+            "clientSecret": "a85f60f84784773996937d4909097fe9"
+        },
+        "uris": {
+            "authorizationUri": "https://www.fitbit.com",
+            "authorizationPath": "/oauth2/authorize",
+            "tokenUri": "https://api.fitbit.com",
+            "tokenPath": "/oauth2/token"
+        },
+        "authorization_uri": {
+            "redirect_uri": "http://localhost:8987/fit/fitbit_auth_callback/",
+            "response_type": "code",
+            "scope": "activity nutrition profile settings sleep social weight heartrate",
+            "state": "3(#0/!~"
+        }
+    }
+}
