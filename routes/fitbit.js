@@ -1,28 +1,38 @@
-module.exports = function(app,express){
+module.exports = function(app,express,supportCrossOriginScript){
     var router              = express.Router();
-    var fitbitController    = require("./../controller/fitbitController");
-    var fitObj              = new fitbitController();
-
-    // OAuth flow
-    router.get('/',function(req, res, next) {
-	fitObj.createAPI(req, res, next);
+    //var fitbitController    = require("./../controller/fitbitController");
+    //var fitObj              = new fitbitController();
+    /*
+	    // OAuth flow
+	    router.get('/authorize',function(req, res, next) {
+		fitObj.authorize(req, res, next);
+	    });
+	    
+	    // On return from the authorization
+	    router.get('/oauthcallback',function(req, res) {
+		fitObj.oauthCallback(req, res);
+	    });
+    */
+    
+    
+    /*----------- using NEW fitbit-oauth2 -----------------*/
+    
+    var fitbitoauth2Controller    	= require("./../controller/fitbitoauth2Controller");
+    var fitObj              		= new fitbitoauth2Controller();
+    
+    router.post('/authorize',supportCrossOriginScript,function(req, res) {
+	console.log('in authorize... = ', req.body, req.params, req.query);
+	fitObj.authorize(req, res);
     });
     
-    // On return from the authorization
-    router.get('/oauth_callback',function(req, res, next) {
+    router.get('/fitbit_auth_callback',supportCrossOriginScript,function(req, res, next) {
+	console.log('in fitbit_auth_callback... = ', req.body, req.params, req.query);
 	fitObj.oauthCallback(req, res, next);
     });
     
-    // Display some stats
-    router.get('/stats',function(req, res) {
-	fitObj.getStats(req, res);
+    router.get('/fb-profile',supportCrossOriginScript,function(req, res, next) {
+	fitObj.getdata(req, res, next);
     });
-    
-    /*
-    router.post('/gcmsend',function(req, res, next) {
-	gcmObj.sendToAndroid();
-    });
-    */
 
     app.use('/fitbit',router);
 }

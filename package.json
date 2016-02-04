@@ -16,6 +16,7 @@
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "express-session": "^1.11.3",
+    "fitbit-oauth2": "0.0.1",
     "forever": "^0.15.1",
     "fs-extra": "^0.26.5",
     "jade": "~1.11.0",
