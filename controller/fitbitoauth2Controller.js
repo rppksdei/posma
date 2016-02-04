@@ -1,28 +1,29 @@
 var Fitbit 	= require("fitbit-oauth2")
-, config        = require('./../config/oauth-creds.json' )
-/*, client 	= new FitbitApiClient("d8451f99be86006a8c7a95e0b1e7e31c", "a85f60f84784773996937d4909097fe9")*/;
+, config        = require('./../config/oauth-creds.json' );
 
 
 // Instanciate the client
 var fitbit = new Fitbit( config.fitbit );
-//console.log(config);
 
 // In a browser, http://localhost:8987/fitbit to authorize a user for the first time.
 authorize = function(req, res){
-    console.log(fitbit.authorizeURL());
+    console.log('\n---------\n',fitbit.authorizeURL());
+    //res.json(fitbit.authorizeURL());
     res.redirect( fitbit.authorizeURL() );
 }
 
 
 oauthCallback = function(req, res, next){
+    console.log('req => ',  req.body, req.params, req.query);
     var code = req.query.code;
+    console.log('code => ',  code);
     fitbit.fetchToken( code, function( err, token ) {
         if ( err ) return next( err );
 
         // persist the token
         //persist.write( tfile, token, function( err ) {
             //if ( err ) return next( err );
-            res.redirect( '/fit/fb-profile' );
+            res.redirect( '/fitbit/fb-profile' );
         //});
     });
 }
@@ -45,7 +46,8 @@ getdata = function(req, res, next){
             });
         else
         */
-            res.send( '<pre>' + JSON.stringify( profile, null, 2 ) + '</pre>' );
+        res.json(profile);
+            //res.send( '<pre>' + JSON.stringify( profile, null, 2 ) + '</pre>' );
     });
 }
 
