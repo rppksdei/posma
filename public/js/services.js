@@ -109,16 +109,16 @@
     .factory('Questionnaire', function($resource){
         var serviceObj = {};
         serviceObj.getDetail = function(){
-            return $resource('/questionnaire/getDetail', {}, authHeader);
+            return $resource('/questionnaires/getDetail', {}, authHeader);
         }
         serviceObj.add = function(){
-            return $resource('/questionnaire/add', {}, authHeader);
+            return $resource('/questionnaires/add', {}, authHeader);
         }
         serviceObj.update = function(){
-            return $resource('/questionnaire/update', {}, authHeader);
+            return $resource('/questionnaires/update', {}, authHeader);
         }
         serviceObj.list = function(){
-            return $resource('/questionnairisArray: true,e/', {}, authHeader);
+            return $resource('/questionnaires/', {}, authHeader);
         }
         return serviceObj;
     })

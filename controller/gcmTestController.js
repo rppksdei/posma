@@ -1,4 +1,3 @@
-
 /* function to send Notification to Android. */
 sendToAndroid = function() {
 	var gcm 	= require('android-gcm');

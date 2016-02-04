@@ -16,13 +16,19 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     $scope.list = function(){
         Patient.getList().query({}, function(data){
             $scope.patients = data;
-            //console.log(data);
-            //console.log(data.length);
             for (var i = 0; i < data.length; i++) {
-                $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
-                $scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+                if(typeof data[i].dos == 'number'){
+                    $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
+                } else {
+                    $scope.patients[i].dos = 'Invalid date';
+                }
+                if(typeof data[i].dohd == 'number'){
+                    $scope.patients[i].dohd     = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+                } else {
+                    $scope.patients[i].dohd = 'Invalid date';
+                }
+                //$scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
             }
-        console.log('$scope.patients = ',$scope.patients);
             $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
         });    
     }
@@ -103,8 +109,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                         $scope.pathways = pdata;
                     });
                 });
-            console.log('data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> \n',data);
-            
                 $scope.patient = data;
                 //console.log('dob = ', moment.unix(data.date_of_birth).format('MM/DD/YYYY'));
                 //$scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
@@ -112,7 +116,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
                 $scope.patient.date_of_birth    = moment.unix(data.date_of_birth).format('MM/DD/YYYY');
                 $scope.patient.dos              = moment.unix(data.dos).format('MM/DD/YYYY');
                 //$scope.patient.dohd             = moment.unix(data.dohd).format('MM/DD/YYYY');
-            console.log('$scope.patient .............................\n ',$scope.patient);
             }
         });
     }
@@ -124,12 +127,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
     }
     $scope.getAge = function(){
         var dob = $scope.patient.date_of_birth;
-        // console.log(dob);
         $scope.patient.age = $scope.getAgeFromDob(dob);
-        // console.log($scope.patient);
-        // var date = new Date(timeStamp);
-        // var dateString = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear().toString();
-        // return dateString;
     }
 
     $scope.getAgeFromDob = function (dateString) {
@@ -205,8 +203,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, change it!",
-        cancelButtonText: "No, cancel it!",
+        confirmButtonText: "Yes, discharge!",
+        cancelButtonText: "No, need to confirm again!",
         closeOnConfirm: true}, 
         function(){
             var update_object = {'_id':object_detail._id, 'is_discharged':1};

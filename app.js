@@ -59,17 +59,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 var basic_auth_token = '1234567890po23sm45a56';
-/*
-app.use('/',function(req, res, next) {
+
+/*app.use('/',function(req, res, next) {
   var headerDetail = req.headers['auth-token'];
-  if (typeof headerDetail != "undefined" && headerDetail == basic_auth_token) {
-    next();
-  }
-  else{
-    res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
-  }
-});
-*/
+    if (typeof headerDetail != "undefined" && headerDetail == basic_auth_token) {
+      next();
+    } else if(req.headers['auth-token'] == 'front' || typeof headerDetail == 'undefined'){
+      next();
+    } else{
+      res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
+    }
+});*/
 /*
 app.get('/superadmin',function(req, res, next) {
   //console.log('CLINIC');
@@ -197,8 +197,6 @@ supportCrossOriginScript = function (req, res, next) {
 
 //End of functions to check session and user type
 var emailService = require('./controller/emailService');
-
-
 
 // Route Path
 require('./routes/login')(app,express);

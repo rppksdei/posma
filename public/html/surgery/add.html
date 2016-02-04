@@ -16,11 +16,11 @@
                     <div class="row">
                         <form name="add_surgery_form" id="add_surgery_form" role="form" ng-submit="add();">
                         	<div class="col-lg-6">
-                                <div class="form-group" ng-class="{'has-error':add_surgery_form.name.$dirty && (add_surgery_form.name.$error.required || errordetail.name)}">
+                                <div class="form-group" ng-class="{'has-error':add_surgery_form.name.$dirty && (add_surgery_form.name.$error.required || add_surgery_form.name.$error.pattern || errordetail.name)}">
                                     <label>Title</label> <span class="required">*</span>
-                                    <input class="form-control" ng-model="surgery.name" name="name" id="name" required value="">
+                                    <input class="form-control" ng-model="surgery.name" ng-pattern="/^[a-zA-Z0-9_]*$/" name="name" id="name" required value="">
                                     <label class="control-label" ng-show="add_surgery_form.name.$dirty && (add_surgery_form.name.$error.required || errordetail.name)">Title is required.</label>
-                                    <!-- <input class="form-control" type="hidden" ng-model="surgery._id" ng-if="surgery._id"> -->
+                                    <label class="control-label" ng-show="add_surgery_form.name.$dirty && add_surgery_form.name.$error.pattern">Title should have only alphanumeric characters.</label>
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
