@@ -68,7 +68,7 @@ PatientAnswer.updatePA = function(search_criteria, new_data, next){
     PatientAnswer.update(search_criteria, {$set:new_data}, next);
 }
 PatientAnswer.getList = function(search_criteria, sort_order, next){
-    PatientAnswer.find(search_criteria, next).sort(sort_order);
+    PatientAnswer.find(search_criteria, next).sort(sort_order).populate('patient');
 }
 
 module.exports = PatientAnswer;

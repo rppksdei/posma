@@ -112,9 +112,7 @@ updatePatientDetail = function(req, res){
     //Code to create JSON object data
     if(typeof req.body.post_patientData !== "undefined") {
         if(typeof req.body.post_patientData == "string") {
-            console.log(req.body.post_patientData);
             req.body.post_patientData = JSON.parse(req.body.post_patientData);
-            console.log(req.body.post_patientData);
             req.body._id = req.body.post_patientData._id;
             //req.body.date_of_birth = req.body.post_patientData.date_of_birth;
             req.body.gender = req.body.post_patientData.gender;
@@ -157,6 +155,33 @@ updatePatientDetail = function(req, res){
     if(typeof req.body.dohd != "undefined"){
         update_data.dohd = moment(req.body.dohd, 'MM/DD/YYYY').unix();
         //update_data.dohd = dateToTimeStamp(req.body.dohd);
+    }
+    if(typeof req.body.clinicalTstage != "undefined") {
+        update_data.clinicalTstage = req.body.clinicalTstage;
+    }
+    if(typeof req.body.clinicalMstage != "undefined") {
+        update_data.clinicalMstage = req.body.clinicalMstage;
+    }
+    if(typeof req.body.clinicalNstage != "undefined") {
+        update_data.clinicalNstage = req.body.clinicalNstage;
+    }
+    if(typeof req.body.pathologicMstage != "undefined") {
+        update_data.pathologicMstage = req.body.pathologicMstage;
+    }
+    if(typeof req.body.pathologicNstage != "undefined") {
+        update_data.pathologicNstage = req.body.pathologicNstage;
+    }
+    if(typeof req.body.pathologicTstage != "undefined") {
+        update_data.pathologicTstage = req.body.pathologicTstage;
+    }
+    if(typeof req.body.tumor_laterality != "undefined") {
+        update_data.tumor_laterality = req.body.tumor_laterality;
+    }
+    if(typeof req.body.neoadjuvant_chemotherapy != "undefined") {
+        update_data.neoadjuvant_chemotherapy = req.body.neoadjuvant_chemotherapy;
+    }
+    if(typeof req.body.size_of_tumor != "undefined") {
+        update_data.size_of_tumor = req.body.size_of_tumor;
     }
     if(typeof req.body.address1 != "undefined") {
         update_data.address1 = req.body.address1;
@@ -241,6 +266,9 @@ updatePatientDetail = function(req, res){
     if(typeof req.body.device_id != "undefined") {
         update_data.device_id = req.body.device_id;
     }
+    if(typeof req.body.gmt != "undefined") {
+        update_data.gmt = req.body.gmt;
+    }
     
 
     update_data.modified = moment().unix();/*Date.now(); */
@@ -248,8 +276,7 @@ updatePatientDetail = function(req, res){
     //console.log('\n', moment().format('X')); // 10 digits timestamp in s
     //console.log('\n', moment().unix()); // 10 digits timestamp in s
 
-    console.log('\nupdate_data ----------------------------------------- \n',update_data); //return;
-    
+    console.log('-----------',update_data);
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){

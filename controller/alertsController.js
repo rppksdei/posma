@@ -17,7 +17,7 @@ getlisting = function(req, res, next){
     });
 }
 
-getAlert = function(req, res, next){
+/*getAlert = function(req, res, next){
     var search_alert = {};
     if(typeof req.body.id != 'undefined') {
         var alert_id = req.body.id;
@@ -72,7 +72,7 @@ getAlert = function(req, res, next){
             }
         });
     }
-}
+}*/
 addNotes = function(req, res, next) {
     var alert_data = req.body;
     var update_data = {};
@@ -103,6 +103,6 @@ addNotes = function(req, res, next) {
 
 module.exports = function() {
     this.getlisting = getlisting;
-    this.getAlert = getAlert;
+    //this.getAlert = getAlert;
     this.addNotes = addNotes;
 }

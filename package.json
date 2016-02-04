@@ -22,6 +22,7 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.3.0",
-    "csvtojson": "~0.5.1"
+    "csvtojson": "~0.5.1",
+    "json2csv": "~3.1.0"
   }
 }
