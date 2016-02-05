@@ -198,8 +198,6 @@ supportCrossOriginScript = function (req, res, next) {
 //End of functions to check session and user type
 var emailService = require('./controller/emailService');
 
-
-
 // Route Path
 require('./routes/login')(app,express);
 require('./routes/profile')(app,express, isLoggedIn);
@@ -217,7 +215,7 @@ require('./routes/front_patient')(app,express, supportCrossOriginScript);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/report')(app, express, isClinicOrSurgeon, isClinicAdmin);
-
+require('./routes/fitbit')(app,express,supportCrossOriginScript);
 
 
 
