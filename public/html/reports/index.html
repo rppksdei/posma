@@ -10,37 +10,73 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div style="float: left;width:85%" >All saved questionnaires</div>
+                    <div>All saved questionnaires</div>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div flash-message="5000" ></div>
+                    
                     <div class="dataTable_wrapper table-responsive">
-                        <table ng-table="tableParams" class="table">
-                                <tr ng-repeat="alert in $data" ng-class="{even: $even, odd: $odd}">
-                                    <td data-title="'Questionnaire'">{{ alert.questionnaire_name }}</td>
-                                    <td data-title="'Filled At'">{{ alert.datetime }}</td>
-                                    <td data-title="'Patient'">{{ alert.patient_first_name }} {{ alert.patient_last_name }}</td>
-                                    <td data-title="'Questions'">
-                                    	<div ng-repeat="ques in alert.questionDetails">
-                                    		<b>{{ques.name}} </b>
-                                    		<div ng-repeat="ans in ques.answer" ng-if="ques.answer_type != 'text'">
-	                                    		{{ans.name}}
-	                                    		<div ng-if="(ques.answer_type == 'rb' || ques.answer_type == 'dd') && ans.is_noted == 1">
-	                                    			<b>Notes: </b> {{ans.notes}} 
-	                                    		</div>
-	                                    	</div>
-                                    		<div ng-if="(ques.answer_type == 'cb') && ques.is_noted == 1" >
-		                                    	<b>Notes: </b> {{ques.notes}} 
-	                                    	</div>
-                                    		<div ng-if="ques.answer_type == 'text'" >
-	                                    		<div ng-repeat="ansq in alert.questions" ng-if="ansq.question == ques._id">
-		                                    		{{ansq.answer}}
-		                                    	</div>
+                        <div class="row form-group">
+                            <div class="col-lg-8"><!--b>Filter By:</b--></div>
+                            <div class="col-lg-2"><!--button class="btn btn-primary pull-right" ng-disabled="!tableParams.hasFilter()" ng-click="tableParams.filter({})">Clear filters</button--></div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-default" ng-csv="csv_data" ng-click="abc(tableParams.filter().patient_first_name,tableParams.filter().questionnaire_name);" csv-header="getHeader()"  filename="test.csv" field-separator="," decimal-separator="." >Export to CSV</button>
+                                <!--a class="btn" title="Export Table" ng-click='csv.generate()' ng-href="{{ csv.link() }}" download="myTable.csv">
+                                    <i class="glyphicon glyphicon-new-window"></i> &#160;Export
+                                </a-->
+                                <!--a st-export="" class="btn btn-default">Export</a-->
+                            </div>
+                        </div>
+                        <!--accordion close-others="true">
+                            <!--accordion-group is-open="isColFiltersOpen"-->
+                            <!--accordion-group>
+                                <!--accordion-heading>
+                                    Specific column filters <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isColFiltersOpen, 'glyphicon-chevron-right': !isColFiltersOpen}"></i>
+                                </accordion-heading-->
+                                <!--div class="row">
+                                    <form class="form-horizontal" name="demo.nameForm">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label class="col-xs-4">Patient</label>
+                                                <div class="controls col-xs-8">
+                                                    <input type="text" class="form-control" placeholder="Patient First Name" ng-model="tableParams.filter().patient_first_name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-4">For Date</label>
+                                                <div class="controls col-xs-8">
+                                                    <input type="text" class="form-control" placeholder="Date" ng-model="tableParams.filter().questionnaire_name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </accordion-group>
+                        </accordion-->
+                        <table st-table="ctrl.rowCollection" ng-table="tableParams" class="table" export-csv="csv" name="myTable" id ="myTable" >
+                            <tr ng-repeat="alert in $data" ng-class="{even: $even, odd: $odd}">
+                                <td data-title="'Questionnaire'">{{ alert.questionnaire_name }}</td>
+                                <td data-title="'Filled At'">{{alert.patient.username}} <br>
+                                </td>
+                                <td data-title="'Patient'">{{ alert.patient_first_name }} {{ alert.patient_last_name }}</td>
+                                <td data-title="'Questions'">
+                                	<div ng-repeat="ques in alert.questionDetails">
+                                		<b>{{ques.name}} </b>
+                                		<div ng-repeat="ans in ques.answer" ng-if="ques.answer_type != 'text'">
+                                    		{{ans.name}}
+                                    	</div>
+                                		<div ng-if="(ques.answer_type == 'cb') && ques.is_noted == 1" >
+	                                    	<b>Notes: </b> {{ques.notes}} 
+                                    	</div>
+                                		<div ng-if="ques.answer_type == 'text'" >
+                                    		<div ng-repeat="ansq in alert.questions" ng-if="ansq.question == ques._id">
+	                                    		{{ansq.answer}}
 	                                    	</div>
                                     	</div>
-                                    </td>
-                                </tr>
+                                	</div>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

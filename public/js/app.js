@@ -1,5 +1,5 @@
 //angular.module('MyAppService', ['ngResource']); 
-var myapp = angular.module("posma",['ang-drag-drop', '720kb.datepicker','angularjs-dropdown-multiselect','ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model",'angular-accordion','angularMoment']);
+var myapp = angular.module("posma",['ngTableToCsv','ngSanitize', 'ngCsv','ang-drag-drop', '720kb.datepicker','angularjs-dropdown-multiselect','ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model",'angular-accordion','angularMoment']);
 var authScope = '1234567890po23sm45a56';
 
 function checkloggedIn($rootScope, $http, $location) {
