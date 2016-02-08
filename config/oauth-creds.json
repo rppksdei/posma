@@ -12,7 +12,7 @@
             "tokenPath": "/oauth2/token"
         },
         "authorization_uri": {
-            "redirect_uri": "http://localhost:8987/fitbit/fitbit_auth_callback",
+            "redirect_uri": "http://192.155.246.146:8987/reports",
             "response_type": "code",
             "scope": "activity nutrition profile settings sleep social weight heartrate",
             "state": "3(#0/!~"

@@ -9,7 +9,8 @@ var fitbit = new Fitbit( config.fitbit );
 authorize = function(req, res){
     console.log('\n---------\n',fitbit.authorizeURL());
     //res.json(fitbit.authorizeURL());
-    res.redirect( fitbit.authorizeURL() );
+    var url = fitbit.authorizeURL();
+    res.redirect(url);
 }
 
 

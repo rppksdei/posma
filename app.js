@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+var cors =require('cors');
 
 //End of code for Passport Login
 
@@ -187,12 +187,15 @@ isClinicOrAdmin = function (req, res, next) {
 }
 
 supportCrossOriginScript = function (req, res, next) {
+        //console.log("I  am in supportCrossOriginScript");
         res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        res.header("Access-Control-Allow-Credentials", true);
+        res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+        res.header("Access-Control-Allow-Headers", "application/x-www-form-urlencoded, x-requested-with, Content-Type, Origin, accept, authorization, client-security-token");
         next();
 }
+//app.options('*',cors({credentials: true, origin: true}));
+//app.post('*',cors({credentials: true, origin: true}));
+//app.get('*',cors({credentials: true, origin: true}));
 
 
 //End of functions to check session and user type
@@ -215,7 +218,7 @@ require('./routes/front_patient')(app,express, supportCrossOriginScript);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/report')(app, express, isClinicOrSurgeon, isClinicAdmin);
-require('./routes/fitbit')(app,express,supportCrossOriginScript);
+require('./routes/fitbit')(app,express, supportCrossOriginScript);
 
 
 

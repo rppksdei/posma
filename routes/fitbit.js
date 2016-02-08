@@ -21,11 +21,13 @@ module.exports = function(app,express,supportCrossOriginScript){
     var fitObj              		= new fitbitoauth2Controller();
     
     router.post('/authorize',supportCrossOriginScript,function(req, res) {
-	console.log('in authorize... = ', req.body, req.params, req.query);
+	//console.log('in authorize... = ', req.body, req.params, req.query);
+	//res.json({'data': 'Working'});
+	console.log('HELL')
 	fitObj.authorize(req, res);
     });
     
-    router.get('/fitbit_auth_callback',supportCrossOriginScript,function(req, res, next) {
+    router.get('/fitbit_auth_callback',function(req, res, next) {
 	console.log('in fitbit_auth_callback... = ', req.body, req.params, req.query);
 	fitObj.oauthCallback(req, res, next);
     });
