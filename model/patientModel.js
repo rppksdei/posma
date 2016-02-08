@@ -50,7 +50,11 @@ var patientSchema = ({
     is_deleted:{type:Number, default:0},
     is_active:{type:Number, default:0},
     created:{type:Number},
-    modified:{type:Number}
+    modified:{type:Number},
+    
+    admission_egfr:{type:String},
+    dx:{type:String},
+    admission_hemoglobin:{type:String}
 });
 
 var Patient = mongoose.model('Patient', patientSchema);
