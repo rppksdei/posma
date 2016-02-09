@@ -270,6 +270,16 @@ updatePatientDetail = function(req, res){
         update_data.gmt = req.body.gmt;
     }
     
+    if(typeof req.body.admission_egfr != "undefined") {
+        update_data.admission_egfr = req.body.admission_egfr;
+    }
+    if(typeof req.body.dx != "undefined") {
+        update_data.dx = req.body.dx;
+    }
+    if(typeof req.body.admission_hemoglobin != "undefined") {
+        update_data.admission_hemoglobin = req.body.admission_hemoglobin;
+    }
+    
 
     update_data.modified = moment().unix();/*Date.now(); */
     //console.log('\n', moment().format('x')); // full 13 digits timestamp in ms
