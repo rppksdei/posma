@@ -42,8 +42,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient, Surgery, $loca
         });
     }
     $scope.getPathways = function(){
-        var surgery_id = $scope.patient.surgery;
-        // console.log(surgery_id);
+      //console.log('>>> ', $scope.patient);
+        var surgery_id = $scope.patient.surgery._id;
         if(typeof surgery_id != 'undefined'){
             Patient.getDetail().query({'surgery': surgery_id}, function(data){
                 $scope.pathways = data;

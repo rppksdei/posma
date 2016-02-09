@@ -130,9 +130,10 @@
                                 </div> -->
                                 <div class="form-group" ng-class="{'has-error':add_patient_form.surgery.$dirty && (add_patient_form.surgery.$error.required)}">
                                     <label>Surgery <span class="required">*</span></label>
-                                    <select ng-model="patient.surgery" class="form-control" ng-change="getPathways()" name="surgery" id="surgery" required>
+                                    <!-- {{patient.surgery._id}} {{$index}} -->
+                                    <select ng-model="patient.surgery._id" class="form-control" ng-change="getPathways()" name="surgery" id="surgery" required>
                                         <option value="">--Select a surgery--</option>
-                                        <option ng-repeat="surg in surgeries" value ="{{surg._id}}" ng-selected="($index < 0) || (patient.surgery._id==surg._id)">{{surg.name}}</option>
+                                        <option ng-repeat="surg in surgeries" value ="{{surg._id}}" ng-selected="($index < 0) || (patient.surgery._id == surg._id)">{{surg.name}}</option>
                                     </select>
                                     <label class="control-label" ng-show="add_patient_form.surgery.$dirty && (add_patient_form.surgery.$error.required || errordetail.surgery)">Surgery is required.</label>
                                 </div>
