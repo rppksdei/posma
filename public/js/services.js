@@ -106,6 +106,16 @@
         // }
         return serviceObj;
     })
+    .factory('Fitbit', function($resource){
+        var serviceObj = {};
+        serviceObj.authorize = function(){
+            return $resource('/fitbit/authorize', {}, authHeader);
+        }
+        serviceObj.getFitbitData = function(){
+            return $resource('/fitbit/getFitbitData', {}, authHeader);
+        }
+        return serviceObj;
+    })
     .factory('Questionnaire', function($resource){
         var serviceObj = {};
         serviceObj.getDetail = function(){

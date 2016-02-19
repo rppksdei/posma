@@ -219,6 +219,14 @@ myapp.config(['$routeProvider',
                 flag:'assign',
                 resolve:{'logged_in':checkloggedIn}
             })
+            
+            .when('/fitbit/authorize/:id',{
+                templateUrl:'/html/fitbit/list.html',
+                controller:'fitbitCtrl',
+                flag:'authorize',
+                resolve:{'logged_in':checkloggedIn}
+            })
+           
             .otherwise({
                 templateUrl:'/html/login.html',
                 controller:'loginCtrl',

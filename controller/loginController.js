@@ -24,6 +24,7 @@ exports.userlogin = function(req, res, next){
             return; 
         });
     })(req, res, next);
+    
 }
 exports.userCookieLogin = function(req, res, next){
     var user_id = req.body.cookie_id;

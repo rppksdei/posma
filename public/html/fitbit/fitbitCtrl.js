@@ -1,6 +1,5 @@
-myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert, moment){
-    
-    $scope.fitbit = {};
+myapp.controller('fitbitCtrl', function($scope, $route, Fitbit, Patient, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert, moment, $window){
+    $scope.patients = [];
     $scope.success = "";
     $scope.patient = "";
     $scope.errordetail = [];
@@ -14,25 +13,30 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     if (typeof $route.current.$$route.flag !== 'undefined') {
         flag = $route.current.$$route.flag;
     }
-    $scope.list = function(){
-        Patient.getList().query({}, function(data){
-            $scope.patients = data;
-            for (var i = 0; i < data.length; i++) {
-                if(typeof data[i].dos == 'number'){
-                    $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
-                } else {
-                    $scope.patients[i].dos = 'Invalid date';
-                }
-                if(typeof data[i].dohd == 'number'){
-                    $scope.patients[i].dohd     = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
-                } else {
-                    $scope.patients[i].dohd = 'Invalid date';
-                }
-                //$scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+    
+    $scope.authorize = function(){
+        $scope.error = [];
+        var patientId = $routeParams.id;
+        Fitbit.authorize().save({'id': patientId,'field':{'dohd':0,'time_of_discharge':0}}, function(data){
+            console.log('data -- ', data);
+            if(data){
+                //window.location.href= data.uri; // opens in same window/tab.
+                $window.open(data.uri, "_blank");
+                /*
+                Surgery.getDetail().query({}, function(sdata){
+                    $scope.surgeries = sdata;
+                    var surgery_id = $scope.patient.surgery._id;
+                    Patient.getDetail().query({'surgery': surgery_id}, function(pdata){
+                        $scope.pathways = pdata;
+                    });
+                });
+                $scope.patient = data;
+                */
             }
-            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
-        });    
+            $location.path('/patients');
+        });
     }
+    
     /* function to get surgeries & pathways on add form */
     $scope.getAdd = function(){
         Surgery.getDetail().query({}, function(data){
@@ -247,44 +251,9 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         });
     };
     
-    // show HeartRate for today.
-    $scope.showFitbitData = function(index) {
-        var object_detail = $scope.tableParams.data[index];
-        Fitbit.getFitbitData().query({'_id': object_detail._id}, function(data){
-            $scope.fitbit = data;
-            //console.log('data == ', data);
-            
-            var hrText = ''
-            hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Time range</th><th style='text-align:center;border:1px solid #f3f3f3;'>HR value(avg.)</th></tr>";
-            for (var dat in data) {
-                //console.log('\ndat--', data[dat]);
-                if (! isNaN(dat)) {
-                    hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].start_time+' - '+data[dat].end_time+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].avg_heart_rate+'</td></tr>';
-                }
-            }
-            hrText += '</table>';
-            
-            if (typeof data[0] != 'undefined') {
-                SweetAlert.swal({
-                    title: "Heart Rate for "+moment.unix(data[0].created).format('MM/DD/YYYY'),
-                    text: hrText,
-                    html: true
-                });
-            }else{
-                SweetAlert.swal({
-                    title: "<medium>Oops! data not available. </medium>",
-                    text: "Make sure you have clicked <strong>sync</strong> button earlier or the data might not be available at the moment.",
-                    html: true,
-                    type: "warning"
-                });
-            }
-            
-            //ngDialog.open({ template: '/html/patients/fitbit_hr.html' });
-        });
-    };
     
-    if (flag == "list") {
-        $scope.list();
+    if (flag == "authorize") {
+        $scope.authorize();
     }else if (flag == "edit") {
         $scope.edit();
     }else if (flag == "add") {
