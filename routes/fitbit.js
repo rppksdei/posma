@@ -39,6 +39,10 @@ module.exports = function(app,express,supportCrossOriginScript){
     router.get('/getFitbitData',supportCrossOriginScript,function(req, res, next) {
 	fitObj.getFitbitData(req, res, next);
     });
+    
+    router.post('/getFitbitHR',supportCrossOriginScript,function(req, res, next) {
+	fitObj.getFitbitData(req, res, next);
+    });
 
     app.use('/fitbit',router);
 }
