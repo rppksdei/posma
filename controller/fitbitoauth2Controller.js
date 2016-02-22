@@ -28,12 +28,12 @@ authorize = function(req, res, next){
             } else{
                 console.log('data===\n', data);
                 if (data.access_token != 'undefined' && data.access_token != null) {
-                    // Set the client's token
+                    
                         fitbit.setToken( data.access_token );
-                    // make api call to fetch data
                         req.uri = fitbit.authorizeURL();
-                        //checkToken();
                         apicall(req, res, 1, next);
+                }else{
+                    apicall(req, res, 1, next);
                 }
                 //res.json(data);
             }
