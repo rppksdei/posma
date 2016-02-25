@@ -26,7 +26,7 @@ var fitbitSchema = new Schema({
     date : {type:String},
     
     /* Data from Heart Rate API */
-    steps:[],
+    steps:{type:Number},
     avg_steps : {type:String},
     
     created:{type:Number},
@@ -35,8 +35,8 @@ var fitbitSchema = new Schema({
 
 var PatientFitbit = mongoose.model('PatientFitbit', fitbitSchema);
 
-PatientFitbit.getAll = function(search_criteria, next){
-    PatientFitbit.find(search_criteria, next).sort({'start_time':1});
+PatientFitbit.getAll = function(search_criteria, fields, next){
+    PatientFitbit.find(search_criteria, fields, next).sort({'date':1,'start_time':1}).lean();
 }
 
 PatientFitbit.getData = function(search_criteria, next){

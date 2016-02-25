@@ -247,14 +247,14 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         });
     };
     
-    // show HeartRate for today.
+    /** show HeartRate for today. **/
     $scope.showFitbitData = function(index) {
         var object_detail = $scope.tableParams.data[index];
         Fitbit.getFitbitData().query({'_id': object_detail._id}, function(data){
-            $scope.fitbit = data;
+            //$scope.fitbit = data;
             //console.log('data == ', data);
             
-            var hrText = ''
+            var hrText = '';
             hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Time range</th><th style='text-align:center;border:1px solid #f3f3f3;'>HR value(avg.)</th></tr>";
             for (var dat in data) {
                 //console.log('\ndat--', data[dat]);
@@ -278,8 +278,40 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
                     type: "warning"
                 });
             }
+        });
+    };
+    
+    /** show Steps data for one week. **/
+    $scope.showFitbitSteps = function(index) {
+        var object_detail = $scope.tableParams.data[index];
+        Fitbit.getFitbitSteps().query({'_id': object_detail._id}, function(data){
+        console.log('type = ', typeof data);
+        console.log('Steps data == ', data);
             
-            //ngDialog.open({ template: '/html/patients/fitbit_hr.html' });
+            var hrText = ''
+            hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Date</th><th style='text-align:center;border:1px solid #f3f3f3;'>Steps</th></tr>";
+            for (var dat in data) {
+                //console.log('\ndat--', data[dat]);
+                if (! isNaN(dat)) {
+                    hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].date+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].steps+'</td></tr>';
+                }
+            }
+            hrText += '</table>';
+            
+            if (typeof data[0] != 'undefined') {
+                SweetAlert.swal({
+                    title: "Steps <br/><small>"+data[0].start_from+" to "+data[0].end_date+"</small>",
+                    text: hrText,
+                    html: true
+                });
+            }else{
+                SweetAlert.swal({
+                    title: "<medium>Oops! data not available. </medium>",
+                    text: "Make sure you have clicked <strong>sync</strong> button earlier or the data might not be available at the moment.",
+                    html: true,
+                    type: "warning"
+                });
+            }
         });
     };
     

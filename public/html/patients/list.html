@@ -56,7 +56,8 @@
                                         <a href="javascript:void(0);" ng-click="deletePatient(patient._id);" title="Delete"><i class="fa fa-trash-o"></i></a>
                                         <a href="/#/fitbit/authorize/{{ patient._id }}" title="Sync"><i class="fa fa-refresh"></i></a>&nbsp;
                                         <!--<a href="/#/fitbit/authorize/{{ patient._id }}" class="" title="Show"><i class="fa fa-eye"></i></a>-->
-                                        <a href="javascript:void(0);" ng-click="showFitbitData($index);" title="Show today's Heartrate"><i class="fa fa-heart"></i></a>
+                                        <a href="javascript:void(0);" ng-click="showFitbitData($index);" title="Heartrate"><i class="fa fa-heart"></i></a>
+                                        <a href="javascript:void(0);" ng-click="showFitbitSteps($index);" title="Steps"><i class="fa fa-paw"></i></a>
                                     </td>
                                 </tr>
                         </table>
