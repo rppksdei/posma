@@ -223,6 +223,8 @@ updateToken = function(req, token, fn){
 apicall = function(req, res, hitNo, next){
     //console.log('\nHi in api call');
     
+    
+    
     var start_time  = '', end_time    = '';
     if (hitNo==1) {
         start_time  = '00:00', end_time    = '04:00';
@@ -238,6 +240,7 @@ apicall = function(req, res, hitNo, next){
         start_time  = '20:00', end_time    = '24:00';
     }
     
+    //console.log('-------------------------------------fitbit = \n', fitbit);
     
     fitbit.request({
         /* Get Heart Rate Intraday Time Series */
@@ -247,7 +250,8 @@ apicall = function(req, res, hitNo, next){
         if ( err ){
             console.log('\n----err = ', err);
             if (hitNo==1) {
-                return res.json({'uri':fitbit.authorizeURL()});
+                console.log('fitbit.authorizeURL = ', fitbit.authorizeURL()+'&prompt=login');
+                return res.json({'uri':fitbit.authorizeURL()+'&prompt=login'});
             }
             //return next( err );
         }else{
@@ -270,32 +274,68 @@ apicall = function(req, res, hitNo, next){
                             if(typeof heart_rate != "undefined"){
                                 fData.heart_rate    = heart_rate;
                             }
-                            if(typeof steps != "undefined"){
-                                fData.steps         = steps;
+                            if (hitNo==1) {
+                                //hit to get Steps for each day.
+                                fitbit.request({
+                                    uri: "https://api.fitbit.com/1/user/-/activities/steps/date/today/1d.json",
+                                    method: 'GET',
+                                },function( serr, sbody, stoken ) {
+                                    if (serr) {
+                                        console.log('\n--Steps Error-- : ', serr);
+                                    }else if (sbody) {
+                                        var allSteps = JSON.parse(sbody);
+                                        console.log('\n--Steps Body-- : ', allSteps['activities-steps'][0].value);
+                                        fData.steps     = allSteps['activities-steps'][0].value;
+                                        //console.log('\n___fData:\n', fData);
+                                        var p_search = { patient : req.session.patient_id, date : moment().format('MM-DD-YYYY'), start_time : start_time };
+                                        fitbitModel.getData(p_search, function(p_err, p_data){
+                                            // update if record already exists. ==
+                                            if(p_data){
+                                                var search_criteria = { _id : p_data._id };
+                                                var new_data        = {avg_heart_rate:fData.avg_heart_rate, heart_rate:fData.heart_rate, steps:fData.steps};
+                                                fitbitModel.updateData(search_criteria, new_data, function(err, data){
+                                                    if(err){
+                                                        console.log('\nUpdate error = ', err);
+                                                    }
+                                                });
+                                            }
+                                            // add if record doesn't exists. ++
+                                            else{
+                                                fitbitModel.addData(fData, function(err, data){
+                                                    var return_val = {};
+                                                    if (err) {
+                                                        console.log('\nAdd error = ', err);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
                             }
-                            
-                            var p_search = { patient : req.session.patient_id, date : moment().format('MM-DD-YYYY'), start_time : start_time };
-                            fitbitModel.getData(p_search, function(p_err, p_data){
-                                // update if record already exists. ==
-                                if(p_data){
-                                    var search_criteria = { _id : p_data._id };
-                                    var new_data        = {avg_heart_rate:fData.avg_heart_rate, heart_rate:fData.heart_rate };
-                                    fitbitModel.updateData(search_criteria, new_data, function(err, data){
-                                        if(err){
-                                            console.log('\nUpdate error = ', err);
-                                        }
-                                    });
-                                }
-                                // add if record doesn't exists. ++
-                                else{
-                                    fitbitModel.addData(fData, function(err, data){
-                                        var return_val = {};
-                                        if (err) {
-                                            console.log('\nAdd error = ', err);
-                                        }
-                                    });
-                                }
-                            });
+                            else{
+                                var p_search = { patient : req.session.patient_id, date : moment().format('MM-DD-YYYY'), start_time : start_time };
+                                fitbitModel.getData(p_search, function(p_err, p_data){
+                                    // update if record already exists. ==
+                                    if(p_data){
+                                        var search_criteria = { _id : p_data._id };
+                                        var new_data        = {avg_heart_rate:fData.avg_heart_rate, heart_rate:fData.heart_rate };
+                                        fitbitModel.updateData(search_criteria, new_data, function(err, data){
+                                            if(err){
+                                                console.log('\nUpdate error = ', err);
+                                            }
+                                        });
+                                    }
+                                    // add if record doesn't exists. ++
+                                    else{
+                                        fitbitModel.addData(fData, function(err, data){
+                                            var return_val = {};
+                                            if (err) {
+                                                console.log('\nAdd error = ', err);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                     }
                 }
             });
@@ -312,11 +352,41 @@ getFitbitData = function(req, res, next){
     }
     
     console.log('...search...\n',search);
-    fitbitModel.getAll(search, function(err, fitbitData){
+    fitbitModel.getAll(search, {}, function(err, fitbitData){
         if(err){
             res.json(err);
         } else{
             //console.log('fitbitData = \n', fitbitData);
+            res.json(fitbitData);
+        }
+    });
+}
+
+getFitbitSteps = function(req, res, next){
+    
+    console.log('req = ',req.body, req.query, req.post);
+    
+    if (typeof req.body.date != 'undefined') {
+        var start_from = moment.unix(req.body.date).subtract(7, "days");
+        var search = { steps: {$ne: null}, patient: req.body._id, date: {$gte: start_from.format('MM-DD-YYYY')}};
+    }else{
+        var start_from = moment().subtract(7, "days");
+        var search = { steps: {$ne: null}, patient: req.query._id, date: {$gte: start_from.format('MM-DD-YYYY')}};
+    }
+    
+    //console.log('start_from -- ', start_from.format('MM-DD-YYYY'));
+    var fields = { heart_rate : 0 };
+    fitbitModel.getAll(search, fields, function(err, fitbitData){
+        if(err){
+            res.json(err);
+        } else{
+            var end_date = '';
+            console.log('\nsteps data = ', fitbitData);
+            if (typeof fitbitData[0] != 'undefined') {
+                fitbitData[0].start_from = start_from.format('MM-DD-YYYY');
+                fitbitData[0].end_date = moment().format('MM-DD-YYYY');
+            }
+            console.log('\n -------------------------new steps data\n', fitbitData);
             res.json(fitbitData);
         }
     });
@@ -329,4 +399,6 @@ module.exports = function(){
     this.getHR            = getHR;
     this.updateToken      = updateToken;
     this.apicall          = apicall;
+    this.getFitbitSteps   = getFitbitSteps;
+    
 }

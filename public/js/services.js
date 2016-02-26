@@ -112,7 +112,14 @@
             return $resource('/fitbit/authorize', {}, authHeader);
         }
         serviceObj.getFitbitData = function(){
+            //console.log('---in service ---');
+            //authHeader.query.isArray = true;
             return $resource('/fitbit/getFitbitData', {}, authHeader);
+        }
+        serviceObj.getFitbitSteps = function(){
+            //var authstep = authHeader;
+            //authstep.query.isArray = false;
+            return $resource('/fitbit/getFitbitSteps', {}, authHeader);
         }
         return serviceObj;
     })
