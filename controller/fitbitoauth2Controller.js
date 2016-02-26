@@ -363,10 +363,18 @@ getFitbitData = function(req, res, next){
 }
 
 getFitbitSteps = function(req, res, next){
-    //console.log('Steps Req -- ',req.body, req.query, req.post);
-    var start_from = moment().subtract(7, "days");
+    
+    console.log('req = ',req.body, req.query, req.post);
+    
+    if (typeof req.body.date != 'undefined') {
+        var start_from = moment.unix(req.body.date).subtract(7, "days");
+        var search = { steps: {$ne: null}, patient: req.body._id, date: {$gte: start_from.format('MM-DD-YYYY')}};
+    }else{
+        var start_from = moment().subtract(7, "days");
+        var search = { steps: {$ne: null}, patient: req.query._id, date: {$gte: start_from.format('MM-DD-YYYY')}};
+    }
+    
     //console.log('start_from -- ', start_from.format('MM-DD-YYYY'));
-    var search = { steps: {$ne: null}, patient: req.query._id, date: {$gte: start_from.format('MM-DD-YYYY')}};
     var fields = { heart_rate : 0 };
     fitbitModel.getAll(search, fields, function(err, fitbitData){
         if(err){
@@ -377,10 +385,8 @@ getFitbitSteps = function(req, res, next){
             if (typeof fitbitData[0] != 'undefined') {
                 fitbitData[0].start_from = start_from.format('MM-DD-YYYY');
                 fitbitData[0].end_date = moment().format('MM-DD-YYYY');
-                //console.log('\n.......new steps data = ', fitbitData);
             }
             console.log('\n -------------------------new steps data\n', fitbitData);
-            //res.json({'fitbitData' : fitbitData, 'start_from' : start_from.format('MM-DD-YYYY'), 'end_date' : moment().format('MM-DD-YYYY') });
             res.json(fitbitData);
         }
     });

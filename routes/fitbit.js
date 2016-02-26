@@ -47,6 +47,10 @@ module.exports = function(app,express,supportCrossOriginScript){
     router.get('/getFitbitSteps',supportCrossOriginScript,function(req, res, next) {
 	fitObj.getFitbitSteps(req, res, next);
     });
+    
+    router.post('/getFitbitSteps',supportCrossOriginScript,function(req, res, next) {
+	fitObj.getFitbitSteps(req, res, next);
+    });
 
     app.use('/fitbit',router);
 }
