@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+var cors =require('cors');
 
 //End of code for Passport Login
 
@@ -58,7 +58,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//CORS middleware Start
+ //CORS support
+ 
+app.options('*', cors());
 var basic_auth_token = '1234567890po23sm45a56';
+
 
 /*app.use('/',function(req, res, next) {
   var headerDetail = req.headers['auth-token'];
@@ -88,6 +94,8 @@ app.get('/',function(req, res, next) {
 app.use(expressSession({secret:"testnav",saveUninitialized:true,resave:true}));
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 //End of code for Passport Session
 
 
@@ -187,13 +195,19 @@ isClinicOrAdmin = function (req, res, next) {
 }
 
 supportCrossOriginScript = function (req, res, next) {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-        res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        res.header("Access-Control-Allow-Credentials", true);
-        next();
+      res.status(200);
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Content-Type");
+      // res.header("Access-Control-Allow-Headers", "Origin");
+      // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      // res.header("Access-Control-Allow-Methods","POST, OPTIONS");
+      // res.header("Access-Control-Allow-Methods","POST, GET, OPTIONS, DELETE, PUT, HEAD");
+      // res.header("Access-Control-Max-Age","1728000");
+      next();
 }
-
+//app.options('*',cors({credentials: true, origin: true}));
+//app.post('*',cors({credentials: true, origin: true}));
+//app.get('*',cors({credentials: true, origin: true}));
 
 //End of functions to check session and user type
 var emailService = require('./controller/emailService');
@@ -215,8 +229,7 @@ require('./routes/front_patient')(app,express, supportCrossOriginScript);
 require('./routes/patientQuestionnaire')(app,express);
 require('./routes/cron')(app, express, isClinicOrSurgeon, isClinicAdmin);
 require('./routes/report')(app, express, isClinicOrSurgeon, isClinicAdmin);
-require('./routes/fitbit')(app,express,supportCrossOriginScript);
-
+require('./routes/fitbit')(app,express, supportCrossOriginScript);
 
 
 // catch 404 and forward to error handler
