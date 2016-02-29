@@ -11,10 +11,12 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
     $scope.getHeader = function () {return ["Username", 
         "Patient Name",
         "DOB",
+        "Date of Surgery",
         "BMI",
         "Date of Discharge",
         "Surgery",
         "Questionnaire",
+        "Questionnaire Filled At",
         "CCI",
         "Dx",
         "Clinical T Stage",
@@ -42,26 +44,38 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
             if(data){
                 $scope.patientanss = data;
                 var j = 0;
-
                 for (var i = 0; i < data.length; i++) {
-                    if(typeof data[i].dos == 'number') {
-                        $scope.patientanss[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
+                    //console.log($scope.patientanss[i].patient_surgery);
+                    if(typeof data[i].patient.date_of_birth == 'number') {
+                        $scope.patientanss[i].patient.date_of_birth     = moment.unix(data[i].patient.date_of_birth).format('MMM DD, YYYY');
                     } else {
-                        $scope.patientanss[i].dos = 'Invalid date';
+                        $scope.patientanss[i].patient.date_of_birth = 'Invalid date';
                     }
-                    if(typeof data[i].dohd == 'number') {
-                        $scope.patientanss[i].dohd = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+                    if(typeof data[i].patient.dos == 'number') {
+                        $scope.patientanss[i].patient.dos     = moment.unix(data[i].patient.dos).format('MMM DD, YYYY');
                     } else {
-                        $scope.patientanss[i].dohd = 'Invalid date';
+                        $scope.patientanss[i].patient.dos = 'Invalid date';
+                    }
+                    if(typeof data[i].patient.dohd == 'number') {
+                        $scope.patientanss[i].patient.dohd = moment.unix(data[i].patient.dohd).format('MMM DD,YYYY hh:mm A');
+                    } else {
+                        $scope.patientanss[i].patient.dohd = 'Invalid date';
+                    }
+                    if(typeof data[i].created == 'number') {
+                        $scope.patientanss[i].created = moment.unix(data[i].created).format('MM/DD/YYYY hh:mm A');
+                    } else {
+                        $scope.patientanss[i].created = 'Invalid date';
                     }
                     $scope.csv_data[j] = {};
                     $scope.csv_data[j].username                 = data[i].patient.username;
                     $scope.csv_data[j].pname                    = data[i].patient_first_name +' '+ data[i].patient_last_name;
                     $scope.csv_data[j].date_of_birth            = data[i].patient.date_of_birth;
+                    $scope.csv_data[j].dos                      = data[i].patient.dos;
                     $scope.csv_data[j].bmi                      = data[i].patient.bmi;
                     $scope.csv_data[j].dohd                     = data[i].patient.dohd;
-                    $scope.csv_data[j].surgery                  = data[i].patient.surgery;
+                    $scope.csv_data[j].surgery                  = data[i].patient_surgery;
                     $scope.csv_data[j].questionnaire_name       = data[i].questionnaire_name;
+                    $scope.csv_data[j].created                  = data[i].created;
                     //$scope.csv_data[j].time_of_discharge        = data[i].patient.time_of_discharge;
                     $scope.csv_data[j].cci                      = data[i].patient.cci;
                     $scope.csv_data[j].dx                       = data[i].patient.dx;
@@ -77,17 +91,18 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
                     $scope.csv_data[j].clavien_minor_no         = data[i].patient.clavien_minor_no;
                     $scope.csv_data[j].clavien_major_no         = data[i].patient.clavien_major_no;
                     $scope.csv_data[j].sbl                      = data[i].patient.sbl;
-                    $scope.csv_data[j].aegfr                    = data[i].patient.admission_egfr;
-                    $scope.csv_data[j].addimission_hemoglobin   = data[i].patient.admission_hemoglobin;
+                    $scope.csv_data[j].admission_egfr           = data[i].patient.admission_egfr;
+                    $scope.csv_data[j].admission_hemoglobin     = data[i].patient.admission_hemoglobin;
                     $scope.csv_data[j].degfr                    = data[i].patient.degfr;
                     $scope.csv_data[j].discharge_hemoglobin     = data[i].patient.discharge_hemoglobin;
-                    $scope.csv_data[j].blood_transfusion     = data[i].patient.blood_transfusion;
+                    $scope.csv_data[j].blood_transfusion        = data[i].patient.blood_transfusion;
                     j++;
                     for(var k = 0; k < data[i].questionDetails.length; k++) {
                         $scope.csv_data[j] = {};
                         $scope.csv_data[j].username                 = '';
                         $scope.csv_data[j].pname                    = '';
                         $scope.csv_data[j].date_of_birth            = '';
+                        $scope.csv_data[j].dos                      = '';
                         $scope.csv_data[j].bmi                      = '';
                         $scope.csv_data[j].dohd                     = '';
                         $scope.csv_data[j].surgery                  = '';
@@ -107,8 +122,8 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
                         $scope.csv_data[j].clavien_minor_no         = '';
                         $scope.csv_data[j].clavien_major_no         = '';
                         $scope.csv_data[j].sbl                      = '';
-                        $scope.csv_data[j].aegfr                    = '';
-                        $scope.csv_data[j].addimission_hemoglobin   = '';
+                        $scope.csv_data[j].admission_egfr           = '';
+                        $scope.csv_data[j].admission_hemoglobin     = '';
                         $scope.csv_data[j].degfr                    = '';
                         $scope.csv_data[j].discharge_hemoglobin     = '';
                         $scope.csv_data[j].question                 = data[i].questionDetails[k].name;

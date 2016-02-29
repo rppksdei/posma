@@ -6,6 +6,7 @@ var alertModel          = require("./../model/alertModel");
 var notificationModel   = require("./../model/notificationModel");
 var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
 var common = require('./../common.js');
+var moment = require('moment');
 
 login = function(req, res, next){
     passport.authenticate('localpatient', function(err, user, info){
@@ -165,7 +166,7 @@ savePatientAns = function(req, res, next){
     var patient_full_data   = JSON.parse(req.body.postFullData);
     var patient_data = patient_full_data.postData;
     var admin_alerts = patient_full_data.admin_alerts;
-    patientQues.created = Date.now();
+    patientQues.created = moment().unix();
     patientQues.patient = patient_data.patient;
     patientQues.questionnaire = patient_data.questionnaire;
     patientModel.getPatient({'_id':patient_data.patient},function(err, user) {

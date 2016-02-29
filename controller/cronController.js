@@ -400,19 +400,27 @@ updatePatientAnswers = function(){
             var totalcalls = 0;
             for(var i = 0; i < total_ques; i++){
                 questionModel.getFieldsQuestion({'_id':data[pa].questions[i].question},{"_id":1,"name":1,"answer_type":1,'answer':1},i,function(err, ansDetail) {
+                    
+
                     var ansDetail_data = ansDetail.data;
                     var new_i = ansDetail.indexVal;
                     questionsArr[totalcalls] = ansDetail_data;
-                    if(ansDetail_data.answer_type == 'rb' || ansDetail_data.answer_type == 'dd'){
-                            var newAns = new Array();
-                            for(aw = 0;aw < ansDetail_data.answer.length;aw++){
-                                if(ansDetail_data.answer[aw]._id == data[pa].questions[new_i].answer){
-                                    newAns.push(ansDetail_data.answer[aw]);
-                                }
+                    if(ansDetail_data.answer_type == 'number'){
+                        console.log(data[pa].questions[new_i].question,'--------------------HERE--------------',data[pa].questions[new_i].answer);
+                        ansDetail_data.text_answer = data[pa].questions[new_i].answer;
+                        questionsArr[totalcalls].num_answer = data[pa].questions[new_i].answer;
+                    } else if(ansDetail_data.answer_type == 'rb' || ansDetail_data.answer_type == 'dd'){
+                        console.log(data[pa].questions[new_i].question,'--------------------HERE1--------------',data[pa].questions[new_i].answer);
+                        var newAns = new Array();
+                        for(aw = 0;aw < ansDetail_data.answer.length;aw++){
+                            if(ansDetail_data.answer[aw]._id == data[pa].questions[new_i].answer){
+                                newAns.push(ansDetail_data.answer[aw]);
                             }
-                            ansDetail_data.answer = newAns;
-                            questionsArr[totalcalls].answer = ansDetail_data.answer;
+                        }
+                        ansDetail_data.answer = newAns;
+                        questionsArr[totalcalls].answer = ansDetail_data.answer;
                     } else if(ansDetail_data.answer_type == 'cb'){
+                        console.log(data[pa].questions[new_i].question,'--------------------HERE2--------------',data[pa].questions[new_i].answer);
                         var newAns = new Array();
                         for(aw = 0;aw < ansDetail_data.answer.length;aw++){
                             if(data[pa].questions[new_i].answer_opts.indexOf(ansDetail_data.answer[aw]._id) != -1){
@@ -422,6 +430,7 @@ updatePatientAnswers = function(){
                         ansDetail_data.answer = newAns;
                         questionsArr[totalcalls].answer = ansDetail_data.answer;
                     } else {
+                        console.log(data[pa].questions[new_i].question,'--------------------HERE3--------------',data[pa].questions[new_i].answer);
                         ansDetail_data.text_answer = data[pa].questions[new_i].answer;
                     }
                     totalcalls++;
