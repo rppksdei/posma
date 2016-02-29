@@ -147,6 +147,9 @@
         serviceObj.addNote = function(){
             return $resource('/alerts/add_notes', {}, authHeader);
         }
+        serviceObj.update = function(){
+            return $resource('/alerts/update', {}, authHeader);
+        }
         return serviceObj;
     })
     .factory('Report', function($resource){

@@ -14,6 +14,9 @@ module.exports = function(app,express, isClinicOrAdmin){
     router.post('/add_notes', function(req, res){
         alertObj.addNotes(req, res);
     });
+    router.post('/update', function(req, res){
+        alertObj.updateAlert(req, res);
+    });
     /*router.post('/getPatientalert', function(req, res){
         alertObj.getAlert(req, res);
     });*/

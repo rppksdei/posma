@@ -1,4 +1,4 @@
-myapp.controller('dashboardCtrl', function($scope, $route, Alerts, $location, Flash, ngTableParams, $rootScope, $routeParams, moment){
+myapp.controller('dashboardCtrl', function($scope, $route, Alerts, $location, Flash, ngTableParams, $rootScope, $routeParams, moment, SweetAlert){
     $scope.error_message = "";
     var rec_cnt = 6;
     var flag = '';
@@ -47,6 +47,40 @@ myapp.controller('dashboardCtrl', function($scope, $route, Alerts, $location, Fl
                     console.log($scope.error);
                 }
             }
+        });
+    }
+    
+    /** Dismiss Alert. **/
+    $scope.dismiss = function(index) {
+        var object_detail = $scope.tableParams.data[index];
+    console.log('--object_detail--', object_detail);
+        SweetAlert.swal({
+            title: "Are you sure?",
+            text: "You want to dismiss '"+object_detail.ques_name+"' alert.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: true
+        }, 
+        function(){
+            var status = 0;
+            if (object_detail.is_dismissed == 0) {
+                status = 1;
+            }
+            var update_object = {'_id':object_detail._id, 'is_dismissed':1};
+            Alerts.update().save(update_object, function(data){
+                console.log('--data--',data);
+                if (data.success) {
+                    console.log('\n in success...');
+                    //$scope.tableParams.data[index].is_dismissed = status;
+                    Flash.create('success', 'Alert updated successfully.', 'alert alert-success');
+                    //$location.path('/');
+                    $route.reload();
+                    console.log('\n after----');
+                }
+            });
         });
     }
 
