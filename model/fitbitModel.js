@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var fitbitSchema = new Schema({
     patient :               {type:Schema.Types.ObjectId, ref:'Patient'},
+    /* Data from profile.json */
     avatar150:              {type:String},
     average_daily_steps:    {type:Number},
     display_name:           {type:String},
@@ -16,27 +17,39 @@ var fitbitSchema = new Schema({
     nickname:               {type:String},
     offset_from_UTC_millis: {type:Number},
     timezone:               {type:String},
+    
+    /* Data from Heart Rate API */
+    heart_rate  :[],
+    start_time  :{type:String},
+    end_time    :{type:String},
+    avg_heart_rate : {type:String},
+    date : {type:String},
+    
+    /* Data from Heart Rate API */
+    steps:{type:Number},
+    avg_steps : {type:String},
+    
     created:{type:Number},
     modified:{type:Number}
 });
 
 var PatientFitbit = mongoose.model('PatientFitbit', fitbitSchema);
 
-PatientFitbit.getAllQuestionnaire = function(search_criteria, next){
-    PatientFitbit.find(search_criteria, next).populate('surgery').populate('clinic').populate('pathway');
+PatientFitbit.getAll = function(search_criteria, fields, next){
+    PatientFitbit.find(search_criteria, fields, next).sort({'date':1,'start_time':1}).lean();
 }
 
-PatientFitbit.getQuestionnaire = function(search_criteria, next){
-    PatientFitbit.findOne(search_criteria, next).populate('surgery').populate('clinic').populate('pathway');
+PatientFitbit.getData = function(search_criteria, next){
+    PatientFitbit.findOne(search_criteria, next);
 }
 
-PatientFitbit.updateQuestionnaire = function(search_criteria, new_data, next){
-     PatientFitbit.update(search_criteria, {$set:new_data}, next);
+PatientFitbit.updateData = function(search_criteria, new_data, next){
+    PatientFitbit.update(search_criteria, {$set:new_data}, next);
 }
 
-PatientFitbit.addQuestionnaire = function(patientDetail, next){
-    var add_questionnaire = new PatientFitbit(patientDetail);
-    add_questionnaire.save(next);
+PatientFitbit.addData = function(fitbitData, next){
+    var add_data = new PatientFitbit(fitbitData);
+    add_data.save(next);
 }
 
 module.exports = PatientFitbit;

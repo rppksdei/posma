@@ -11,10 +11,10 @@ module.exports = function(app, express,supportCrossOriginScript){
         res.send("sdfdsf");
         //patientFrontObj.getPatientDetail(req, res);
     });*/
-    console.log(supportCrossOriginScript);
-    router.post('/login', supportCrossOriginScript, function(req, res){
+    
+    router.post('/login',supportCrossOriginScript, function(req, res){
         patientFrontObj.login(req, res, function(err, data){
-            controlleronsole.log("test");
+            console.log("test"); // need 2 check
         });
     });
     router.get('/loggedout', supportCrossOriginScript, function(req, res, next) {

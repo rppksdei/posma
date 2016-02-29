@@ -103,6 +103,23 @@
         // }
         return serviceObj;
     })
+    .factory('Fitbit', function($resource){
+        var serviceObj = {};
+        serviceObj.authorize = function(){
+            return $resource('/fitbit/authorize', {}, authHeader);
+        }
+        serviceObj.getFitbitData = function(){
+            //console.log('---in service ---');
+            //authHeader.query.isArray = true;
+            return $resource('/fitbit/getFitbitData', {}, authHeader);
+        }
+        serviceObj.getFitbitSteps = function(){
+            //var authstep = authHeader;
+            //authstep.query.isArray = false;
+            return $resource('/fitbit/getFitbitSteps', {}, authHeader);
+        }
+        return serviceObj;
+    })
     .factory('Questionnaire', function($resource){
         var serviceObj = {};
         serviceObj.getDetail = function(){

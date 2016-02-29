@@ -51,13 +51,11 @@
                                     </td>
                                     <td data-title="'Action'" align="center" width="8%">
                                         <!--<a href="javascript:void(0);" ng-click="dischargePatient($index);" title="Discharge Patient"><i class="fa fa-sign-out"></i></a>-->
-                                        <a href="javascript:void(0);" ng-click="dischargePatient($index);" title="Discharge Patient" ng-if="patient.dohd=='Invalid date'"><i class="fa fa-sign-out"></i></a>
+                                         <a href="javascript:void(0);" ng-click="dischargePatient($index);" title="Discharge Patient" ng-if="patient.dohd=='Invalid date'"><i class="fa fa-sign-out"></i></a> 
                                         <a href="/#/patients/edit/{{ patient._id }}" title="Edit"><i class="fa fa-edit fa-fw"></i></a>
                                         <a href="javascript:void(0);" ng-click="deletePatient(patient._id);" title="Delete"><i class="fa fa-trash-o"></i></a>
-                                        <a href="/#/fitbit/authorize/{{ patient._id }}" title="Sync"><i class="fa fa-refresh"></i></a>&nbsp;
-                                        <!--<a href="/#/fitbit/authorize/{{ patient._id }}" class="" title="Show"><i class="fa fa-eye"></i></a>-->
-                                        <a href="javascript:void(0);" ng-click="showFitbitData($index);" title="Heartrate"><i class="fa fa-heart"></i></a>
-                                        <a href="javascript:void(0);" ng-click="showFitbitSteps($index);" title="Steps"><i class="fa fa-paw"></i></a>
+                                        <a href="/#/fitbit/authorize/{{ patient._id }}" title="Sync">Sync</a>
+                                        <a href="/#/fitbit/authorize/{{ patient._id }}" title="Show">Show</a>
                                     </td>
                                 </tr>
                         </table>
