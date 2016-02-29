@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var cors =require('cors');
+var cors = require('cors');
 
 //End of code for Passport Login
 

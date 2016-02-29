@@ -1,22 +1,19 @@
     var authScope = '1234567890po23sm45a56';
     var authHeader = {
-                            query: {
-                                method: 'GET',
-                                isArray: true,
-                                headers: { 'auth-token': authScope }
-                            },
-                            save: {
-                                method: 'POST',
-                                headers: { 'auth-token': authScope }
-                            },
-                            get: {
-                                method: 'GET',
-                                headers: { 'auth-token': authScope }
-                            }
-                        };
-                        
-    
-    
+                        query: {
+                            method: 'GET',
+                            isArray: true,
+                            headers: { 'auth-token': authScope }
+                        },
+                        save: {
+                            method: 'POST',
+                            headers: { 'auth-token': authScope }
+                        },
+                        get: {
+                            method: 'GET',
+                            headers: { 'auth-token': authScope }
+                        }
+                    };
     angular.module('PosmaService', ['ngResource'])
     .factory('Login', function($resource){
         var serviceObj = {};
@@ -138,7 +135,7 @@
     .factory('Report', function($resource){
         var serviceObj = {};
         serviceObj.list = function(){
-            return $resource('/reports', {}, authHeader);
+            return $resource('/reports', {},{}, authHeader);
         }
         serviceObj.getalert = function(){
             return $resource('/alerts/getPatientalert', {}, authHeader);
@@ -147,7 +144,6 @@
     })
     .factory('Questions', function($resource){
         var serviceObj = {};
-
         serviceObj.getList = function(){
             return $resource('/question/', {}, authHeader);
         }
