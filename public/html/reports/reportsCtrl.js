@@ -37,7 +37,8 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
     ]};
 
     $scope.list = function(){
-        Report.list().save({'search':'','limit':2}, function(data){
+        //Report.list().save({'search':'','limit':2}, function(data){
+        Report.list().query(function(data){
             if(data){
                 $scope.patientanss = data;
                 var j = 0;

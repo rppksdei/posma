@@ -56,6 +56,10 @@
                         </accordion-->
                         <table st-table="ctrl.rowCollection" ng-table="tableParams" class="table" export-csv="csv" name="myTable" id ="myTable" >
                             <tr ng-repeat="alert in $data" ng-class="{even: $even, odd: $odd}">
+
+                                <td data-title="'addimission_hemoglobin'">{{ alert.addimission_hemoglobin }}</td>
+                                <td data-title="'aegfr'">{{ alert.aegfr }}</td>
+                                <td data-title="'dx'">{{ alert.dx }}</td>
                                 <td data-title="'Questionnaire'">{{ alert.questionnaire_name }}</td>
                                 <td data-title="'Filled At'">{{alert.patient.username}} <br>
                                 </td>

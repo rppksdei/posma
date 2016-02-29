@@ -139,7 +139,7 @@
     .factory('Alerts', function($resource){
         var serviceObj = {};
         serviceObj.getDetail = function(){
-            return $resource('/alerts/getDetail', {}, authHeader);
+            return $resource('/alerts/alertDetail', {}, authHeader);
         }
         serviceObj.list = function(){
             return $resource('/alerts/', {}, authHeader);
