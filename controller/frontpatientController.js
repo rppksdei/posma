@@ -23,7 +23,7 @@ login = function(req, res, next){
             if (err){
                 next(err);
             } else{
-                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id,'password':user.password});
+                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id,'password':user.password,'username':user.username});
             }
             return; 
         });

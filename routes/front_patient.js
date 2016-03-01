@@ -14,7 +14,7 @@ module.exports = function(app, express,supportCrossOriginScript){
     
     router.post('/login',supportCrossOriginScript, function(req, res){
         patientFrontObj.login(req, res, function(err, data){
-            console.log("test"); // need 2 check
+            //console.log("test"); // need 2 check
         });
     });
     router.get('/loggedout', supportCrossOriginScript, function(req, res, next) {
