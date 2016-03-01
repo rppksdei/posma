@@ -6,11 +6,16 @@ module.exports = function(app,express, isClinicOrAdmin){
     router.get('/',isClinicOrAdmin, function(req, res, next) {
         alertObj.getlisting(req, res, next);
     });
-    router.post('/getDetail', function(req, res){
-        alertObj.getAlert(req, res);
+    //router.post('/getDetail', function(req, res, next){
+    router.post('/alertDetail', function(req, res, next){
+        console.log('---------------Routes------------');
+        alertObj.getDetail(req, res, next);
     });
     router.post('/add_notes', function(req, res){
         alertObj.addNotes(req, res);
+    });
+    router.post('/update', function(req, res){
+        alertObj.updateAlert(req, res);
     });
     /*router.post('/getPatientalert', function(req, res){
         alertObj.getAlert(req, res);

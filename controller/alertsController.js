@@ -1,13 +1,14 @@
 var alertModel = require("./../model/alertModel");
 var common = require('./../common.js');
 getlisting = function(req, res, next){
-    var search = {clinic:req.user._id};
+    var search = {clinic:req.user._id, is_dismissed:0};
     var sort_order = {created:-1, is_noted: 1 };
     if(typeof req.query.conditions != "undefined"){
         search = JSON.parse(req.query.conditions);
         search.is_deleted = 0;
         search.clinic = req.user._id;
     }
+    console.log('search == ',search);
     alertModel.getList(search, sort_order, function(err, listData){
         if(err){
             res.json(err);
@@ -17,8 +18,9 @@ getlisting = function(req, res, next){
     });
 }
 
-/*getAlert = function(req, res, next){
+getDetail = function(req, res, next){
     var search_alert = {};
+    console.log(req.body.id,'here');
     if(typeof req.body.id != 'undefined') {
         var alert_id = req.body.id;
         search_alert = {_id:alert_id};
@@ -72,7 +74,7 @@ getlisting = function(req, res, next){
             }
         });
     }
-}*/
+}
 addNotes = function(req, res, next) {
     var alert_data = req.body;
     var update_data = {};
@@ -101,8 +103,38 @@ addNotes = function(req, res, next) {
     }
 }
 
+updateAlert = function(req, res){
+    var update_data = {};
+    if(typeof req.body.is_dismissed != "undefined"){
+        update_data.is_dismissed = req.body.is_dismissed;
+    }
+    update_data.modified = Date.now();
+    
+    if(typeof req.body._id != "undefined"){
+        var search_criteria = {};
+        var search_criteria = {_id:req.body._id};
+        alertModel.updateAlert(search_criteria, update_data, function(err, data){
+            if (err) {
+                console.log('Error : ', err);
+                res.json({"error":"Alert can't be dismissed right now."});
+            }
+            else{
+                res.json({"success":"Alert dismissed Successfully"});
+            }
+        });
+    }
+    else{
+        var return_data = {};
+        return_data.error = "Please enter object id to update";
+        res.json(return_data);
+    }
+}
+
+
 module.exports = function() {
-    this.getlisting = getlisting;
-    //this.getAlert = getAlert;
-    this.addNotes = addNotes;
+    this.getlisting     = getlisting;
+    this.getDetail      = getDetail;
+    this.addNotes       = addNotes;
+    this.updateAlert    = updateAlert;
+    
 }

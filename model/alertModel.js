@@ -31,6 +31,7 @@ var alertSchema = new Schema({
     created:                {type:Number},
     notes:                  {type:String},
     is_noted:               {type:Number, default:0}, //no note added by admin, 1: note added by admin
+    is_dismissed:           {type:Number, default:0}, // 1 : yes, 0 : no
     modified:               {type:Number} 
 });
 
@@ -40,6 +41,9 @@ Alert.getAlert = function(search_criteria, next){
 }
 Alert.getList = function(search_criteria, sort_order, next){
     Alert.find(search_criteria, next).sort(sort_order);
+}
+Alert.updateAlert = function(search_criteria, new_data, next){
+    Alert.update(search_criteria, {$set:new_data}, next);
 }
 Alert.addAlerts = function(submit_data, next){
     var add_alert = new Alert(submit_data);

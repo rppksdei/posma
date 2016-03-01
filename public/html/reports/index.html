@@ -57,23 +57,23 @@
                         <table st-table="ctrl.rowCollection" ng-table="tableParams" class="table" export-csv="csv" name="myTable" id ="myTable" >
                             <tr ng-repeat="alert in $data" ng-class="{even: $even, odd: $odd}">
                                 <td data-title="'Questionnaire'">{{ alert.questionnaire_name }}</td>
-                                <td data-title="'Filled At'">{{alert.patient.username}} <br>
+                                <td data-title="'Filled At'">{{alert.created}} <br>
                                 </td>
                                 <td data-title="'Patient'">{{ alert.patient_first_name }} {{ alert.patient_last_name }}</td>
                                 <td data-title="'Questions'">
                                 	<div ng-repeat="ques in alert.questionDetails">
                                 		<b>{{ques.name}} </b>
-                                		<div ng-repeat="ans in ques.answer" ng-if="ques.answer_type != 'text'">
+                                		<div ng-repeat="ans in ques.answer" ng-if="(ques.answer_type != 'text') && (ques.answer_type != 'number')">
                                     		{{ans.name}}
                                     	</div>
                                 		<div ng-if="(ques.answer_type == 'cb') && ques.is_noted == 1" >
-	                                    	<b>Notes: </b> {{ques.notes}} 
+	                                    	<b>Notes: </b> {{ques.notes}}
                                     	</div>
-                                		<div ng-if="ques.answer_type == 'text'" >
-                                    		<div ng-repeat="ansq in alert.questions" ng-if="ansq.question == ques._id">
-	                                    		{{ansq.answer}}
-	                                    	</div>
-                                    	</div>
+                                        <div ng-if="(ques.answer_type == 'text') || (ques.answer_type == 'number')" >
+                                            <div ng-repeat="ansq in alert.questions" ng-if="ansq.question == ques._id">
+                                                {{ansq.answer}}
+                                            </div>
+                                        </div>
                                 	</div>
                                 </td>
                             </tr>
