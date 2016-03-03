@@ -38,14 +38,15 @@ Question.getQuestion = function(search_criteria, next){
     Question.findOne(search_criteria, next);
 }
 
-Question.getFieldsQuestion = function(search_criteria,fields_sel,i, next){
-    if(typeof fields_sel == 'undefined' && typeof i == 'undefined') {
+Question.getFieldsQuestion = function(search_criteria,fields_sel,i,ans_id, next){
+    if(typeof fields_sel == 'undefined' && typeof i == 'undefined' && typeof ans_id == 'undefined') {
         Question.findOne(search_criteria, next);
     } else {
         Question.findOne(search_criteria, fields_sel, function(err, data){
             var response = {};
             response.indexVal = i;
             response.data = data;
+            response.ansId = ans_id;
             next(err, response);
         });
     }

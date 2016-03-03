@@ -70,9 +70,9 @@
 	                                    	<b>Notes: </b> {{ques.notes}}
                                     	</div>
                                         <div ng-if="(ques.answer_type == 'text') || (ques.answer_type == 'number')" >
-                                            <div ng-repeat="ansq in alert.questions" ng-if="ansq.question == ques._id">
-                                                {{ansq.answer}}
-                                            </div>
+                                            <!--div ng-repeat="ansq in alert.questions" ng-if="ansq.question == ques._id"-->
+                                                {{ques.text_answer}}
+                                            <!--/div-->
                                         </div>
                                 	</div>
                                 </td>

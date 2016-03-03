@@ -114,17 +114,9 @@ myapp.controller('reportsCtrl', function($scope, $route, Report, $location, Flas
                                 }
                             }
                         } else if(data[i].questionDetails[k].answer_type == 'number'){
-                            for(var ques_cnt = 0; ques_cnt < data[i].questions.length; ques_cnt++){
-                                if(data[i].questionDetails[k]._id == data[i].questions[ques_cnt].question){
-                                    ans_txt = data[i].questions[ques_cnt].answer;
-                                }
-                            }
+                            ans_txt = data[i].questionDetails[k].text_answer;
                         } else if(data[i].questionDetails[k].answer_type == 'text'){
-                            for(var ques_cnt = 0; ques_cnt < data[i].questions.length; ques_cnt++){
-                                if(data[i].questionDetails[k]._id == data[i].questions[ques_cnt].question){
-                                    ans_txt = data[i].questions[ques_cnt].answer;   
-                                } 
-                            }
+                            ans_txt = data[i].questionDetails[k].text_answer;
                         }
                         row_data['ans'+k]                      = ans_txt;
                         $scope.csv_data[j] = row_data;

@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var QuesSchema = new Schema({
+/*var QuesSchema = new Schema({
     question:{type:Schema.Types.ObjectId, ref:'Question'},
     question_name:{type:String},
     question_type:{type:Number, default:0}, // 0=normal, 1= array
     answer:{type:String},
     answer_opts:[{type:Schema.Types.ObjectId}]
-});
+});*/
 
 var AnsweDetailedSchema = new Schema({
     _id:{type:Schema.Types.ObjectId},
@@ -30,7 +30,7 @@ var patientAnswerSchema = ({
     surgery:{type:Schema.Types.ObjectId, ref:'Surgery'},
     pathway:{type:Schema.Types.ObjectId, ref:'Pathway'},
     questionnaire:{type:Schema.Types.ObjectId, ref:'Questionnaire'},
-    questions:[QuesSchema],
+    //questions:[QuesSchema],
     datetime: {type:Number},
 
     questionDetails:[QuesDetailedSchema],
@@ -39,8 +39,6 @@ var patientAnswerSchema = ({
 
     questionnaire_name:{type:String},
     questionnaire_recur_type:{type:String},
-    created:{type:Number},
-    modified:{type:Number},
 
     patient_first_name: {type:String},
     patient_last_name: {type:String},
@@ -55,6 +53,9 @@ var patientAnswerSchema = ({
     clinic_email: {type:String},
     clinic_username: {type:String},
     clinic_mobile: {type:String},
+
+    created:{type:Number},
+    modified:{type:Number},
 });
 
 var PatientAnswer = mongoose.model('PatientAnswer', patientAnswerSchema);

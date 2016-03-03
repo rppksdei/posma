@@ -8,10 +8,10 @@ module.exports = function(app,express){
     
     
     /* router.get('/detail', function(req, res, next){ */
-    setInterval(function(){ 
-		//console.log('Cron Job');
-		cronObj.getlisting();
-    },300000); // 60000 = 1min
+  //   setInterval(function(){ 
+		// //console.log('Cron Job');
+		// cronObj.getlisting();
+  //   },300000); // 60000 = 1min
     setInterval(function(){ 
 		//console.log('Cron Patient Answers');
 		cronObj.updatePatientAnswers();
