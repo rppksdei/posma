@@ -251,33 +251,47 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     $scope.showFitbitData = function(index) {
         var object_detail = $scope.tableParams.data[index];
         Fitbit.getFitbitData().query({'_id': object_detail._id}, function(data){
-            //$scope.fitbit = data;
-            //console.log('data == ', data);
-            
-            var hrText = '';
-            hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Time range</th><th style='text-align:center;border:1px solid #f3f3f3;'>HR value(avg.)</th></tr>";
-            for (var dat in data) {
-                //console.log('\ndat--', data[dat]);
-                if (! isNaN(dat)) {
-                    hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].start_time+' - '+data[dat].end_time+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].avg_heart_rate+'</td></tr>';
-                }
-            }
-            hrText += '</table>';
+            console.log('data == ', data);
             
             if (typeof data[0] != 'undefined') {
+                var hrText = '';
+                hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Time range</th><th style='text-align:center;border:1px solid #f3f3f3;'>HR value(avg.)</th></tr>";
+                for (var dat in data) {
+                    //console.log('\ndat--', data[dat]);
+                    if (! isNaN(dat)) {
+                        hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].start_time+' - '+data[dat].end_time+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].avg_heart_rate+'</td></tr>';
+                    }
+                }
+                hrText += "<tr><td colspan='2'><a href='/#/patients/history/"+data[0].patient+"' title='See HR history'>See HR history</a></td></tr></table>";
+            
                 SweetAlert.swal({
                     title: "Heart Rate for "+moment.unix(data[0].created).format('MM/DD/YYYY'),
                     text: hrText,
-                    html: true
+                    html: true,
+                    allowEscapeKey : true, allowOutsideClick : true
                 });
             }else{
                 SweetAlert.swal({
                     title: "<medium>Oops! data not available. </medium>",
                     text: "Make sure you have clicked <strong>sync</strong> button earlier or the data might not be available at the moment.",
                     html: true,
-                    type: "warning"
+                    type: "warning",
+                    allowEscapeKey : true, allowOutsideClick : true
                 });
             }
+        });
+    };
+    
+    /** show HeartRate History. **/
+    $scope.getHRhistory = function(index) {
+        swal.close();
+        var patientId = $routeParams.id;
+        Fitbit.getFitbitData().query({'_id': patientId,'is_date':0}, function(data){
+            console.log('History data == <pre>', data);
+            $scope.historyHR = data;
+                //$scope.patient = data;
+                //$scope.patient.date_of_birth    = moment.unix(data.date_of_birth).format('MM/DD/YYYY');
+                //$scope.patient.dos              = moment.unix(data.dos).format('MM/DD/YYYY');
         });
     };
     
@@ -302,14 +316,16 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
                 SweetAlert.swal({
                     title: "Steps <br/><small>"+data[0].start_from+" to "+data[0].end_date+"</small>",
                     text: hrText,
-                    html: true
+                    html: true,
+                    allowEscapeKey : true, allowOutsideClick : true
                 });
             }else{
                 SweetAlert.swal({
                     title: "<medium>Oops! data not available. </medium>",
                     text: "Make sure you have clicked <strong>sync</strong> button earlier or the data might not be available at the moment.",
                     html: true,
-                    type: "warning"
+                    type: "warning",
+                    allowEscapeKey : true, allowOutsideClick : true
                 });
             }
         });
@@ -321,5 +337,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         $scope.edit();
     }else if (flag == "add") {
         $scope.getAdd();
+    }else if(flag == "historyHR"){
+        $scope.getHRhistory();
     };
 });

@@ -345,7 +345,9 @@ apicall = function(req, res, hitNo, next){
 
 getFitbitData = function(req, res, next){
     console.log('req = ',req.body, req.query, req.post);
-    if (typeof req.body.date != 'undefined') {
+    if (typeof req.query.is_date != 'undefined') {
+        var search = { heart_rate:{$ne: null}, patient:req.query._id };
+    }else if (typeof req.body.date != 'undefined') {
         var search = { heart_rate:{$ne: null}, patient:req.body._id, date:moment.unix(req.body.date).format('MM-DD-YYYY') };
     }else{
         var search = { heart_rate:{$ne: null}, patient:req.query._id, date:moment().format('MM-DD-YYYY') };
