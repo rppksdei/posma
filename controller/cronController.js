@@ -392,50 +392,41 @@ updatepatientDetail = function(req, res){
 
 updatePatientAnswers = function(){
     patientAnsModel.getList({},{created:-1}, function(err, data){
-    	//console.log(data);
         for(pa in data){
             var patientData = {};
             var updateQutData = {};
-            //console.log('------------',);
-
             questionnaireModel.getInfo({'_id':data[pa].questionnaire},{'name':1,'type':1},data[pa]._id,data[pa].patient,function(err, quesData) {
-                //console.log('----',quesData,data[pa]._id);
-                
                 quesDatadetail = quesData.data;
-                updateQutData.questionnaire_name          = quesDatadetail.name;
-                updateQutData.questionnaire_recur_type    = quesDatadetail.type;
-                var update_id = quesData.nextId;
-                var patient_id = quesData.patient;
-
-                patientAnsModel.updatePA({'_id':update_id},updateQutData, function(err, quData){
-
-                	patientModel.getPatientData({'_id':patient_id},update_id, function(err, userData) {
-
-                		user = userData.data;
-                		update_id = userData.nextId;
-		                patientData.patient_first_name          = user.first_name;
-		                patientData.patient_last_name           = user.last_name;
-		                patientData.patient_email               = user.email;
-		                patientData.patient_username            = user.username;
-		                patientData.patient_mobile              = user.mobile;
-		                patientData.patient_surgery             = user.surgery.name;
-		                patientData.clinic_name                 = user.clinic.clinic_name;
-		                patientData.clinic_first_name           = user.clinic.first_name;
-		                patientData.clinic_last_name            = user.clinic.last_name;
-		                patientData.clinic_email                = user.clinic.email;
-		                patientData.clinic_username             = user.clinic.username;
-		                patientData.clinic_mobile               = user.clinic.mobile;
-		                patientData.is_detailed                 = 1;
-		                patientAnsModel.updatePA({'_id':update_id},patientData, function(err, data){
-
-		                	//patientModel.getPatient({'_id':data[pa].patient},function(err, user) {
-		                    console.log('cron Done');
-		                });
-		            });
-                });
+                if(typeof quesDatadetail != "undefined"){
+                    updateQutData.questionnaire_name          = quesDatadetail.name;
+                    updateQutData.questionnaire_recur_type    = quesDatadetail.type;
+                    var update_id = quesData.nextId;
+                    var patient_id = quesData.patient;
+                    patientAnsModel.updatePA({'_id':update_id},updateQutData, function(err, quData){
+                        patientModel.getPatientData({'_id':patient_id},update_id, function(err, userData) {
+                            user = userData.data;
+                            update_id = userData.nextId;
+                            patientData.patient_first_name          = user.first_name;
+                            patientData.patient_last_name           = user.last_name;
+                            patientData.patient_email               = user.email;
+                            patientData.patient_username            = user.username;
+                            patientData.patient_mobile              = user.mobile;
+                            patientData.patient_surgery             = user.surgery.name;
+                            patientData.clinic_name                 = user.clinic.clinic_name;
+                            patientData.clinic_first_name           = user.clinic.first_name;
+                            patientData.clinic_last_name            = user.clinic.last_name;
+                            patientData.clinic_email                = user.clinic.email;
+                            patientData.clinic_username             = user.clinic.username;
+                            patientData.clinic_mobile               = user.clinic.mobile;
+                            patientData.is_detailed                 = 1;
+                            patientAnsModel.updatePA({'_id':update_id},patientData, function(err, data){
+                                //patientModel.getPatient({'_id':data[pa].patient},function(err, user) {
+                                console.log('cron Done');
+                            });
+                        });
+                    });
+                }
             });
-
-            
         }
     });
 }

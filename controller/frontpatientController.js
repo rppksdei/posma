@@ -160,7 +160,7 @@ setQuestionAnswers = function(key,ansData,fun){
     });
 }
 
-function setAllDsta(user, patientQues, patient_data, total_ques, admin_alerts, res){
+function setAllData(user, patientQues, patient_data, total_ques, admin_alerts, res){
     var i = 0; 
     var temp = new Array();
     var quDe = new Array();
@@ -193,12 +193,11 @@ function setAllDsta(user, patientQues, patient_data, total_ques, admin_alerts, r
                 qu_cnt++;
                 if(qu_cnt == total_ques){
                     patientQues.questions_details = quDe;
+                    aveDetails(patientQues, patient_data, admin_alerts,res,user);
                 }
             });
         }
     }
-
-    
 
     for (key in patient_data.quesData) {
         var qData = new Array;
@@ -231,8 +230,6 @@ function setAllDsta(user, patientQues, patient_data, total_ques, admin_alerts, r
             } else if(ansDetail_data.answer_type == 'text'){
                 qdetails.text_answer = ans_id;
             }
-            
-
             quDe.push(qdetails);
             qu_cnt++;
             if(qu_cnt == total_ques){
@@ -324,7 +321,7 @@ savePatientAns = function(req, res, next){
             var total_ques_withoutcheckbox = Object.keys(patient_data.quesData).length;
             var total_ques_checkbox = Object.keys(patient_data.ansData).length;
             var total_ques = total_ques_withoutcheckbox + total_ques_checkbox;
-            setAllDsta(user,patientQues, patient_data, total_ques, admin_alerts,res);
+            setAllData(user,patientQues, patient_data, total_ques, admin_alerts,res);
         }
     });
 }
