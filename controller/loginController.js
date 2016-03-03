@@ -18,7 +18,7 @@ exports.userlogin = function(req, res, next){
                 next(err);
             }
             else{
-                console.log(user);
+                //console.log(user);
                 res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id});
             }
             return; 
@@ -64,7 +64,7 @@ exports.loggedout = function(req, res, next){
 passport.use('local', new LocalStrategy(
     function(username, password, done) {
         password = common.encrypt(password);
-        console.log(password);
+        //console.log(password);
         var userDetail = {'username':username, 'password':password};
         adminModel.getAdmin(userDetail, function(err, user){
             if (err) {

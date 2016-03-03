@@ -17,7 +17,6 @@ getlisting = function(req, res, next){
         if(err){
             res.json(err);
         } else{
-            console.log(answerDetails);
             res.json(answerDetails);
         }
     });

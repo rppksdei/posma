@@ -42,6 +42,16 @@ Questionnaire.getQuestionnaire = function(search_criteria, next){
 Questionnaire.getQuestionnaireinfo = function(search_criteria,fields, next){
     Questionnaire.findOne(search_criteria,fields, next);
 }
+Questionnaire.getInfo = function(search_criteria,fields,next_id,patient, next){
+    //Questionnaire.findOne(search_criteria,fields, next);
+    Questionnaire.findOne(search_criteria, fields, function(err, data){
+            var response = {};
+            response.data = data;
+            response.nextId = next_id;
+            response.patient = patient;
+            next(err, response);
+    });
+}
 
 Questionnaire.updateQuestionnaire = function(search_criteria, new_data, next){
     Questionnaire.update(search_criteria, {$set:new_data}, next);

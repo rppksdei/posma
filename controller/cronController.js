@@ -136,7 +136,6 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     patientsData[currentIndex].pathway.questionnaires = tempVals;
                 }
             }
-//console.log('\n currentIndex = ', currentIndex, '\t length = ', length, '\n');
             if((currentIndex+1)==length){
                 //console.log(patientsData);
                 /*** add patients with related questionnaires into notifications table ***/
@@ -392,83 +391,51 @@ updatepatientDetail = function(req, res){
 }
 
 updatePatientAnswers = function(){
-    patientAnsModel.getList({is_detailed:0},{created:-1}, function(err, data){
+    patientAnsModel.getList({},{created:-1}, function(err, data){
+    	//console.log(data);
         for(pa in data){
-            var quesansData = {};
-            var questionsArr = new Array();
-            var total_ques = data[pa].questions.length;
-            var totalcalls = 0;
-            for(var i = 0; i < total_ques; i++){
-                questionModel.getFieldsQuestion({'_id':data[pa].questions[i].question},{"_id":1,"name":1,"answer_type":1,'answer':1},i,function(err, ansDetail) {
-                    
+            var patientData = {};
+            var updateQutData = {};
+            //console.log('------------',);
 
-                    var ansDetail_data = ansDetail.data;
-                    var new_i = ansDetail.indexVal;
-                    questionsArr[totalcalls] = ansDetail_data;
-                    if(ansDetail_data.answer_type == 'number'){
-                        console.log(data[pa].questions[new_i].question,'--------------------HERE--------------',data[pa].questions[new_i].answer);
-                        ansDetail_data.text_answer = data[pa].questions[new_i].answer;
-                        questionsArr[totalcalls].num_answer = data[pa].questions[new_i].answer;
-                    } else if(ansDetail_data.answer_type == 'rb' || ansDetail_data.answer_type == 'dd'){
-                        console.log(data[pa].questions[new_i].question,'--------------------HERE1--------------',data[pa].questions[new_i].answer);
-                        var newAns = new Array();
-                        for(aw = 0;aw < ansDetail_data.answer.length;aw++){
-                            if(ansDetail_data.answer[aw]._id == data[pa].questions[new_i].answer){
-                                newAns.push(ansDetail_data.answer[aw]);
-                            }
-                        }
-                        ansDetail_data.answer = newAns;
-                        questionsArr[totalcalls].answer = ansDetail_data.answer;
-                    } else if(ansDetail_data.answer_type == 'cb'){
-                        console.log(data[pa].questions[new_i].question,'--------------------HERE2--------------',data[pa].questions[new_i].answer);
-                        var newAns = new Array();
-                        for(aw = 0;aw < ansDetail_data.answer.length;aw++){
-                            if(data[pa].questions[new_i].answer_opts.indexOf(ansDetail_data.answer[aw]._id) != -1){
-                                newAns.push(ansDetail_data.answer[aw]);
-                            }
-                        }
-                        ansDetail_data.answer = newAns;
-                        questionsArr[totalcalls].answer = ansDetail_data.answer;
-                    } else {
-                        console.log(data[pa].questions[new_i].question,'--------------------HERE3--------------',data[pa].questions[new_i].answer);
-                        ansDetail_data.text_answer = data[pa].questions[new_i].answer;
-                    }
-                    totalcalls++;
-                    if(totalcalls == total_ques){;
-                        patientAnsModel.updatePA({'_id':data[pa]._id},{'questionDetails':questionsArr}, function(err, data){
+            questionnaireModel.getInfo({'_id':data[pa].questionnaire},{'name':1,'type':1},data[pa]._id,data[pa].patient,function(err, quesData) {
+                //console.log('----',quesData,data[pa]._id);
+                
+                quesDatadetail = quesData.data;
+                updateQutData.questionnaire_name          = quesDatadetail.name;
+                updateQutData.questionnaire_recur_type    = quesDatadetail.type;
+                var update_id = quesData.nextId;
+                var patient_id = quesData.patient;
 
-                        });
-                        var questionnaireArr = {};
-                        questionnaireModel.getQuestionnaire({'_id':data[pa].questionnaire},function(err, questionnaireDet) {
-                            questionnaireArr.questionnaire_name         = questionnaireDet.name;
-                            questionnaireArr.questionnaire_recur_type   = questionnaireDet.recur_type;
-                            patientAnsModel.updatePA({'_id':data[pa]._id},questionnaireArr, function(err, data){
-                                
-                            });
-                        });
+                patientAnsModel.updatePA({'_id':update_id},updateQutData, function(err, quData){
 
-                        var patientData = {};
-                        patientModel.getPatient({'_id':data[pa].patient},function(err, user) {
-                            patientData.patient_first_name          = user.first_name;
-                            patientData.patient_last_name           = user.last_name;
-                            patientData.patient_email               = user.email;
-                            patientData.patient_username            = user.username;
-                            patientData.patient_mobile              = user.mobile;
-                            patientData.patient_surgery             = user.surgery.name;
-                            patientData.clinic_name                 = user.clinic.clinic_name;
-                            patientData.clinic_first_name           = user.clinic.first_name;
-                            patientData.clinic_last_name            = user.clinic.last_name;
-                            patientData.clinic_email                = user.clinic.email;
-                            patientData.clinic_username             = user.clinic.username;
-                            patientData.clinic_mobile               = user.clinic.mobile;
-                            patientData.is_detailed                 = 1;
-                            patientAnsModel.updatePA({'_id':data[pa]._id},patientData, function(err, data){
-                                console.log('cron Done');
-                            });
-                        });
-                    }
+                	patientModel.getPatientData({'_id':patient_id},update_id, function(err, userData) {
+
+                		user = userData.data;
+                		update_id = userData.nextId;
+		                patientData.patient_first_name          = user.first_name;
+		                patientData.patient_last_name           = user.last_name;
+		                patientData.patient_email               = user.email;
+		                patientData.patient_username            = user.username;
+		                patientData.patient_mobile              = user.mobile;
+		                patientData.patient_surgery             = user.surgery.name;
+		                patientData.clinic_name                 = user.clinic.clinic_name;
+		                patientData.clinic_first_name           = user.clinic.first_name;
+		                patientData.clinic_last_name            = user.clinic.last_name;
+		                patientData.clinic_email                = user.clinic.email;
+		                patientData.clinic_username             = user.clinic.username;
+		                patientData.clinic_mobile               = user.clinic.mobile;
+		                patientData.is_detailed                 = 1;
+		                patientAnsModel.updatePA({'_id':update_id},patientData, function(err, data){
+
+		                	//patientModel.getPatient({'_id':data[pa].patient},function(err, user) {
+		                    console.log('cron Done');
+		                });
+		            });
                 });
-            }
+            });
+
+            
         }
     });
 }

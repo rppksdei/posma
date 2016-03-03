@@ -8,7 +8,6 @@ getlisting = function(req, res, next){
         search.is_deleted = 0;
         search.clinic = req.user._id;
     }
-    console.log('search == ',search);
     alertModel.getList(search, sort_order, function(err, listData){
         if(err){
             res.json(err);

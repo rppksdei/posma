@@ -82,6 +82,16 @@ exports.getPatient = function(search_criteria, fields, next){
     }
 }
 
+exports.getPatientData = function(search_criteria,next_id, next){
+    //Patient.findOne(search_criteria, next).populate('surgery').populate('clinic').populate('pathway');
+    Patient.findOne(search_criteria, function(err, data){
+            var response = {};
+            response.data = data;
+            response.nextId = next_id;
+            next(err, response);
+    }).populate('surgery').populate('clinic').populate('pathway');
+}
+
 exports.getPatientDetail = function(search_criteria, fields, next){
     if(typeof fields !== 'undefined'){
         Patient.findOne(search_criteria, fields, next);
