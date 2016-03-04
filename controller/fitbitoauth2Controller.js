@@ -344,8 +344,12 @@ apicall = function(req, res, hitNo, next){
 }
 
 getFitbitData = function(req, res, next){
-    console.log('req = ',req.body, req.query, req.post);
-    if (typeof req.query.is_date != 'undefined') {
+    //console.log('req = ',req.body, req.query, req.post);
+    var fields = {};
+    if (typeof req.query.is_steps != 'undefined' && req.query.is_steps == 1) {
+        var search = { steps:{$ne: null}, patient:req.query._id };
+        fields = {'heart_rate':0};
+    }else if (typeof req.query.is_date != 'undefined') {
         var search = { heart_rate:{$ne: null}, patient:req.query._id };
     }else if (typeof req.body.date != 'undefined') {
         var search = { heart_rate:{$ne: null}, patient:req.body._id, date:moment.unix(req.body.date).format('MM-DD-YYYY') };
@@ -354,11 +358,11 @@ getFitbitData = function(req, res, next){
     }
     
     console.log('...search...\n',search);
-    fitbitModel.getAll(search, {}, function(err, fitbitData){
+    fitbitModel.getAll(search, fields, function(err, fitbitData){
         if(err){
             res.json(err);
         } else{
-            //console.log('fitbitData = \n', fitbitData);
+            console.log('steps history------------------------------------------\n', fitbitData);
             res.json(fitbitData);
         }
     });
