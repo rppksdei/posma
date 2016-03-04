@@ -309,20 +309,18 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     $scope.showFitbitSteps = function(index) {
         var object_detail = $scope.tableParams.data[index];
         Fitbit.getFitbitSteps().query({'_id': object_detail._id}, function(data){
-        console.log('type = ', typeof data);
-        console.log('Steps data == ', data);
-            
-            var hrText = ''
-            hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Date</th><th style='text-align:center;border:1px solid #f3f3f3;'>Steps</th></tr>";
-            for (var dat in data) {
-                //console.log('\ndat--', data[dat]);
-                if (! isNaN(dat)) {
-                    hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].date+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].steps+'</td></tr>';
-                }
-            }
-            hrText += "<tr><td colspan='2'><a href='/#/patients/history/steps/"+data[0].patient+"' title='See Steps history'>See Steps history</a></td></tr></table>";
-            
+            console.log('Steps data == ', data);
             if (typeof data[0] != 'undefined') {
+                var hrText = ''
+                hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Date</th><th style='text-align:center;border:1px solid #f3f3f3;'>Steps</th></tr>";
+                for (var dat in data) {
+                    //console.log('\ndat--', data[dat]);
+                    if (! isNaN(dat)) {
+                        hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].date+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].steps+'</td></tr>';
+                    }
+                }
+                hrText += "<tr><td colspan='2'><a href='/#/patients/history/steps/"+data[0].patient+"' title='See Steps history'>See Steps history</a></td></tr></table>";
+                
                 SweetAlert.swal({
                     title: "Steps <br/><small>"+data[0].start_from+" to "+data[0].end_date+"</small>",
                     text: hrText,
