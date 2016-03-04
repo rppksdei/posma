@@ -201,6 +201,12 @@ myapp.config(['$routeProvider',
                 flag:'historyHR',
                 resolve:{'logged_in':checkloggedIn}
             })
+            .when('/patients/history/steps/:id',{
+                templateUrl:'/html/patients/history.html',
+                controller:'patientCtrl',
+                flag:'historySteps',
+                resolve:{'logged_in':checkloggedIn}
+            })
             .when('/pathways',{
                 templateUrl:'/html/pathways/list.html',
                 controller:'pathwayCtrl',

@@ -282,6 +282,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         });
     };
     
+    
     /** show HeartRate History. **/
     $scope.getHRhistory = function(index) {
         swal.close();
@@ -289,11 +290,20 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         Fitbit.getFitbitData().query({'_id': patientId,'is_date':0}, function(data){
             console.log('History data == <pre>', data);
             $scope.historyHR = data;
-                //$scope.patient = data;
-                //$scope.patient.date_of_birth    = moment.unix(data.date_of_birth).format('MM/DD/YYYY');
-                //$scope.patient.dos              = moment.unix(data.dos).format('MM/DD/YYYY');
         });
     };
+    
+    
+    /** show STEPS History. **/
+    $scope.getStepsHistory = function(index) {
+        swal.close();
+        var patientId = $routeParams.id;
+        Fitbit.getFitbitData().query({'_id': patientId,'is_steps':1}, function(data){
+            console.log('Steps History data ==> ', data);
+            $scope.historySteps = data;
+        });
+    };
+    
     
     /** show Steps data for one week. **/
     $scope.showFitbitSteps = function(index) {
@@ -310,7 +320,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
                     hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].date+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].steps+'</td></tr>';
                 }
             }
-            hrText += '</table>';
+            hrText += "<tr><td colspan='2'><a href='/#/patients/history/steps/"+data[0].patient+"' title='See Steps history'>See Steps history</a></td></tr></table>";
             
             if (typeof data[0] != 'undefined') {
                 SweetAlert.swal({
@@ -339,5 +349,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         $scope.getAdd();
     }else if(flag == "historyHR"){
         $scope.getHRhistory();
+    }else if(flag == "historySteps"){
+        $scope.getStepsHistory();
     };
 });
