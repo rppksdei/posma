@@ -20,8 +20,9 @@
                         <table ng-table="tableParams" class="table">
                                 <tr ng-repeat="patient in $data" ng-class="{even: $even, odd: $odd}">
                             <!--<td data-title="'Username'">{{patient}}</td> -->
+                                    <td data-title="'Username'">{{ patient.username }}</td>
                                     <td data-title="'Full Name'">{{ patient.first_name }} {{ patient.last_name }}</td>
-                                    <td data-title="'Email'">{{ patient.email }}</td>
+                                    <!--<td data-title="'Email'">{{ patient.email }}</td>-->
                                     <!-- <td data-title="'D.O.B.'">{{ patient.date_of_birth | date: 'MM/dd/yyyy' }}</td> -->
                                     <td data-title="'Age'">{{patient.age}}</td>
                                     <td data-title="'Gender'">

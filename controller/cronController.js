@@ -412,6 +412,7 @@ updatePatientAnswers = function(){
                             patientData.patient_username            = user.username;
                             patientData.patient_mobile              = user.mobile;
                             patientData.patient_surgery             = user.surgery.name;
+                            patientData.clinic_id                   = user.clinic._id;
                             patientData.clinic_name                 = user.clinic.clinic_name;
                             patientData.clinic_first_name           = user.clinic.first_name;
                             patientData.clinic_last_name            = user.clinic.last_name;
