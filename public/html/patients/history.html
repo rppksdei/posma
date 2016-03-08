@@ -16,7 +16,6 @@
                     <div class="dataTable_wrapper table-responsive" ng-if="historyHR" >
                         <table ng-table="tableParams" class="table">
                             <tr ng-repeat="hr in historyHR" ng-class="{even: $even, odd: $odd}">
-                                hiii
                                 <td data-title="'Date'">{{ hr.date }}</td>
                                 <td data-title="'Time'">{{ hr.start_time }} - {{ hr.end_time }}</td>
                                 <td data-title="'Avg. HR'">{{ hr.avg_heart_rate }}</td>
