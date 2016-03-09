@@ -55,7 +55,7 @@ var patientSchema = ({
     admission_egfr:{type:String},
     dx:{type:String},
     admission_hemoglobin:{type:String},
-    
+    is_read_terms:{type:Number, default:0}, // 0 : No, 1: yes
     /* fitbit token parameters */
     access_token    :{type: String},
     refresh_token   :{type: String},
