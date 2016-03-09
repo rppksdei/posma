@@ -107,7 +107,7 @@ dateToTimeStamp = function(myDate){
     return dateTimeStamp;
 }
 updatePatientDetail = function(req, res){
-    console.log('\nreq.body == \n', req.body);
+    //console.log('\nreq.body == \n', req.body);
     //console.log('date_of_birth = ',moment(req.body.date_of_birth, 'MM/DD/YYYY').unix());
     //Code to create JSON object data
     if(typeof req.body.post_patientData !== "undefined") {
@@ -218,6 +218,9 @@ updatePatientDetail = function(req, res){
     }
     if(typeof req.body.is_active != "undefined") {
         update_data.is_active = req.body.is_active;
+    }
+    if(typeof req.body.is_read_terms != "undefined") {
+        update_data.is_read_terms = req.body.is_read_terms;
     }
     if(typeof req.body.cci != "undefined") {
         update_data.cci = req.body.cci;

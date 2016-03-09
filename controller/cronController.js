@@ -392,6 +392,7 @@ updatepatientDetail = function(req, res){
 
 updatePatientAnswers = function(){
     patientAnsModel.getList({},{created:-1}, function(err, data){
+	//console.log('data = ', data);
         for(pa in data){
             var patientData = {};
             var updateQutData = {};

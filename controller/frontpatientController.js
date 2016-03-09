@@ -23,7 +23,7 @@ login = function(req, res, next){
             if (err){
                 next(err);
             } else{
-                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id,'password':user.password,'username':user.username});
+                res.json({ 'code':0, 'success':true, 'type':user.user_type, 'user_id':user._id,'password':user.password,'username':user.username,'is_read_terms':user.is_read_terms});
             }
             return; 
         });
@@ -65,6 +65,18 @@ loggedout = function(req, res, next){
 getDetail = function(req, res, next){
     var search_criteria = {_id:req.body.pId};
     var fields = {_id:1, address1:1, age:1, bmi:1, date_of_birth:1, email:1, first_name:1, gender:1, height:1, last_name:1, mobile:1, weight:1 };
+    patientModel.getPatientDetail(search_criteria, fields, function(err, patientData){
+        if (err) {
+            res.json( { 'code':401, 'error':'Not a patient', 'message':"Not a valid patient." } );
+        } else {
+            res.json(patientData);
+        }
+    });
+}
+
+checkTerms = function(req, res, next){
+    var search_criteria = {username:req.body.username};
+    var fields = {is_read_terms:1};
     patientModel.getPatientDetail(search_criteria, fields, function(err, patientData){
         if (err) {
             res.json( { 'code':401, 'error':'Not a patient', 'message':"Not a valid patient." } );
@@ -359,4 +371,5 @@ module.exports = function(){
     this.loggedout       = loggedout;
     this.savePatientAns  = savePatientAns;
     this.getDetail       = getDetail;
+    this.checkTerms      = checkTerms;
 }
