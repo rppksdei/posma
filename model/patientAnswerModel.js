@@ -46,7 +46,7 @@ var patientAnswerSchema = ({
     patient_username: {type:String},
     patient_mobile: {type:String},
     patient_surgery: {type:String},
-
+    clinic_id:{type:Schema.Types.ObjectId},
     clinic_name: {type:String},
     clinic_first_name: {type:String},
     clinic_last_name: {type:String},
