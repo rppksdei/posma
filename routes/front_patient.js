@@ -29,6 +29,10 @@ module.exports = function(app, express,supportCrossOriginScript){
 	//console.log('req=',req.body);
         adminpatientFrontObj.updatePatientDetail(req, res, next);
     });
+    
+    router.post('/checkTerms', supportCrossOriginScript, function(req, res, next) {
+        patientFrontObj.checkTerms(req, res, next);
+    });
 
     /* add Patient Answers. */
     router.post('/saveans', supportCrossOriginScript, function(req, res, next) {

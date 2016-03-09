@@ -8,15 +8,16 @@ module.exports = function(app,express){
     
     
     /* router.get('/detail', function(req, res, next){ */
-  //   setInterval(function(){ 
-		// //console.log('Cron Job');
-		// cronObj.getlisting();
-  //   },300000); // 60000 = 1min
     setInterval(function(){ 
-		//console.log('Cron Patient Answers');
-		cronObj.updatePatientAnswers();
-    },10000); // 5 0s
+	    //console.log('Cron Job');
+	    cronObj.getlisting();
+    },300000); // 60000 = 1min
     
+    setInterval(function(){ 
+	//console.log('Cron Patient Answers');
+	//console.log('...In setInterval');
+	cronObj.updatePatientAnswers();
+    },10000); // 5 0s
     
     router.post('/gcmsend',function(req, res, next) {
 	gcmObj.sendToAndroid();
