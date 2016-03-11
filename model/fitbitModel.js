@@ -36,7 +36,7 @@ var fitbitSchema = new Schema({
 var PatientFitbit = mongoose.model('PatientFitbit', fitbitSchema);
 
 PatientFitbit.getAll = function(search_criteria, fields, next){
-    PatientFitbit.find(search_criteria, fields, next).sort({'date':1,'start_time':1}).lean();
+    PatientFitbit.find(search_criteria, fields, next).populate('patient').sort({'date':1,'start_time':1}).lean();
 }
 
 PatientFitbit.getData = function(search_criteria, next){
