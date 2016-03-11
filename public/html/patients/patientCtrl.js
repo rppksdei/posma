@@ -262,7 +262,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
                         hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].start_time+' - '+data[dat].end_time+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].avg_heart_rate+'</td></tr>';
                     }
                 }
-                hrText += "<tr><td colspan='2'><a href='/#/patients/history/"+data[0].patient+"' title='See HR history'>See HR history</a></td></tr></table>";
+                hrText += "<tr><td colspan='2'><a href='/#/patients/history/"+data[0].patient._id+"' title='See HR history'>See HR history</a></td></tr></table>";
             
                 SweetAlert.swal({
                     title: "Heart Rate for "+moment.unix(data[0].created).format('MM/DD/YYYY'),
@@ -287,9 +287,26 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     $scope.getHRhistory = function(index) {
         swal.close();
         var patientId = $routeParams.id;
+        $scope.csv_HRdata = [];
         Fitbit.getFitbitData().query({'_id': patientId,'is_date':0}, function(data){
             console.log('History data == <pre>', data);
             $scope.historyHR = data;
+            // make CSV data
+            for (var i = 0; i < data.length; i++) {
+                $scope.csv_HRdata[i] = {};
+                $scope.csv_HRdata[i].date             = data[i].date;
+                $scope.csv_HRdata[i].steps            = data[i].steps;
+                $scope.csv_HRdata[i].recommended      = "10000 / day";
+                
+                if (data[i].steps < 10000) {
+                    var less = 10000 - data[i].steps;
+                    $scope.csv_HRdata[i].statistics       = "Less by "+less;
+                }else if (data[i].steps > 10000) {
+                    var more = data[i].steps - 10000;
+                    $scope.csv_HRdata[i].statistics       = "More by "+more;
+                }
+                $scope.csv_HRdata[i].username         = data[i].patient.username;
+            }
         });
     };
     
@@ -298,9 +315,25 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     $scope.getStepsHistory = function(index) {
         swal.close();
         var patientId = $routeParams.id;
+        $scope.csv_Stepsdata = [];
         Fitbit.getFitbitData().query({'_id': patientId,'is_steps':1}, function(data){
             console.log('Steps History data ==> ', data);
             $scope.historySteps = data;
+            // make CSV data
+            for (var i = 0; i < data.length; i++) {
+                $scope.csv_Stepsdata[i] = {};
+                $scope.csv_Stepsdata[i].date             = data[i].date;
+                $scope.csv_Stepsdata[i].steps            = data[i].steps;
+                $scope.csv_Stepsdata[i].recommended      = "10000 / day";
+                if (data[i].steps < 10000) {
+                    var less = 10000 - data[i].steps;
+                    $scope.csv_Stepsdata[i].statistics       = "Less by "+less;
+                }else if (data[i].steps > 10000) {
+                    var more = data[i].steps - 10000;
+                    $scope.csv_Stepsdata[i].statistics       = "More by "+more;
+                }
+                $scope.csv_Stepsdata[i].username         = data[i].patient.username;
+            }
         });
     };
     
@@ -319,7 +352,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
                         hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].date+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].steps+'</td></tr>';
                     }
                 }
-                hrText += "<tr><td colspan='2'><a href='/#/patients/history/steps/"+data[0].patient+"' title='See Steps history'>See Steps history</a></td></tr></table>";
+                hrText += "<tr><td colspan='2'><a href='/#/patients/history/steps/"+data[0].patient._id+"' title='See Steps history'>See Steps history</a></td></tr></table>";
                 
                 SweetAlert.swal({
                     title: "Steps <br/><small>"+data[0].start_from+" to "+data[0].end_date+"</small>",
@@ -338,6 +371,9 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
             }
         });
     };
+    
+    $scope.getHrHeader      = function () {return ["Date", "Time","Average Heart rate","Username"]};
+    $scope.getStepsHeader   = function () {return ["Date", "Steps","Recommended","Statistics","Username"]};
     
     if (flag == "list") {
         $scope.list();

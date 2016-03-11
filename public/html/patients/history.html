@@ -8,13 +8,18 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div ng-if="historyHR" >Heart Rate History</div><div ng-if="historySteps" >Steps History</div>
+                    <div ng-if="historyHR" class="col-xs-6"><strong>{{historyHR[0].patient.username}}'s</strong> Heart Rate History</div><div ng-if="historySteps" class="col-xs-6"><strong>{{historySteps[0].patient.username}}'s</strong> Steps History</div>
+                    <div class="col-xs-6">
+                        <button ng-if="historyHR" class="btn btn-primary pull-right" ng-csv="csv_HRdata" csv-header="getHrHeader()" filename="history_heartrate.csv" field-separator="," decimal-separator="." >Export HR</button>
+                        <button ng-if="historySteps" class="btn btn-primary pull-right" ng-csv="csv_Stepsdata" ng-click="abc(tableParams.filter().patient_first_name,tableParams.filter().questionnaire_name);" csv-header="getStepsHeader()" filename="history_steps.csv" field-separator="," decimal-separator="." >Export Steps</button>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div flash-message="5000" ></div>
                     <div class="dataTable_wrapper table-responsive" ng-if="historyHR" >
-                        <table ng-table="tableParams" class="table">
+                        <table ng-table="tableParams" class="table" export-csv="csv">
                             <tr ng-repeat="hr in historyHR" ng-class="{even: $even, odd: $odd}">
                                 <td data-title="'Date'">{{ hr.date }}</td>
                                 <td data-title="'Time'">{{ hr.start_time }} - {{ hr.end_time }}</td>
@@ -24,7 +29,7 @@
                         </table>
                     </div>
                     <div class="dataTable_wrapper table-responsive" ng-if="historySteps">
-                        <table ng-table="tableParams" class="table">
+                        <table ng-table="tableParams" class="table" export-csv="csv">
                             <tr ng-repeat="step in historySteps" ng-class="{even: $even, odd: $odd}">
                                 <td data-title="'Date'">{{ step.date }}</td>
                                 <td data-title="'Steps'">{{ step.steps }}</td>
