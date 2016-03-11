@@ -84,7 +84,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
 				    var tempDate = new Date(current_date.format('YYYY/MM/DD')+' '+qdata[j].time_slots[k]);
 					//console.log('>>>>tempDate = ', tempDate);
                                     newD = moment(tempDate).unix();
-                                    console.log('..newD = ',newD);
+                                   // console.log('..newD = ',newD);
 				    
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
                                         //console.log('inside');
@@ -160,7 +160,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                             	    console.log('Notification add error : ',err2);
                             	}
                             	if(ndata){
-                            	    //console.log('Notification add success--------------------->\n',ndata);
+                            	    console.log('Notification add success--------------------->\n');
 				    if(ndata.device_id != '' && ndata.device_id != 'null' && typeof ndata.device_id != 'undefined'){
 					var titl_time = moment.utc(ndata.datetime, 'X').format('HH:mm a');
 					var titl = ndata.questionnaire_name+"' Available at "+titl_time;
@@ -225,8 +225,8 @@ getlisting = function(){
             //res.json(err);
         }
         else{
-            //console.log('\nNo. of Patients : ',patientsData.length);
-	    //console.log('\n\nPatients Data : \n',patientsData);
+            console.log('\nNo. of Patients : ',patientsData.length);
+	   // console.log('\n\nPatients Data : \n',patientsData);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
             
@@ -423,7 +423,7 @@ updatePatientAnswers = function(){
                             patientData.is_detailed                 = 1;
                             patientAnsModel.updatePA({'_id':update_id},patientData, function(err, data){
                                 //patientModel.getPatient({'_id':data[pa].patient},function(err, user) {
-                                console.log('cron Done');
+                                //console.log('cron Done');
                             });
                         });
                     });
