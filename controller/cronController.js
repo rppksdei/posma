@@ -84,7 +84,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
 				    var tempDate = new Date(current_date.format('YYYY/MM/DD')+' '+qdata[j].time_slots[k]);
 					//console.log('>>>>tempDate = ', tempDate);
                                     newD = moment(tempDate).unix();
-                                   // console.log('..newD = ',newD);
+                                    //console.log('..newD = ',newD);
 				    
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
                                         //console.log('inside');
@@ -98,7 +98,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                                 if(is_time_slot_in==true){
                                     tempObj.questionnaire 	= qdata[j]._id;
                                     tempObj.questionnaire_name 	= qdata[j].name;
-				console.log('tempObj => ',tempObj);
+				    //console.log('tempObj => ',tempObj);
                                     tempVals[cnt++] = tempObj;
                                     // tempVals[cnt++] = qdata[j];
                                 }
@@ -160,10 +160,10 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                             	    console.log('Notification add error : ',err2);
                             	}
                             	if(ndata){
-                            	    console.log('Notification add success--------------------->\n');
+                            	    console.log('\n+++ Notification add success +++');
 				    if(ndata.device_id != '' && ndata.device_id != 'null' && typeof ndata.device_id != 'undefined'){
 					var titl_time = moment.utc(ndata.datetime, 'X').format('HH:mm a');
-					var titl = ndata.questionnaire_name+"' Available at "+titl_time;
+					var titl = ndata.questionnaire_name+" - "+titl_time;
 					sendNotification(ndata.device_id, titl, 'There is a new questionnaire available for you. Please fill relevant data and submit. Wish you a speedy recovery.');
 				    }
                             	}
@@ -226,14 +226,12 @@ getlisting = function(){
         }
         else{
             console.log('\nNo. of Patients : ',patientsData.length);
-	   // console.log('\n\nPatients Data : \n',patientsData);
+	    //console.log('\n\nPatients Data : \n',patientsData);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
-            
             for(var i=0; i<patientsData.length; i++){
                 cbTofindQuestionnaires(patientsData,pd,patientsData.length,i);
             }
-
         }
     });
 }
