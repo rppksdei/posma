@@ -265,6 +265,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
                 }
             });
         } else {
+        console.log('$scope.question = ', $scope.question);
             var questiondata = $scope.question;
             var answer = [];
             if ( !($scope.question.answer_type == "text" || $scope.question.answer_type == 'number') ) {
@@ -281,7 +282,7 @@ myapp.controller('questionsCtrl', function($scope, $route,Flash, Questions,ngTab
                 var lastItem = $scope.answer_opts.length-1;
                 $scope.answer_opts.splice(lastItem);
             }
-            console.log(questiondata.answer);
+            console.log('qdata=',questiondata);
             Questions.updateQuestion().save(questiondata, function(data){
                 if (data.success) {
                     Flash.create('success', 'Question has been updated successfully.', 'alert alert-success');
