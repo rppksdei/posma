@@ -14,6 +14,8 @@ var questionSchema = new Schema({
     answer_type:{type:String, default:'text'}, //0=Text, 1=Number
     min_range:{type:Number},
     max_range:{type:Number},
+    outofrange_minval:{type:Number},
+    outofrange_maxval:{type:Number},
     max_length:{type:Number, default:0},
     gender:{type:String, default:"b"}, //m=Male, f=Female, b=Both
     clinic:{type:Schema.Types.ObjectId, ref:'Clinic'},
