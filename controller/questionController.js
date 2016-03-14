@@ -87,6 +87,12 @@ updateQuestionDetail = function(req, res){
     if(typeof req.body.max_range != "undefined"){
         update_data.max_range = req.body.max_range;
     }
+    if(typeof req.body.outofrange_minval != "undefined"){
+        update_data.outofrange_minval = req.body.outofrange_minval;
+    }
+    if(typeof req.body.outofrange_maxval != "undefined"){
+        update_data.outofrange_maxval = req.body.outofrange_maxval;
+    }
     if(typeof req.body.max_length != "undefined"){
         update_data.max_length = req.body.max_length;
     }
