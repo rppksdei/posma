@@ -88,55 +88,67 @@ checkTerms = function(req, res, next){
 
 setQuestiondata = function(admin_alert, fn){
     var quData = {};
+    //console.log('+++++++admin_alert--\n', admin_alert);
     questionModel.getQuestion({'_id':admin_alert.question}, function(err, questionDetail) {
         if (err) {
+            console.log('***Error in func = setQuestiondata');
         } else{
-            quData.ques_name        = questionDetail.name;
-            quData.answer_type      = questionDetail.answer_type;
-            quData.gender           = questionDetail.gender;
-            quData.question         = admin_alert.question;
-            quData.ans              = admin_alert.ans;
-            quData.multians         = admin_alert.multians;
-            quData.questionnaire    = admin_alert.questionnaire;
-            quData.datetime         = admin_alert.datetime;
-            quData.clinic           = admin_alert.clinic;
-            /*if(send_serach.anstype == 'text'){
-                 quData.max_length       = questionDetail.max_length;
-            } else if(send_serach.anstype == 'number'){
-                quData.min_range        = questionDetail.min_range;
-                quData.max_range        = questionDetail.max_range;
-            } else */
-            if(admin_alert.anstype == 'cb') {
-                var sel_cntr = 0;
-                answer_nameArr = new Array();
-                answer_out_of_rangeArr = new Array();
-                if(typeof admin_alert.multians != 'undefined'){
-                    while(sel_cntr < admin_alert.multians.length){
-                        var cntr = 0;
-                        if(typeof questionDetail.answer != 'undefined'){
-                            while(cntr < questionDetail.answer.length){
-                                if(questionDetail.answer[cntr]._id == admin_alert.multians[sel_cntr]){
-                                    answer_nameArr[sel_cntr]           = questionDetail.answer[cntr].name;
-                                    answer_out_of_rangeArr[sel_cntr]   = questionDetail.answer[cntr].out_of_range;
+            //console.log('questionDetail = ', questionDetail);
+            if (questionDetail != null) {
+    
+                quData.ques_name        = questionDetail.name;
+                quData.answer_type      = questionDetail.answer_type;
+                quData.gender           = questionDetail.gender;
+                quData.question         = admin_alert.question;
+                quData.ans              = admin_alert.ans;
+                quData.multians         = admin_alert.multians;
+                quData.questionnaire    = admin_alert.questionnaire;
+                quData.datetime         = admin_alert.datetime;
+                quData.clinic           = admin_alert.clinic;
+                /*if(send_serach.anstype == 'text'){
+                     quData.max_length       = questionDetail.max_length;
+                } else if(send_serach.anstype == 'number'){
+                    quData.min_range        = questionDetail.min_range;
+                    quData.max_range        = questionDetail.max_range;
+                } else */
+                if(admin_alert.anstype == 'cb') {
+                    var sel_cntr = 0;
+                    answer_nameArr = new Array();
+                    answer_out_of_rangeArr = new Array();
+                    if(typeof admin_alert.multians != 'undefined'){
+                        while(sel_cntr < admin_alert.multians.length){
+                            var cntr = 0;
+                            if(typeof questionDetail.answer != 'undefined'){
+                                while(cntr < questionDetail.answer.length){
+                                    if(questionDetail.answer[cntr]._id == admin_alert.multians[sel_cntr]){
+                                        answer_nameArr[sel_cntr]           = questionDetail.answer[cntr].name;
+                                        answer_out_of_rangeArr[sel_cntr]   = questionDetail.answer[cntr].out_of_range;
+                                    }
+                                    cntr++;
                                 }
-                                cntr++;
+                                quData.answer_name          = answer_nameArr;
+                                quData.answer_out_of_range  = answer_out_of_rangeArr;
                             }
-                            quData.answer_name          = answer_nameArr;
-                            quData.answer_out_of_range  = answer_out_of_rangeArr;
+                            sel_cntr++;
                         }
-                        sel_cntr++;
                     }
-                }
-            } else if(admin_alert.anstype == 'rb' || admin_alert.anstype == 'dd') {
-                var cntr = 0;
-                while(cntr < questionDetail.answer.length){
-                    if(questionDetail.answer[cntr]._id == admin_alert.ans){
-                        quData.answer_name         = questionDetail.answer[cntr].name;
-                        quData.ans                 = questionDetail.answer[cntr]._id;
-                        quData.answer_out_of_range = questionDetail.answer[cntr].out_of_range;
-                        break;
+                } else if(admin_alert.anstype == 'rb' || admin_alert.anstype == 'dd') {
+                    var cntr = 0;
+                    while(cntr < questionDetail.answer.length){
+                        if(questionDetail.answer[cntr]._id == admin_alert.ans){
+                            quData.answer_name         = questionDetail.answer[cntr].name;
+                            quData.ans                 = questionDetail.answer[cntr]._id;
+                            quData.answer_out_of_range = questionDetail.answer[cntr].out_of_range;
+                            break;
+                        }
+                        cntr++;
                     }
-                    cntr++;
+                }else if(admin_alert.anstype == 'number') {
+                    //console.log('questionDetail = ', questionDetail);
+                    //console.log('-----questionDetail.ans = ', questionDetail.answer);
+                    quData.ans = null;
+                    quData.answer_name         = admin_alert.ans;
+                    quData.answer_out_of_range = true;                       
                 }
             }
         }
@@ -275,31 +287,36 @@ function saveDetails(patientQues, patient_data, admin_alerts,res,user){
                     res.json(err);
                 } else{
                     for(alert in admin_alerts){
-                        setQuestiondata(admin_alerts[alert],function(errQues, quReturnData){
-                            var savealerts = {};
-                            savealerts = quReturnData;
-                            savealerts.patientanswer = patanserId;
-                            savealerts.patient_first_name      = user.first_name;
-                            savealerts.patient_last_name       = user.last_name;
-                            savealerts.patient_email           = user.email;
-                            savealerts.patient_username        = user.username;
-                            savealerts.patient_mobile          = user.mobile;
-                            savealerts.patient_surgery         = user.surgery.name;
-                            savealerts.clinic_name             = user.clinic.clinic_name;
-                            savealerts.clinic_first_name       = user.clinic.first_name;
-                            savealerts.clinic_last_name        = user.clinic.last_name;
-                            savealerts.clinic_email            = user.clinic.email;
-                            savealerts.clinic_username         = user.clinic.username;
-                            savealerts.clinic_mobile           = user.clinic.mobile;
-                            alertModel.addAlerts(savealerts, function(erralerts, dataalerts){
-                                /*if (err) {
-                                    res.json(err);
-                                } else{
-                                    return_val.error = err;
-                                    res.json(return_val);
-                                }*/
+                //console.log('...admin_alert...\n', admin_alerts[alert]);
+                        if (admin_alerts[alert] != null) {
+                            setQuestiondata(admin_alerts[alert],function(errQues, quReturnData){
+                                var savealerts = {};
+                                savealerts = quReturnData;
+                                savealerts.patientanswer = patanserId;
+                                savealerts.patient_first_name      = user.first_name;
+                                savealerts.patient_last_name       = user.last_name;
+                                savealerts.patient_email           = user.email;
+                                savealerts.patient_username        = user.username;
+                                savealerts.patient_mobile          = user.mobile;
+                                savealerts.patient_surgery         = user.surgery.name;
+                                savealerts.clinic_name             = user.clinic.clinic_name;
+                                savealerts.clinic_first_name       = user.clinic.first_name;
+                                savealerts.clinic_last_name        = user.clinic.last_name;
+                                savealerts.clinic_email            = user.clinic.email;
+                                savealerts.clinic_username         = user.clinic.username;
+                                savealerts.clinic_mobile           = user.clinic.mobile;
+                            //console.log('\n________savealerts________\n');
+                                alertModel.addAlerts(savealerts, function(erralerts, dataalerts){
+                                    if (err) {
+                                        //res.json(err);
+                                        console.log('Alert add error : ', err);
+                                    }/* else{
+                                        return_val.error = err;
+                                        res.json(return_val);
+                                    }*/
+                                });
                             });
-                        });
+                        }
                     }
                     return_val.success = "Answers has been saved successfully.";
                     res.json(return_val);
