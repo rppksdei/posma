@@ -294,18 +294,10 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
             // make CSV data
             for (var i = 0; i < data.length; i++) {
                 $scope.csv_HRdata[i] = {};
-                $scope.csv_HRdata[i].date             = data[i].date;
-                $scope.csv_HRdata[i].steps            = data[i].steps;
-                $scope.csv_HRdata[i].recommended      = "10000 / day";
-                
-                if (data[i].steps < 10000) {
-                    var less = 10000 - data[i].steps;
-                    $scope.csv_HRdata[i].statistics       = "Less by "+less;
-                }else if (data[i].steps > 10000) {
-                    var more = data[i].steps - 10000;
-                    $scope.csv_HRdata[i].statistics       = "More by "+more;
-                }
-                $scope.csv_HRdata[i].username         = data[i].patient.username;
+                $scope.csv_HRdata[i].date            = data[i].date;
+                $scope.csv_HRdata[i].time            = data[i].start_time+" - "+data[i].end_time;
+                $scope.csv_HRdata[i].avg_heart_rate  = data[i].avg_heart_rate;
+                $scope.csv_HRdata[i].username        = data[i].patient.username;
             }
         });
     };
