@@ -282,14 +282,21 @@ updatePatientDetail = function(req, res){
     if(typeof req.body.admission_hemoglobin != "undefined") {
         update_data.admission_hemoglobin = req.body.admission_hemoglobin;
     }
-    
+    if(typeof req.body.timezone != "undefined") {
+        var timezoneParsed = JSON.parse(req.body.timezone);
+        console.log('timezoneParsed = ', timezoneParsed);
+        console.log('moment offset = ', moment().utcOffset(timezoneParsed.offset)._offset);
+            update_data.timezone = timezoneParsed;
+            update_data.gmt = moment().utcOffset(timezoneParsed.offset)._offset;
+        console.log('updated gmt = ',update_data.gmt);
+    }
 
     update_data.modified = moment().unix();/*Date.now(); */
     //console.log('\n', moment().format('x')); // full 13 digits timestamp in ms
     //console.log('\n', moment().format('X')); // 10 digits timestamp in s
     //console.log('\n', moment().unix()); // 10 digits timestamp in s
 
-    console.log('-----------',update_data);
+    //console.log('-----------',update_data);
     if(typeof req.body._id != "undefined"){
         var search_criteria = {_id:req.body._id};
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
@@ -305,7 +312,7 @@ updatePatientDetail = function(req, res){
                     return_data.error = error_detail;
                     res.json(return_data);
                 } else {
-                    return_data.error = message;
+                    return_data.error = err;
                     res.json(return_data);
                 }
             } else {

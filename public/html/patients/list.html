@@ -21,6 +21,10 @@
                                 <tr ng-repeat="patient in $data" ng-class="{even: $even, odd: $odd}">
                             <!--<td data-title="'Username'">{{patient}}</td> -->
                                     <td data-title="'Username'">{{ patient.username }}</td>
+                                    <!--<td data-title="'Device Attached'">
+                                            <i ng-if="patient.device_id != ''" class="fa" ng-class="fa-check"></i>
+                                            <i ng-if="patient.device_id == null" class="fa" ng-class="fa-times"></i>
+                                    </td>-->
                                     <td data-title="'Full Name'">{{ patient.first_name }} {{ patient.last_name }}</td>
                                     <!--<td data-title="'Email'">{{ patient.email }}</td>-->
                                     <!-- <td data-title="'D.O.B.'">{{ patient.date_of_birth | date: 'MM/dd/yyyy' }}</td> -->
@@ -43,6 +47,7 @@
 <!--working over discharge date-->
                                     <!-- <td data-title="'Clinic'">{{ patient.clinic.clinic_name }}</td> -->
                                     <td data-title="'Pathway'">{{ patient.pathway.name }}</td>
+                                    
                                     <td data-title="'Status'">
                                         <a href="javascript:void(0);" ng-click="changePatientStatus($index);">
                                         <button class="btn btn-circle btn-sm btn" ng-class="{'btn-danger':patient.is_active == 0, 'btn-success':patient.is_active == 1}" type="button">
