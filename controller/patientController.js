@@ -295,7 +295,7 @@ updatePatientDetail = function(req, res){
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
-            //console.log(data);
+            console.log(err, data);
             if (err) {
                 if (err.errors) {
                     var error_detail = [];
@@ -305,7 +305,7 @@ updatePatientDetail = function(req, res){
                     return_data.error = error_detail;
                     res.json(return_data);
                 } else {
-                    return_data.error = message;
+                    return_data.error = err;
                     res.json(return_data);
                 }
             } else {
