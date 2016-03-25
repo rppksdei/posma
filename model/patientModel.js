@@ -63,7 +63,7 @@ var patientSchema = ({
     user_id         :{type: String},
     expires_in      :{type: String},
     expires_at      :{type: String},
-    
+    timezone       :{}
 });
 
 var Patient = mongoose.model('Patient', patientSchema);

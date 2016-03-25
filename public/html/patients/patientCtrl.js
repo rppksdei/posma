@@ -1,4 +1,9 @@
-myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert, moment){
+myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert, moment, $http){
+    $scope.timezones = {};
+    $http.get('js/timezones.json').success(function(data) {
+        //console.log('timezones = ', data);
+        $scope.timezones = data;
+    });
     
     $scope.fitbit = {};
     $scope.success = "";
@@ -39,6 +44,8 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
             $scope.patient.gender = 'M';
             $scope.patient.neoadjuvant_chemotherapy = 'na';
             $scope.patient.tumor_laterality = 'na';
+            //$scope.patient.timezone = '-7';
+            $scope.patient.timezoneText = '(UTC-08:00) Pacific Time (US & Canada)';
             $scope.surgeries = data;
         });
     }
@@ -68,7 +75,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
-        //console.log('$scope.patient =============\n ',$scope.patient); return;
+        //console.log('$scope.patient =============\n ',$scope.patient); //return;
             Patient.addPatient().save(patientData, function(data){
             if(data.success){
                 if($scope.patient._id){
@@ -111,12 +118,10 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
                     });
                 });
                 $scope.patient = data;
-                //console.log('dob = ', moment.unix(data.date_of_birth).format('MM/DD/YYYY'));
-                //$scope.patient.date_of_birth    = $scope.timeStampToDate(data.date_of_birth);
-                //$scope.patient.surgery          = $scope.patient.surgery._id;
                 $scope.patient.date_of_birth    = moment.unix(data.date_of_birth).format('MM/DD/YYYY');
                 $scope.patient.dos              = moment.unix(data.dos).format('MM/DD/YYYY');
-                //$scope.patient.dohd             = moment.unix(data.dohd).format('MM/DD/YYYY');
+                $scope.patient.timezoneText     = data.timezone.text;
+                $scope.patient.timezone         = JSON.stringify(data.timezone);
             }
         });
     }
