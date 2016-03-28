@@ -190,8 +190,8 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
 				    if(ndata.device_id != '' && ndata.device_id != 'null' && typeof ndata.device_id != 'undefined'){
 					console.log('nData...................................\n', ndata);
 					//var titl_time = moment.utc(ndata.datetime, 'X').format('HH:mm a');
-					var titl_time = moment(ndata.datetime, 'X').format('HH:mm a');
-					var titl = ndata.questionnaire_name+" - "+titl_time;
+					var titl_time = moment(ndata.datetime, 'X').format('HH:mm');
+					var titl = titl_time+" - "+ndata.questionnaire_name;
 					sendNotification(ndata.device_id, titl, 'There is a new questionnaire available for you. Please fill relevant data and submit. Wish you a speedy recovery.');
 				    }
                             	}
