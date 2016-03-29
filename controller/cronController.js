@@ -33,10 +33,10 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
         if(qdata.length > 0){
             // var pdd1 = new Date(patientsData[currentIndex].dohd);
             // var pdd2 = moment.utc(patientsData[currentIndex].dohd, 'X').utcOffset('+0530').format('YYYY-MM-DD HH:mm:ss');
-	    console.log('\n\n----------------------------\ntime_of_discharge = ', patientsData[currentIndex].time_of_discharge, patientsData[currentIndex].username, patientsData[currentIndex].gmt);
+	    //console.log('\n\n----------------------------\ntime_of_discharge = ', patientsData[currentIndex].time_of_discharge, patientsData[currentIndex].username, patientsData[currentIndex].gmt);
 	    if (patientsData[currentIndex].gmt != undefined) {
 		patientsData[currentIndex].time_of_discharge = changeToUTC(patientsData[currentIndex].time_of_discharge, patientsData[currentIndex].gmt);
-		console.log('altered time_of_discharge = ', patientsData[currentIndex].time_of_discharge);
+		//console.log('altered time_of_discharge = ', patientsData[currentIndex].time_of_discharge);
 	    }
             var pdd3 = moment.unix(patientsData[currentIndex].time_of_discharge);
             var pdd = pdd3._d; // full date format e.g.{Wed Nov 25 2015 11:53:18 GMT+0530 (IST)}
@@ -65,7 +65,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     }
                 }
                 else if(qdata[j].type=='recursive'){
-                    console.log('...In recursive...')
+                    //console.log('...In recursive...')
                     var recur_execut_date       = moment(pdd).add(qdata[j].start_day, 'd');//addDays;
                     var recur_execut_date_full  = recur_execut_date.format(); // full date
                     var recur_execut_date_ts    = moment(recur_execut_date).unix();
@@ -89,10 +89,10 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     */
                     var is_time_slot_in = false;
                     if(qdata[j].recur_type == 'd'){
-                        console.log("currentTimeStamp =" ,query.currentTimeStamp,"recur_execut_date_ts = ",recur_execut_date_ts, "recur_execut_end_date_ts = ",recur_execut_end_date_ts);
+                        //console.log("currentTimeStamp =" ,query.currentTimeStamp,"recur_execut_date_ts = ",recur_execut_date_ts, "recur_execut_end_date_ts = ",recur_execut_end_date_ts);
                         if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
 			    //console.log('time_slots = ', j, '\n',qdata[j].time_slots);
-                            console.log('in time_slots---');
+                           // console.log('in time_slots---');
                             if(qdata[j].time_slots.length > 0){
 				//console.log('\n query.currentTimeStamp...daily',query.currentTimeStamp);
 				//console.log('\n query.endTimeStamp...daily',query.endTimeStamp);
@@ -103,7 +103,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                                     newD = moment(tempDate).unix();
                                     //console.log('..newD = ',newD);
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
-                                        console.log('___inside___');
+                                       // console.log('___inside___');
                                         is_time_slot_in = true;
                                         tempObj.datetime = newD;
                                         break;
@@ -166,7 +166,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         notification_data.is_filled     = 0;
 
                         for(var m=0; m<patientsData[l].pathway.questionnaires.length; m++){
-			    console.log('************************\npatient data', patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
+			    //console.log('************************\npatient data', patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
 			    if(patientsData[l].gmt != undefined) {
 				notification_data.datetime      = changeFromUTC(patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
 			    }else{
@@ -175,17 +175,15 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                             notification_data.questionnaire = patientsData[l].pathway.questionnaires[m].questionnaire;
 			    notification_data.questionnaire_name = patientsData[l].pathway.questionnaires[m].questionnaire_name;
 			    notification_data.device_id     = patientsData[l].device_id;
-			   console.log('-----------notification_data--------------------\n', notification_data);
-
+			   //console.log('-----------notification_data--------------------\n', notification_data);
                             notificationModel.add(notification_data, function(err2, ndata){
                             	if(err2){
                             	    console.log('Notification add error : ',err2);
                             	}
-                            	if(ndata){
-				    
-                            	    console.log('+++ Notification add success +++', ndata.device_id);
+                            	if(ndata){	    
+                            	    console.log('\n+++ Notification add success +++', ndata.device_id);
 				    if(ndata.device_id != '' && ndata.device_id != 'null' && typeof ndata.device_id != 'undefined'){
-					console.log('nData...................................\n', ndata);
+					//console.log('nData...................................\n', ndata);
 					//var titl_time = moment.utc(ndata.datetime, 'X').format('HH:mm a');
 					var titl_time = moment(ndata.datetime, 'X').format('HH:mm');
 					var titl = titl_time+" - "+ndata.questionnaire_name;
@@ -205,7 +203,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
 
 /* function to send Notification to Android. */
 sendNotification = function(deviceId, title, msg) {
-    console.log('deviceId = ', deviceId);
+    console.log('\n--------------------------in send notification - deviceId = ', deviceId);
 	var gcm 	= require('android-gcm');
 	var serverKey	= "AIzaSyBFtOhKI6zT_zG6rUcIS0wirmphj8vRmaU"; // type : server
 	var senderId 	= "707879217713";
