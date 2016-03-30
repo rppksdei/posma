@@ -21,8 +21,14 @@ changeFromUTC = function(ts, offset){
     return newts;
 }
 
+/* UTC -> XXX change timezone from UTC timezone to user timezone */
+changeToPatientZone = function(ts, serverOffset, patientOffset){
+    var newts = parseInt(ts) + ((parseInt(patientOffset) - parseInt(serverOffset)) * 60 );
+    return newts;
+}
+
 /* callback functions for incrementing and to get questionnaire details */
-cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){    
+cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
     // console.log("\ncurrentIndex = ",currentIndex);
     // console.log('//\n',patientsData[currentIndex]);
     //console.log('questionnaires = ', patientsData[currentIndex].pathway.questionnaire)
@@ -31,18 +37,25 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
     questionnaireModel.find(search_questionnaier, params, function(err, qdata){
         //console.log('.........................Qdata...........................\n',qdata);
         if(qdata.length > 0){
+	    var query = {};
             // var pdd1 = new Date(patientsData[currentIndex].dohd);
             // var pdd2 = moment.utc(patientsData[currentIndex].dohd, 'X').utcOffset('+0530').format('YYYY-MM-DD HH:mm:ss');
-	    console.log('\n\n----------------------------\ntime_of_discharge = ', patientsData[currentIndex].time_of_discharge, patientsData[currentIndex].username, patientsData[currentIndex].gmt);
-	    if (patientsData[currentIndex].gmt != undefined) {
-		patientsData[currentIndex].time_of_discharge = changeToUTC(patientsData[currentIndex].time_of_discharge, patientsData[currentIndex].gmt);
-		console.log('altered time_of_discharge = ', patientsData[currentIndex].time_of_discharge);
+	//    if (patientsData[currentIndex].gmt != undefined) {
+	//	patientsData[currentIndex].time_of_discharge = changeToUTC(patientsData[currentIndex].time_of_discharge, patientsData[currentIndex].gmt);
+	//    }
+	    console.log('>index',currentIndex,' gmt',patientsData[currentIndex].gmt,' currentTimeStamp = ', pd.currentTimeStamp, ' endTimeStamp = ',pd.endTimeStamp);
+	    if (patientsData[currentIndex].gmt != pd.serverOffset) {
+		query.currentTimeStamp	= changeToPatientZone(pd.currentTimeStamp, pd.serverOffset, patientsData[currentIndex].gmt);
+		query.endTimeStamp	= changeToPatientZone(pd.endTimeStamp, pd.serverOffset, patientsData[currentIndex].gmt);
+	    }else{
+		query.currentTimeStamp	= pd.currentTimeStamp;
+		query.endTimeStamp	= pd.endTimeStamp;
 	    }
+	    console.log('+ currentTimeStamp = ', query.currentTimeStamp, ' endTimeStamp = ',query.endTimeStamp);
 	    
             var pdd3 = moment.unix(patientsData[currentIndex].time_of_discharge);
             var pdd = pdd3._d; // full date format e.g.{Wed Nov 25 2015 11:53:18 GMT+0530 (IST)}
             //console.log('pdd = ', pdd);
-            // console.log(query);
             // var pdd4 = moment.utc(patientsData[currentIndex].dohd, 'X').format();
             var tempVals = new Array(); var cnt = 0; 
 
@@ -67,7 +80,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     }
                 }
                 else if(qdata[j].type=='recursive'){
-                    console.log('...In recursive...')
+                    //console.log('...In recursive...')
                     var recur_execut_date       = moment(pdd).add(qdata[j].start_day, 'd');//addDays;
                     var recur_execut_date_full  = recur_execut_date.format(); // full date
                     var recur_execut_date_ts    = moment(recur_execut_date).unix();
@@ -76,11 +89,15 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                     var recur_execut_end_date_ts  = moment(recur_execut_end_date).unix();
                     var current_day = moment.unix(query.currentTimeStamp).format('E');
                     // console.log('current_day = ',current_day);
-                    var current_date = moment.unix(query.currentTimeStamp)/*.utc('+05:30')*/;
+                    var current_date = moment.unix(query.currentTimeStamp);/*.utc('+05:30')*/
+		//console.log('\n>>> current_date unix = ', moment(current_date).unix());
+		    //var patient_current_date = changeFromUTC(moment(current_date).unix(), patientsData[currentIndex].gmt);
+		    //patient_current_date = moment.unix(patient_current_date);
+		//console.log('\n>>> patient_current_date = ', patient_current_date);
+		//console.log('\n>>> patient_current_date = ', moment.unix(patient_current_date)._d);
 		    //console.log('***\ncurrentTimeStamp : ', query.currentTimeStamp);
 		    //console.log('***\ncurrent_date : ', current_date);
 		    //console.log('---', current_date.format('YYYY/MM/DD'));
-		    
                     /*
                     // console.log('1 = ', recur_execut_date);
                     //console.log('2 = ', recur_execut_date_full); // e.g {2015-11-26T11:53:18+05:30}
@@ -95,7 +112,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         //console.log("currentTimeStamp =" ,query.currentTimeStamp,"recur_execut_date_ts = ",recur_execut_date_ts, "recur_execut_end_date_ts = ",recur_execut_end_date_ts);
                         if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
 			    //console.log('time_slots = ', j, '\n',qdata[j].time_slots);
-                            console.log('in time_slots---');
+                            //console.log('in time_slots---');
                             if(qdata[j].time_slots.length > 0){
 				//console.log('\n query.currentTimeStamp...daily',query.currentTimeStamp);
 				//console.log('\n query.endTimeStamp...daily',query.endTimeStamp);
@@ -103,10 +120,12 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
 				    var newD = '';
 				    var tempDate = new Date(current_date.format('YYYY/MM/DD')+' '+qdata[j].time_slots[k]);
 				    //console.log('>>>>tempDate = ', tempDate);
+				    //tempDate = moment(tempDate).add(qdata[j].total_days, 'd')
                                     newD = moment(tempDate).unix();
+				    //newD = changeToUTC(newD, patientsData[currentIndex].gmt);
                                     //console.log('..newD = ',newD);
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
-                                        console.log('___inside___');
+                                        //console.log('___inside___');
                                         is_time_slot_in = true;
                                         tempObj.datetime = newD;
                                         break;
@@ -125,31 +144,6 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                             }
                         }
                     }
-		    /*else if(qdata[j].recur_type == 'w'){
-                        if(qdata[j].days.indexOf(current_day) >= 0){
-                            if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
-                                if(qdata[j].time_slots.length > 0){
-                                    for (var k = 0; k < qdata[j].time_slots.length; k++) {
-                                        var newD = moment(current_date.format('YYYY-MM-DD')+' '+qdata[j].time_slots[k]).unix();
-                                        // console.log('\nnewD...weekly',newD);
-                                        if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
-                                            is_time_slot_in = true;
-                                            tempObj.datetime = newD;
-                                        	break;
-                                            // qdata[j].datetime = newD; // working here over getting execution time for inserting notification.
-                                        }
-                                    };
-                                    // console.log('is_time_slot_in W = ',is_time_slot_in);
-                                    if(is_time_slot_in==true){
-                                        tempObj.questionnaire 		= qdata[j]._id;
-                                        tempObj.questionnaire_name 	= qdata[j].name;
-                                        tempVals[cnt++] = tempObj;
-                                        // tempVals[cnt++] = qdata[j];
-                                    }
-                                }
-                            }
-                        }
-                    }*/
                 }
                 if((j+1)==qdata.length){
                     console.log('tempVals----->', tempVals, '_________________\n');
@@ -169,12 +163,12 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                         notification_data.is_filled     = 0;
 
                         for(var m=0; m<patientsData[l].pathway.questionnaires.length; m++){
-			    console.log('************************\npatient data', patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
-			    if(patientsData[l].gmt != undefined) {
-				notification_data.datetime      = changeFromUTC(patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
-			    }else{
+			    //console.log('************************\npatient data', patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
+			//    if(patientsData[l].gmt != undefined) {
+			//	notification_data.datetime      = changeFromUTC(patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
+			//    }else{
 				notification_data.datetime      = patientsData[l].pathway.questionnaires[m].datetime;
-			    }
+			    //}
                             notification_data.questionnaire = patientsData[l].pathway.questionnaires[m].questionnaire;
 			    notification_data.questionnaire_name = patientsData[l].pathway.questionnaires[m].questionnaire_name;
 			    notification_data.device_id     = patientsData[l].device_id;
@@ -185,10 +179,9 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
                             	    console.log('Notification add error : ',err2);
                             	}
                             	if(ndata){
-				    
                             	    console.log('+++ Notification add success +++', ndata.device_id);
 				    if(ndata.device_id != '' && ndata.device_id != 'null' && typeof ndata.device_id != 'undefined'){
-					console.log('nData...................................\n', ndata);
+					//console.log('nData...................................\n', ndata);
 					//var titl_time = moment.utc(ndata.datetime, 'X').format('HH:mm a');
 					var titl_time = moment(ndata.datetime, 'X').format('HH:mm');
 					var titl = titl_time+" - "+ndata.questionnaire_name;
@@ -208,7 +201,7 @@ cbTofindQuestionnaires = function(patientsData,query,length,currentIndex){
 
 /* function to send Notification to Android. */
 sendNotification = function(deviceId, title, msg) {
-    console.log('deviceId = ', deviceId);
+    console.log('\n--------------In sendNotification , deviceId = ', deviceId);
 	var gcm 	= require('android-gcm');
 	var serverKey	= "AIzaSyBFtOhKI6zT_zG6rUcIS0wirmphj8vRmaU"; // type : server
 	var senderId 	= "707879217713";
@@ -243,28 +236,28 @@ getlisting = function(){
     //console.log(moment());
     console.log(moment().utcOffset());
     var currentTimeStamp	= moment().unix();
-	console.log('\ncurrentTimeStamp = ', currentTimeStamp);
+	//console.log('\ncurrentTimeStamp = ', currentTimeStamp);
     var serverOffset 		= moment().utcOffset();
-	console.log('serverOffset = ', serverOffset);
-    currentTimeStamp		= changeToUTC(currentTimeStamp, serverOffset);
-	console.log('alter currentTimeStamp = ', currentTimeStamp);
+	//console.log('serverOffset = ', serverOffset);
+    //currentTimeStamp		= changeToUTC(currentTimeStamp, serverOffset);
+	//console.log('alter currentTimeStamp = ', currentTimeStamp);
 	//var endTimeStamp        = addMinutes(current_date, 5); // val = 10 mins
-    var endTimeStamp        = moment.unix(currentTimeStamp).add(5, 'm'); // val = 5 mins
+    var endTimeStamp        = moment(moment.unix(currentTimeStamp).add(10, 'm')._d).unix(); // val = 5 mins
 	//console.log('\endTimeStamp = ', endTimeStamp);
-	console.log('endTimeStamp ts = ', moment(endTimeStamp._d).unix());
+	//console.log('endTimeStamp ts = ', moment(endTimeStamp._d).unix());
     search.dohd = {$lte: currentTimeStamp};
     var patParams = {username:1,pathway:1,time_of_discharge:1};
     patientModel.getAllPatient(search, function(err, patientsData){
         if(err){
-            console.log(err);
-            //res.json(err);
+            console.log(err); //res.json(err);
         }
         else{
             console.log('\nNo. of Patients : ',patientsData.length);
 	        //console.log('\n\nPatients Data : \n',patientsData);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
-            
+	    pd.serverOffset      = serverOffset;
+        console.log("pd = ", pd);
             for(var i=0; i<patientsData.length; i++){
                 cbTofindQuestionnaires(patientsData,pd,patientsData.length,i);
             }
@@ -272,27 +265,6 @@ getlisting = function(){
         }
     });
 }
-/*
-amit = function(req,res,next){
-    var search = {is_deleted:0, pathway:{$ne: null}};
-    var current_date        = new Date();
-    var currentTimeStamp    = moment().unix();
-    var endTimeStamp        = addMinutes(current_date, 40);
-    search.dohd = {$lte: currentTimeStamp};
-    patientModel.getAllPatient(search, function(err, patientsData){
-        if(err){
-            res.json(err);
-        }
-        else{
-            for(var i=0; i<patientsData.length; i++){
-                console.log(patientsData[i].pathway.questionnaire);
-                cbTofindQuestionnaires(patientsData,patientsData.length,i,res);
-            }
-            //console.log(patientsData.length); return;
-        }
-    })
-}
-*/
 
 addDays = function(d, days){
     var newdate = d.setDate(d.getDate()+days);
