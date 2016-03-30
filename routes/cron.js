@@ -11,7 +11,7 @@ module.exports = function(app,express){
     setInterval(function(){ 
 	    //console.log('Cron Job');
 	    cronObj.getlisting();
-    },600000); // 60000 = 1min, 600000 = 10min
+    },60000); // 60000 = 1min, 600000 = 10min
     
     setInterval(function(){ 
 	//console.log('Cron Patient Answers');
