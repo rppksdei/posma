@@ -1,6 +1,7 @@
 var patientAnswerModel = require("./../model/patientAnswerModel");
 var moment = require('moment');
 getlisting = function(req, res, next){
+    console.log('req.user = ', req.user._id);
     //console.log('req.user = ',req.user);
     var search = {'clinic_id':req.user._id};
     if(typeof req.body.limit != undefined){
@@ -15,8 +16,10 @@ getlisting = function(req, res, next){
     }
     patientAnswerModel.getList(search, {created:-1},function(err, answerDetails){
         if(err){
+            console.log('error...',err);
             res.json(err);
         } else{
+            console.log('ans+++', answerDetails);
             res.json(answerDetails);
         }
     });

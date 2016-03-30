@@ -52,13 +52,12 @@ cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
 		query.endTimeStamp	= pd.endTimeStamp;
 	    }
 	    console.log('+ currentTimeStamp = ', query.currentTimeStamp, ' endTimeStamp = ',query.endTimeStamp);
-	    
+
             var pdd3 = moment.unix(patientsData[currentIndex].time_of_discharge);
             var pdd = pdd3._d; // full date format e.g.{Wed Nov 25 2015 11:53:18 GMT+0530 (IST)}
             //console.log('pdd = ', pdd);
             // var pdd4 = moment.utc(patientsData[currentIndex].dohd, 'X').format();
-            var tempVals = new Array(); var cnt = 0; 
-
+            var tempVals = new Array(); var cnt = 0;
             for(var j=0; j<qdata.length; j++){
                 //console.log('------------',qdata[j]);
                 var tempObj = {};
@@ -112,7 +111,6 @@ cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
                         //console.log("currentTimeStamp =" ,query.currentTimeStamp,"recur_execut_date_ts = ",recur_execut_date_ts, "recur_execut_end_date_ts = ",recur_execut_end_date_ts);
                         if((query.currentTimeStamp >= recur_execut_date_ts) && (query.currentTimeStamp < recur_execut_end_date_ts)){
 			    //console.log('time_slots = ', j, '\n',qdata[j].time_slots);
-                            //console.log('in time_slots---');
                             if(qdata[j].time_slots.length > 0){
 				//console.log('\n query.currentTimeStamp...daily',query.currentTimeStamp);
 				//console.log('\n query.endTimeStamp...daily',query.endTimeStamp);
@@ -125,7 +123,6 @@ cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
 				    //newD = changeToUTC(newD, patientsData[currentIndex].gmt);
                                     //console.log('..newD = ',newD);
                                     if((newD >= query.currentTimeStamp) && (newD < query.endTimeStamp)){
-                                        //console.log('___inside___');
                                         is_time_slot_in = true;
                                         tempObj.datetime = newD;
                                         break;
@@ -163,7 +160,6 @@ cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
                         notification_data.is_filled     = 0;
 
                         for(var m=0; m<patientsData[l].pathway.questionnaires.length; m++){
-			    //console.log('************************\npatient data', patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
 			//    if(patientsData[l].gmt != undefined) {
 			//	notification_data.datetime      = changeFromUTC(patientsData[l].pathway.questionnaires[m].datetime, patientsData[l].gmt);
 			//    }else{
@@ -172,8 +168,7 @@ cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
                             notification_data.questionnaire = patientsData[l].pathway.questionnaires[m].questionnaire;
 			    notification_data.questionnaire_name = patientsData[l].pathway.questionnaires[m].questionnaire_name;
 			    notification_data.device_id     = patientsData[l].device_id;
-			    //console.log('-----------notification_data--------------------\n', notification_data);
-
+			   //console.log('-----------notification_data--------------------\n', notification_data);
                             notificationModel.add(notification_data, function(err2, ndata){
                             	if(err2){
                             	    console.log('Notification add error : ',err2);
@@ -251,9 +246,9 @@ getlisting = function(){
         if(err){
             console.log(err); //res.json(err);
         }
-        else{
+        else
+        {
             console.log('\nNo. of Patients : ',patientsData.length);
-	        //console.log('\n\nPatients Data : \n',patientsData);
             pd.currentTimeStamp  = currentTimeStamp;
             pd.endTimeStamp      = endTimeStamp;
 	    pd.serverOffset      = serverOffset;
@@ -261,7 +256,6 @@ getlisting = function(){
             for(var i=0; i<patientsData.length; i++){
                 cbTofindQuestionnaires(patientsData,pd,patientsData.length,i);
             }
-
         }
     });
 }

@@ -2,8 +2,8 @@
     "fitbit": {
         "timeout": 10000,
         "creds": {
-            "clientID": "227F3W",
-            "clientSecret": "b20e36c1113f08b4d363135be93d1090"
+            "clientID": "227G8M",
+            "clientSecret": "c76d9a0e17c15edb37efe91372b73473"
         },
         "uris": {
             "authorizationUri": "https://www.fitbit.com",
@@ -12,7 +12,7 @@
             "tokenPath": "/oauth2/token"
         },
         "authorization_uri": {
-            "redirect_uri": "http://localhost:8987/fitbit/fitbit_auth_callback",
+            "redirect_uri": "http://careafterall.com/fitbit/fitbit_auth_callback",
             "response_type": "code",
             "scope": "activity nutrition profile settings sleep social weight heartrate",
             "state": "3(#0/!~"

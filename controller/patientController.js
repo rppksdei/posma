@@ -302,7 +302,7 @@ updatePatientDetail = function(req, res){
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
-            //console.log(data);
+            console.log(err, data);
             if (err) {
                 if (err.errors) {
                     var error_detail = [];
