@@ -26,9 +26,9 @@ var Notification = mongoose.model('Notification', notificationSchema);
 
 Notification.getAll = function(search_criteria, sort_order, next){
     if(!sort_order || sort_order == '-') {
-        Notification.find(search_criteria, next).populate('questionnaire');
+        Notification.find(search_criteria, next).populate('questionnaire').limit(20);
     } else {
-        Notification.find(search_criteria, next).populate('questionnaire').sort(sort_order);
+        Notification.find(search_criteria, next).populate('questionnaire').sort(sort_order).limit(20);
     }
 }
 

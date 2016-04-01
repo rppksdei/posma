@@ -180,7 +180,8 @@ cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
 					//var titl_time = moment.utc(ndata.datetime, 'X').format('HH:mm a');
 					var titl_time = moment(ndata.datetime, 'X').format('HH:mm');
 					var titl = titl_time+" - "+ndata.questionnaire_name;
-					sendNotification(ndata.device_id, titl, 'There is a new questionnaire available for you. Please fill relevant data and submit. Wish you a speedy recovery.');
+					var uniqKey = moment().unix() + m;
+					sendNotification(ndata.device_id, titl, 'New questionnaire available. Please fill relevant data and submit. Wish you a speedy recovery.',uniqKey);
 				    }
                             	}
                             });
@@ -195,8 +196,8 @@ cbTofindQuestionnaires = function(patientsData,pd,length,currentIndex){
 }
 
 /* function to send Notification to Android. */
-sendNotification = function(deviceId, title, msg) {
-    console.log('\n--------------In sendNotification , deviceId = ', deviceId);
+sendNotification = function(deviceId, title, msg,uniqKey) {
+    console.log('\n--------------In sendNotification unique key = ',uniqKey,' \n deviceId = ', deviceId);
 	var gcm 	= require('android-gcm');
 	var serverKey	= "AIzaSyBFtOhKI6zT_zG6rUcIS0wirmphj8vRmaU"; // type : server
 	var senderId 	= "707879217713";
@@ -209,7 +210,8 @@ sendNotification = function(deviceId, title, msg) {
 	    data: {
 		key1: 'This is key1',
 		title: title,
-		message: msg
+		message: msg,
+		id:uniqKey
 		// key2: 'key 2'
 	    }
 	});
