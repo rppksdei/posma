@@ -1,5 +1,5 @@
 //angular.module('MyAppService', ['ngResource']); 
-var myapp = angular.module("posma",['ngTableToCsv','ngSanitize', 'ngCsv','ang-drag-drop', '720kb.datepicker','angularjs-dropdown-multiselect','ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model",'angular-accordion','angularMoment']);
+var myapp = angular.module("posma",['ngTableToCsv','ngSanitize', 'ngCsv','ang-drag-drop', '720kb.datepicker','angularjs-dropdown-multiselect','ngRoute',"ngTable", 'flash', 'PosmaService', 'ngCookies', "checklist-model",'angular-accordion','angularMoment','mdo-angular-cryptography']);
 var authScope = '1234567890po23sm45a56';
 
 function checkloggedIn($rootScope, $http, $location) {
@@ -12,6 +12,9 @@ function checkloggedIn($rootScope, $http, $location) {
         }
     });  
 }
+myapp.config(['$cryptoProvider', function($cryptoProvider){
+    $cryptoProvider.setCryptographyKey('ABCD123');
+}]);
 myapp.config(['$routeProvider',
     function ($routeProvider){
         $routeProvider

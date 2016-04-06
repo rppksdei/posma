@@ -1,5 +1,7 @@
 var patientModel = require("./../model/patientModel");
+var common = require('./../common.js');
 var moment = require('moment');
+
 getlisting = function(req, res, next){
     var search_patient = {is_deleted:0};
     if (req.user.user_type == "2") {
@@ -11,7 +13,6 @@ getlisting = function(req, res, next){
         if(err){
             res.json(err);
         } else{
-            //console.log(patientDetail);
             res.json(patientDetail);
         }
     });
@@ -30,6 +31,7 @@ getPatientDetail = function(req, res){
                 return_val.error = "Patient doesn't exists";
                 res.json(return_val);
             } else{
+                data.password = common.decrypt(data.password);
                 res.json(data);
             }
         }
@@ -63,9 +65,11 @@ addPatient = function(req, res, next){
         } else {
             var return_val = {};
             if (data.success) {
+        //console.log('req.body = \n',req.body);
                 //add Admin cum clinic
                 var patientDetail = req.body;
                 patientDetail.created = moment().unix();
+                patientDetail.password = common.encrypt(patientDetail.password);
                 //patientDetail.created = Date.now();
                 patientDetail.clinic = req.user._id;
                 //patientDetail.date_of_birth = dateToTimeStamp(req.body.date_of_birth);
@@ -132,7 +136,7 @@ updatePatientDetail = function(req, res){
         update_data.username = req.body.username;
     }
     if(typeof req.body.password != "undefined") {
-        update_data.password = req.body.password;
+        update_data.password = common.encrypt(req.body.password);
     }
     if(typeof req.body.first_name != "undefined") {
         update_data.first_name = req.body.first_name;

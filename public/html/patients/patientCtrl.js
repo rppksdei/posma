@@ -1,13 +1,44 @@
-myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert, moment, $http){
+myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery, $location, Flash, $routeParams, ngTableParams, $rootScope, SweetAlert, moment, $http, $crypto){
     $scope.timezones = {};
     $http.get('js/timezones.json').success(function(data) {
         //console.log('timezones = ', data);
         $scope.timezones = data;
     });
+    //var encrypted = $crypto.encrypt('some plain text data');
+    //var decrypted = $crypto.decrypt(encrypted);
+    
+    /*
+    $scope.key = "SXGWLZPDOKFIVUHJYTQBNMACERxswgzldpkoifuvjhtybqmncare";
+    $scope.encodeStr = function (uncoded) {
+        uncoded = uncoded.toUpperCase().replace(/^\s+|\s+$/g,"");
+        var coded = "";
+        var chr;
+        for (var i = uncoded.length - 1; i >= 0; i--) {
+          chr = uncoded.charCodeAt(i);
+          coded += (chr >= 65 && chr <= 90) ? 
+            $scope.key.charAt(chr - 65 + 26*Math.floor(Math.random()*2)) :
+            String.fromCharCode(chr); 
+        }
+        return encodeURIComponent(coded);  
+    }
+    
+    $scope.decodeStr = function (coded) {
+        coded = decodeURIComponent(coded);  
+        var uncoded = "";
+        var chr;
+        for (var i = coded.length - 1; i >= 0; i--) {
+          chr = coded.charAt(i);
+          uncoded += (chr >= "a" && chr <= "z" || chr >= "A" && chr <= "Z") ?
+            String.fromCharCode(65 + key.indexOf(chr) % 26) :
+            chr; 
+          }
+        return uncoded;   
+    }
+    */
     
     $scope.fitbit = {};
     $scope.success = "";
-    $scope.patient = "";
+    $scope.patient = ""; $scope.patient_encrpyt = "";
     $scope.errordetail = [];
     /* 720kb date picker settings */
         $scope.pattern = 'MM/dd/yyyy';
@@ -72,35 +103,50 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         }
         
     }
+    
+    $scope.encryptedData = function(data){
+        var y = 0;
+        for (key in data){
+            //console.log('\n', key, $scope.patient[key]);
+            data[key] = $crypto.encrypt(data[key].toString());
+            y++;
+            //console.log('\nnew value = ', $scope.patient_encrpyt[key]);
+        }
+        if (Object.keys(data).length == y) {
+            return data;
+        }
+    }
     /* function to add/save new patient */
     $scope.add = function(){
         var patientData = $scope.patient;
-        //console.log('$scope.patient =============\n ',$scope.patient); //return;
+        //console.log('$scope.patient =============\n ',$scope.patient, Object.keys($scope.patient).length);
+        //patientData = $scope.encryptedData($scope.patient);
+        //console.log("--------------------------", patientData);
             Patient.addPatient().save(patientData, function(data){
-            if(data.success){
-                if($scope.patient._id){
-                    Flash.create('success', 'Patient has been updated successfully.', 'alert alert-success');
-                }else{
-                    Flash.create('success', 'Patient has been added successfully.', 'alert alert-success');
-                }
-                $location.path('/patients');
-            }else{
-                console.log('Error Data = ', data);
-                if (data.error.errors){
-                    $scope.errordetail = [];
-                    for (var errName in data.error.errors) {
-                        $scope.errordetail[errName] = data.error.errors[errName].message;
+                if(data.success){
+                    if($scope.patient._id){
+                        Flash.create('success', 'Patient has been updated successfully.', 'alert alert-success');
+                    }else{
+                        Flash.create('success', 'Patient has been added successfully.', 'alert alert-success');
                     }
-                    //console.log($scope.errordetail);
-                    Flash.create('danger', $scope.errordetail, 'alert alert-danger');
+                    $location.path('/patients');
+                }else{
+                    console.log('Error Data = ', data);
+                    if (data.error.errors){
+                        $scope.errordetail = [];
+                        for (var errName in data.error.errors) {
+                            $scope.errordetail[errName] = data.error.errors[errName].message;
+                        }
+                        //console.log($scope.errordetail);
+                        Flash.create('danger', $scope.errordetail, 'alert alert-danger');
+                    }
+                    else{
+                        //$scope.errordetail[data.error.path] = data.error.message;
+                        Flash.create('danger', data.error, 'alert alert-danger');
+                        $("html").scrollTop(0);
+                    }
                 }
-                else{
-                    //$scope.errordetail[data.error.path] = data.error.message;
-                    Flash.create('danger', data.error, 'alert alert-danger');
-                    $("html").scrollTop(0);
-                }
-            }
-        });
+            });
     }
     
     $scope.edit = function(){

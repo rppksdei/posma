@@ -2,11 +2,12 @@ var Fitbit 	= require("fitbit-oauth2")
 , moment        = require('moment')
 , patientModel  = require("./../model/patientModel")
 , fitbitModel   = require("./../model/fitbitModel")
-, config        = require('./../config/oauth-creds.json' );
+, config        = require('./../config/oauth-creds.json' )
+, config_server = require('./../config/oauth-creds-server.json' );
 
 // Instanciate the client
-var fitbit = new Fitbit( config.fitbit );
-
+//var fitbit = new Fitbit( config.fitbit );
+var fitbit = new Fitbit( config_server.fitbit );
 /**
     In a browser, http://localhost:8987/fitbit to authorize a user for the first time.
 */
@@ -31,9 +32,9 @@ authorize = function(req, res, next){
                     
                         fitbit.setToken( data.access_token );
                         req.uri = fitbit.authorizeURL();
-                        apicall(req, res, 1, next);
+                        secondApiCall(req, res, next);
                 }else{
-                    apicall(req, res, 1, next);
+                    secondApiCall(req, res, next);
                 }
                 //res.json(data);
             }
@@ -69,14 +70,14 @@ oauthCallback = function(req, res, next){
 }
 
 getHR = function(req, res, next){
-    var cnt = 1;
-    while (cnt <= 6) {
-        apicall(req, res, cnt, next);
-        cnt++;
-    }
-    if (cnt==7) {
-        return res.json("Fitbit data successfully added in database. You can close this tab now.");
-    }
+    //var cnt = 1;
+    //while (cnt <= 6) {
+        secondApiCall(req, res, next);
+        //cnt++;
+    //}
+    //if (cnt==7) {
+        //return res.json("Fitbit data successfully added in database. You can close this tab now.");
+    //}
     /*
     fitbit.request({
         // Get User Profile Data
@@ -343,6 +344,32 @@ apicall = function(req, res, hitNo, next){
     });
 }
 
+/** Make an API call **/
+secondApiCall = function(req, res, next){
+    fitbit.request({
+        // Get Heart Rate Time Series
+        uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/7d.json",
+        /* Get Heart Rate Intraday Time Series */
+        //uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min/time/"+start_time+"/"+end_time+".json",
+        method: 'GET',
+    }, function( err, body, token ) {
+        if ( err ){
+            console.log('\n secondApiCall error = ', err);
+            //if (hitNo==1) {
+            //    console.log('fitbit.authorizeURL = ', fitbit.authorizeURL()+'&prompt=login');
+            return res.json({'uri':fitbit.authorizeURL()+'&prompt=login'});
+            //}
+            //return next( err );
+        }else{
+            console.log('\n----------heart_rate-------------\n', body);
+            var heart_rate = JSON.parse( body );
+            console.log('\n----------heart_rate-------------\n', heart_rate);
+            console.log('\n-----------token = ', token);
+            return res.json('<pre>'+heart_rate+'</pre>');
+        }
+    });
+}
+
 getFitbitData = function(req, res, next){
     //console.log('req = ',req.body, req.query, req.post);
     var fields = {};
@@ -406,5 +433,5 @@ module.exports = function(){
     this.updateToken      = updateToken;
     this.apicall          = apicall;
     this.getFitbitSteps   = getFitbitSteps;
-    
+    this.secondApiCall    = secondApiCall;
 }
