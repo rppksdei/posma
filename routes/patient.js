@@ -4,11 +4,11 @@ module.exports = function(app, express, isClinicOrSurgeon, isClinicAdmin,support
     var patientObj = new patientController();
   
     /* GET users listing. */
-    router.get('/',  function(req, res, next) {
+    router.get('/', isClinicOrSurgeon, function(req, res, next) {
         patientObj.getlisting(req, res, next);
     });
     /* add Clinic listing. */
-    router.post('/add',  function(req, res, next) {
+    router.post('/add', isClinicOrSurgeon, function(req, res, next) {
         if(typeof req.body._id != "undefined"){
             patientObj.updatePatientDetail(req, res, next);
         }else{

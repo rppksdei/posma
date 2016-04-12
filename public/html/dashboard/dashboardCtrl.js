@@ -10,7 +10,6 @@ myapp.controller('dashboardCtrl', function($scope, $route, Alerts, $location, Fl
 
     $scope.alerts = function(){
         Alerts.list().query({}, function(data){
-            console.log("dfsdfdf");
             //console.log('--------------here1',data);
             $scope.alerts = data;
             for (var i = 0; i < data.length; i++) {

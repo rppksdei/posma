@@ -12,6 +12,53 @@ function checkloggedIn($rootScope, $http, $location) {
         }
     });  
 }
+
+function checkloggedInSuperAdmin($rootScope, $http, $location) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
+        if (data.error) {
+            $location.path('/login');
+        }
+        else{
+            if (data.user_type==1) { // if superadmin
+                $location.path('/unauthorized');
+            }else{
+                $rootScope.user = data;
+            }
+        }
+    });  
+}
+
+function checkloggedInInstitution($rootScope, $http, $location, $routeParams) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
+        if (data.error) {
+            $location.path('/login');
+        }
+        else{
+            if (data.user_type==1) { // if superadmin
+                $location.path('/unauthorized');
+            }else{
+                var patientId = $routeParams.id;
+            console.log('data = ', data);
+            console.log('patientId = ', patientId);
+            var pdata = {};
+                pdata.id = patientId;
+                console.log('authScope = ', authScope);
+                //pdata.field = {'clinic':1};
+                $http.post('/patient/detail', pdata, {headers: {'auth-token': authScope}}).success(function(ndata) {
+                //$http.post('/login/currentUserCheckLogin', data, {headers: {'auth-token': authScope}}).success(function(ndata) {
+                    console.log('ndata==', ndata);
+                    if (data._id==ndata.clinic._id) {
+                        $rootScope.user = data;
+                    }else{
+                        $location.path('/unauthorized');
+                    }
+                });
+                //$rootScope.user = data;
+            }
+        }
+    });  
+}
+
 myapp.config(['$cryptoProvider', function($cryptoProvider){
     $cryptoProvider.setCryptographyKey('ABCD123');
 }]);
@@ -43,7 +90,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/dashboard/detail.html',
                 controller:'dashboardCtrl',
                 flag:'alert_detail',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/edit_profile',{
                 templateUrl:'/html/profile/edit_profile.html',
@@ -79,25 +126,25 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/surgeon/list.html',
                 controller:'surgeonCtrl',
                 flag:'list',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/edit_surgeon/:id',{
                 templateUrl:'/html/surgeon/add.html',
                 controller:'surgeonCtrl',
                 flag:'edit_surgeon',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/add_surgeon',{
                 templateUrl:'/html/surgeon/add.html',
                 controller:'surgeonCtrl',
                 flag:'add_surgeon',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/reports',{
                 templateUrl:'/html/reports/index.html',
                 controller:'reportsCtrl',
                 flag:'report',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/logout',{
                 templateUrl:'/html/authenticate/login.html',
@@ -112,13 +159,13 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/questions/index.html',
                 controller:'questionsCtrl',
                 flag:'list',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/questions/add',{
                 templateUrl:'/html/questions/add.html',
                 controller:'questionsCtrl',
                 flag:'add',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/questions/dd',{
                 templateUrl:'/html/questions/dd.html',
@@ -130,7 +177,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/questions/add.html',
                 controller:'questionsCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             /*.when('/questionnaire',{
                 templateUrl:'/html/questionnaire/list.html',
@@ -142,106 +189,109 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/questionnaire/index.html',
                 controller:'questionnaireCtrl',
                 flag:'list',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/questionnaire/assign_questions/:id',{
                 templateUrl:'/html/questionnaire/assign_questions.html',
                 controller:'questionnaireCtrl',
                 flag:'assign_ques',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/questionnaire/add',{
                 templateUrl:'/html/questionnaire/add.html',
                 controller:'questionnaireCtrl',
                 flag:'add_questionnaire',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/questionnaire/edit/:id',{
                 templateUrl:'/html/questionnaire/edit.html',
                 controller:'questionnaireCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/surgeries',{
                 templateUrl:'/html/surgery/surgeries.html',
                 controller:'surgeryCtrl',
                 flag:'get_surgery',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/surgeries/add',{
                 templateUrl:'/html/surgery/add.html',
                 controller:'surgeryCtrl',
                 flag:'add',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/surgeries/edit/:id',{
                 templateUrl:'/html/surgery/add.html',
                 controller:'surgeryCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/patients',{
                 templateUrl:'/html/patients/list.html',
                 controller:'patientCtrl',
                 flag:'list',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/patients/add',{
                 templateUrl:'/html/patients/add.html',
                 controller:'patientCtrl',
                 flag:'add',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/patients/edit/:id',{
                 templateUrl:'/html/patients/add.html',
                 controller:'patientCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInInstitution}
             })
             .when('/patients/history/:id',{
                 templateUrl:'/html/patients/history.html',
                 controller:'patientCtrl',
                 flag:'historyHR',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/patients/history/steps/:id',{
                 templateUrl:'/html/patients/history.html',
                 controller:'patientCtrl',
                 flag:'historySteps',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/pathways',{
                 templateUrl:'/html/pathways/list.html',
                 controller:'pathwayCtrl',
                 flag:'list',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/pathways/add',{
                 templateUrl:'/html/pathways/add.html',
                 controller:'pathwayCtrl',
                 flag:'add',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/pathways/edit/:id',{
                 templateUrl:'/html/pathways/add.html',
                 controller:'pathwayCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             .when('/pathways/assignquestionnaires/:id',{
                 templateUrl:'/html/pathways/assign.html',
                 controller:'pathwayCtrl',
                 flag:'assign',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
             
             .when('/fitbit/authorize/:id',{
                 templateUrl:'/html/fitbit/list.html',
                 controller:'fitbitCtrl',
                 flag:'authorize',
-                resolve:{'logged_in':checkloggedIn}
+                resolve:{'logged_in':checkloggedInSuperAdmin}
             })
-           
+            .when('/unauthorized',{
+                templateUrl:'/html/dashboard/unauthorized.html',
+                controller:'dashboardCtrl'
+            })
             .otherwise({
                 templateUrl:'/html/login.html',
                 controller:'loginCtrl',

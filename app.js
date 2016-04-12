@@ -172,6 +172,7 @@ isClinicOrSurgeon = function (req, res, next) {
         res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
       }
     } else{
+      console.log('in else');
       res.status(200).json( { 'code':401, 'error':'Unauthorized'} );  
     }
   });

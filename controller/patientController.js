@@ -10,18 +10,22 @@ getlisting = function(req, res, next){
         search_patient.clinic = req.user._id;
     }
     patientModel.getAllPatient(search_patient, function(err, patientDetail){
+        //console.log('patient controller = ', err, patientDetail);
         if(err){
             res.json(err);
         } else{
-            res.json(patientDetail);
+            res.json({'code':200, 'success':patientDetail});
         }
     });
 }
 getPatientDetail = function(req, res){
+    console.log('req.body = ', req.body, '\n req.user',req.user);
     var patient_id = req.body.id;
     var search_patient  = {_id:patient_id};
     var fields          = req.body.field;
+console.log('search_patient = ', search_patient);
     patientModel.getPatient(search_patient, fields, function(err, data){
+        console.log('success = ', err, data);
         var return_val = {};
         if (err){
             return_val.error = err;
@@ -31,7 +35,7 @@ getPatientDetail = function(req, res){
                 return_val.error = "Patient doesn't exists";
                 res.json(return_val);
             } else{
-                data.password = common.decrypt(data.password);
+                //data.password = common.decrypt(data.password);
                 res.json(data);
             }
         }

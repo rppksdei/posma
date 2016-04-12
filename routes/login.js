@@ -8,6 +8,9 @@ module.exports = function(app,express){
     router.get('/checkloggedin',  function(req, res, next) {
         loginController.checkloggedin(req, res, next);
     });
+    //router.post('/currentUserCheckLogin',  function(req, res, next) {
+    //    loginController.currentUserCheckLogin(req, res, next);
+    //});
     router.get('/loggedout',  function(req, res, next) {
         loginController.loggedout(req, res, next);
     });

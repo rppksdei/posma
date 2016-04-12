@@ -6,36 +6,6 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     });
     //var encrypted = $crypto.encrypt('some plain text data');
     //var decrypted = $crypto.decrypt(encrypted);
-    
-    /*
-    $scope.key = "SXGWLZPDOKFIVUHJYTQBNMACERxswgzldpkoifuvjhtybqmncare";
-    $scope.encodeStr = function (uncoded) {
-        uncoded = uncoded.toUpperCase().replace(/^\s+|\s+$/g,"");
-        var coded = "";
-        var chr;
-        for (var i = uncoded.length - 1; i >= 0; i--) {
-          chr = uncoded.charCodeAt(i);
-          coded += (chr >= 65 && chr <= 90) ? 
-            $scope.key.charAt(chr - 65 + 26*Math.floor(Math.random()*2)) :
-            String.fromCharCode(chr); 
-        }
-        return encodeURIComponent(coded);  
-    }
-    
-    $scope.decodeStr = function (coded) {
-        coded = decodeURIComponent(coded);  
-        var uncoded = "";
-        var chr;
-        for (var i = coded.length - 1; i >= 0; i--) {
-          chr = coded.charAt(i);
-          uncoded += (chr >= "a" && chr <= "z" || chr >= "A" && chr <= "Z") ?
-            String.fromCharCode(65 + key.indexOf(chr) % 26) :
-            chr; 
-          }
-        return uncoded;   
-    }
-    */
-    
     $scope.fitbit = {};
     $scope.success = "";
     $scope.patient = ""; $scope.patient_encrpyt = "";
@@ -51,22 +21,28 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         flag = $route.current.$$route.flag;
     }
     $scope.list = function(){
-        Patient.getList().query({}, function(data){
-            $scope.patients = data;
-            for (var i = 0; i < data.length; i++) {
-                if(typeof data[i].dos == 'number'){
-                    $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
-                } else {
-                    $scope.patients[i].dos = 'Invalid date';
+        Patient.getList().get({}, function(resp){
+        console.log('patient data = ', resp);
+            if (resp.success) {
+                data = resp.success;
+                $scope.patients = data;
+                for (var i = 0; i < data.length; i++) {
+                    if(typeof data[i].dos == 'number'){
+                        $scope.patients[i].dos     = moment.unix(data[i].dos).format('MM/DD/YYYY');
+                    } else {
+                        $scope.patients[i].dos = 'Invalid date';
+                    }
+                    if(typeof data[i].dohd == 'number'){
+                        $scope.patients[i].dohd     = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+                    } else {
+                        $scope.patients[i].dohd = 'Invalid date';
+                    }
+                    //$scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
                 }
-                if(typeof data[i].dohd == 'number'){
-                    $scope.patients[i].dohd     = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
-                } else {
-                    $scope.patients[i].dohd = 'Invalid date';
-                }
-                //$scope.patients[i].dohd    = moment.unix(data[i].dohd).format('MM/DD/YYYY HH:mm:ss');
+                $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
+            }else if (resp.error && resp.error=='Unauthorized'){
+                $location.path('/unauthorized');
             }
-            $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.patients});
         });    
     }
     /* function to get surgeries & pathways on add form */
