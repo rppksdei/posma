@@ -20,6 +20,7 @@ getlisting = function(req, res, next){
 getQuestionDetail = function(req, res){
     var question_id = req.body._id;
     var search_question = {_id:question_id};
+    console.log('sq = ', search_question);
     questionModel.getQuestion(search_question, function(err, data){
         var return_val = {};
         if (err){

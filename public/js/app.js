@@ -28,7 +28,8 @@ function checkloggedInSuperAdmin($rootScope, $http, $location) {
     });  
 }
 
-function checkloggedInInstitution($rootScope, $http, $location, $routeParams) {
+/* check if PATIENT is of current logged in institution. */
+function checkloggedInPatient($rootScope, $http, $location, $routeParams) {
     $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
         if (data.error) {
             $location.path('/login');
@@ -38,22 +39,193 @@ function checkloggedInInstitution($rootScope, $http, $location, $routeParams) {
                 $location.path('/unauthorized');
             }else{
                 var patientId = $routeParams.id;
-            console.log('data = ', data);
-            console.log('patientId = ', patientId);
+            //console.log('data = ', data);
+            //console.log('patientId = ', patientId);
             var pdata = {};
                 pdata.id = patientId;
-                console.log('authScope = ', authScope);
-                //pdata.field = {'clinic':1};
                 $http.post('/patient/detail', pdata, {headers: {'auth-token': authScope}}).success(function(ndata) {
                 //$http.post('/login/currentUserCheckLogin', data, {headers: {'auth-token': authScope}}).success(function(ndata) {
-                    console.log('ndata==', ndata);
-                    if (data._id==ndata.clinic._id) {
+                    //console.log('ndata==', ndata);
+                    if (typeof ndata.error != 'undefined') {
+                        $location.path('/unauthorized');
+                    }
+                    else if (data._id==ndata.clinic._id) {
                         $rootScope.user = data;
                     }else{
                         $location.path('/unauthorized');
                     }
                 });
                 //$rootScope.user = data;
+            }
+        }
+    });  
+}
+
+/* check if SURGERY is of current logged in institution. */
+function checkloggedInSurgery($rootScope, $http, $location, $routeParams) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
+        if (data.error) {
+            $location.path('/login');
+        }
+        else{
+            if (data.user_type==1) { // if superadmin
+                $location.path('/unauthorized');
+            }else{
+                var Id = $routeParams.id;
+                //console.log('patientId = ', Id);
+                if (typeof Id != 'undefined') {
+                    var pdata = {};
+                    pdata.id = Id;
+                    $http.post('/surgery/detail', pdata, {headers: {'auth-token': authScope}}).success(function(ndata) {
+                //console.log('ndata==', ndata);
+                        if (typeof ndata.error != 'undefined') {
+                            $location.path('/unauthorized');
+                        }
+                        else if (data._id==ndata.clinic) {
+                            $rootScope.user = data;
+                        }else{
+                            $location.path('/unauthorized');
+                        }
+                    });
+                }else{
+                    $rootScope.user = data;
+                }
+            }
+        }
+    });  
+}
+
+/* check if QUESTION is of current logged in institution. */
+function checkloggedInQuestion($rootScope, $http, $location, $routeParams) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
+        if (data.error) {
+            $location.path('/login');
+        }
+        else{
+            if (data.user_type==1) { // if superadmin
+                $location.path('/unauthorized');
+            }else{
+                var Id = $routeParams.id;
+                //console.log('Id = ', Id);
+                if (typeof Id != 'undefined') {
+                    var pdata = {};
+                    pdata._id = Id;
+                    $http.post('/question/getDetail', pdata, {headers: {'auth-token': authScope}}).success(function(ndata) {
+                //console.log('ndata==', ndata);
+                        if (typeof ndata.error != 'undefined') {
+                            $location.path('/unauthorized');
+                        }
+                        else if (data._id==ndata.clinic) {
+                            $rootScope.user = data;
+                        }else{
+                            $location.path('/unauthorized');
+                        }
+                    });
+                }else{
+                    $rootScope.user = data;
+                }
+            }
+        }
+    });  
+}
+
+/* check if SURGEON is of current logged in institution. */
+function checkloggedInSurgeon($rootScope, $http, $location, $routeParams) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
+        if (data.error) {
+            $location.path('/login');
+        }
+        else{
+            if (data.user_type==1) { // if superadmin
+                $location.path('/unauthorized');
+            }else{
+                var Id = $routeParams.id;
+                //console.log('Id = ', Id);
+                if (typeof Id != 'undefined') {
+                    var pdata = {};
+                    pdata.id = Id;
+                    $http.post('/manage_admin/detail', pdata, {headers: {'auth-token': authScope}}).success(function(ndata) {
+                //console.log('ndata==', ndata);
+                        if (typeof ndata.error != 'undefined') {
+                            $location.path('/unauthorized');
+                        }
+                        else if (data._id==ndata.parent_id) {
+                            $rootScope.user = data;
+                        }else{
+                            $location.path('/unauthorized');
+                        }
+                    });
+                }else{
+                    $rootScope.user = data;
+                }
+            }
+        }
+    });  
+}
+
+/* check if QUESTIONNAIRE is of current logged in institution. */
+function checkloggedInQuestionnaire($rootScope, $http, $location, $routeParams) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
+        if (data.error) {
+            $location.path('/login');
+        }
+        else{
+            if (data.user_type==1) { // if superadmin
+                $location.path('/unauthorized');
+            }else{
+                var Id = $routeParams.id;
+                //console.log('Id = ', Id);
+                if (typeof Id != 'undefined') {
+                    var pdata = {};
+                    pdata._id = Id;
+                    $http.post('/questionnaires/getDetail', pdata, {headers: {'auth-token': authScope}}).success(function(ndata) {
+                //console.log('ndata==', ndata);
+                        if (typeof ndata.error != 'undefined') {
+                            $location.path('/unauthorized');
+                        }
+                        else if (data._id==ndata.clinic) {
+                            $rootScope.user = data;
+                        }else{
+                            $location.path('/unauthorized');
+                        }
+                    });
+                }else{
+                    $rootScope.user = data;
+                }
+            }
+        }
+    });  
+}
+
+/* check if QUESTION is of current logged in institution. */
+function checkloggedInPathway($rootScope, $http, $location, $routeParams) {
+    $http.get('/login/checkloggedin', {headers: {'auth-token': authScope}}).success(function(data) {
+        if (data.error) {
+            $location.path('/login');
+        }
+        else{
+            if (data.user_type==1) { // if superadmin
+                $location.path('/unauthorized');
+            }else{
+                var Id = $routeParams.id;
+                //console.log('Id = ', Id);
+                if (typeof Id != 'undefined') {
+                    var pdata = {};
+                    pdata.id = Id;
+                    $http.post('/pathway/detail', pdata, {headers: {'auth-token': authScope}}).success(function(ndata) {
+                //console.log('ndata==', ndata);
+                        if (typeof ndata.error != 'undefined') {
+                            $location.path('/unauthorized');
+                        }
+                        else if (data._id==ndata.clinic) {
+                            $rootScope.user = data;
+                        }else{
+                            $location.path('/unauthorized');
+                        }
+                    });
+                }else{
+                    $rootScope.user = data;
+                }
             }
         }
     });  
@@ -132,7 +304,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/surgeon/add.html',
                 controller:'surgeonCtrl',
                 flag:'edit_surgeon',
-                resolve:{'logged_in':checkloggedInSuperAdmin}
+                resolve:{'logged_in':checkloggedInSurgeon}
             })
             .when('/add_surgeon',{
                 templateUrl:'/html/surgeon/add.html',
@@ -177,7 +349,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/questions/add.html',
                 controller:'questionsCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedInSuperAdmin}
+                resolve:{'logged_in':checkloggedInQuestion}
             })
             /*.when('/questionnaire',{
                 templateUrl:'/html/questionnaire/list.html',
@@ -207,7 +379,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/questionnaire/edit.html',
                 controller:'questionnaireCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedInSuperAdmin}
+                resolve:{'logged_in':checkloggedInQuestionnaire}
             })
             .when('/surgeries',{
                 templateUrl:'/html/surgery/surgeries.html',
@@ -225,7 +397,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/surgery/add.html',
                 controller:'surgeryCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedInSuperAdmin}
+                resolve:{'logged_in':checkloggedInSurgery}
             })
             .when('/patients',{
                 templateUrl:'/html/patients/list.html',
@@ -243,7 +415,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/patients/add.html',
                 controller:'patientCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedInInstitution}
+                resolve:{'logged_in':checkloggedInPatient}
             })
             .when('/patients/history/:id',{
                 templateUrl:'/html/patients/history.html',
@@ -273,7 +445,7 @@ myapp.config(['$routeProvider',
                 templateUrl:'/html/pathways/add.html',
                 controller:'pathwayCtrl',
                 flag:'edit',
-                resolve:{'logged_in':checkloggedInSuperAdmin}
+                resolve:{'logged_in':checkloggedInPathway}
             })
             .when('/pathways/assignquestionnaires/:id',{
                 templateUrl:'/html/pathways/assign.html',

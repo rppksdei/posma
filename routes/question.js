@@ -5,12 +5,12 @@ module.exports = function(app,express,isClinicAdmin){
     
     /* GET Question listing. */
     router.get('/',isClinicAdmin,  function(req, res, next) {
-        console.log("Get list of Question");
+        //console.log("Get list of Question");
         questionObj.getlisting(req, res, next);
     });
 
     router.post('/',isClinicAdmin,  function(req, res, next) {
-        console.log("Get list of Questionssssa");
+        //console.log("Get list of Questionssssa");
         questionObj.getlisting(req, res, next);
     });
     

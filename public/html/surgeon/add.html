@@ -25,11 +25,11 @@
                                     <label class="control-label" ng-show="add_admin_form.username.$dirty && add_admin_form.username.$error.required">Username is required.</label>
                                     <label class="control-label" ng-show="errordetail['username']" ng-bind="errordetail['username']"></label>
                                 </div>
-				                <div class="form-group" ng-class="{'has-error':add_admin_form.password.$dirty && (add_admin_form.password.$error.required || errordetail['password'])}">
+				<div class="form-group" ng-class="{'has-error':add_admin_form.password.$dirty && (add_admin_form.password.$error.required || errordetail['password'])}">
                                     <label>Password <span class="required">*</span></label>
-                                    <input class="form-control" ng-model="admin.password" name="password" id="password" required  value="">
-            						<label class="control-label" ng-show="add_admin_form.password.$dirty && add_admin_form.password.$error.required">Password is required.</label>
-            						<label class="control-label" ng-show="errordetail['password']" ng-bind="errordetail['password']"></label>
+                                    <input class="form-control" ng-model="admin.password" name="password" id="password" type="password" required value="">
+            			    <label class="control-label" ng-show="add_admin_form.password.$dirty && add_admin_form.password.$error.required">Password is required.</label>
+            			    <label class="control-label" ng-show="errordetail['password']" ng-bind="errordetail['password']"></label>
                                 </div>
 				                <div class="form-group">
                                     <label>Surgeries</label>

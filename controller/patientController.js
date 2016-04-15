@@ -19,13 +19,12 @@ getlisting = function(req, res, next){
     });
 }
 getPatientDetail = function(req, res){
-    console.log('req.body = ', req.body, '\n req.user',req.user);
+    //console.log('req.body = ', req.body, '\n req.user',req.user);
     var patient_id = req.body.id;
     var search_patient  = {_id:patient_id};
     var fields          = req.body.field;
-console.log('search_patient = ', search_patient);
+    //console.log('search_patient = ', search_patient);
     patientModel.getPatient(search_patient, fields, function(err, data){
-        console.log('success = ', err, data);
         var return_val = {};
         if (err){
             return_val.error = err;
@@ -35,7 +34,7 @@ console.log('search_patient = ', search_patient);
                 return_val.error = "Patient doesn't exists";
                 res.json(return_val);
             } else{
-                //data.password = common.decrypt(data.password);
+                data.password = common.decrypt(data.password);
                 res.json(data);
             }
         }
@@ -310,7 +309,7 @@ updatePatientDetail = function(req, res){
         patientModel.updatePatient(search_criteria, update_data, function(err, data){
             var return_data = {};
             var message = "";
-            console.log(err, data);
+            //console.log(err, data);
             if (err) {
                 if (err.errors) {
                     var error_detail = [];
