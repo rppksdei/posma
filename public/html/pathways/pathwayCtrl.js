@@ -13,7 +13,7 @@ myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, Quest
     }
     $scope.list = function(){
         Pathway.getList().query({}, function(data){
-            console.log(data);
+            //console.log(data);
             $scope.pathways = data;
             $scope.tableParams = new ngTableParams({count:5}, {counts:{}, data:$scope.pathways});
         });    
@@ -43,7 +43,7 @@ myapp.controller('pathwayCtrl', function($scope, $route, Pathway, Surgery, Quest
     /* function to add/save new pathway */
     $scope.add = function(){
         var pathwayData = $scope.pathway;
-        console.log(pathwayData);
+        //console.log(pathwayData);
         
         Pathway.addPathway().save(pathwayData, function(data){
             if(data.success){

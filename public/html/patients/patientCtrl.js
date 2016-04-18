@@ -22,7 +22,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     }
     $scope.list = function(){
         Patient.getList().get({}, function(resp){
-        console.log('patient data = ', resp);
+        //console.log('patient data = ', resp);
             if (resp.success) {
                 data = resp.success;
                 $scope.patients = data;
@@ -68,7 +68,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         }
     }
     $scope.getQuestionnaires = function(){
-        console.log($scope.patient);
+        //console.log($scope.patient);
         var pathway_id = $scope.patient.pathway;
         if(typeof pathway_id != 'undefined'){
             Patient.getDetail().query({'surgery': pathway_id}, function(data){
@@ -316,7 +316,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         var patientId = $routeParams.id;
         $scope.csv_HRdata = [];
         Fitbit.getFitbitData().query({'_id': patientId,'is_date':0}, function(data){
-            console.log('History data == <pre>', data);
+            //console.log('History data == <pre>', data);
             $scope.historyHR = data;
             // make CSV data
             for (var i = 0; i < data.length; i++) {
@@ -336,7 +336,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         var patientId = $routeParams.id;
         $scope.csv_Stepsdata = [];
         Fitbit.getFitbitData().query({'_id': patientId,'is_steps':1}, function(data){
-            console.log('Steps History data ==> ', data);
+            //console.log('Steps History data ==> ', data);
             $scope.historySteps = data;
             // make CSV data
             for (var i = 0; i < data.length; i++) {
@@ -361,7 +361,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
     $scope.showFitbitSteps = function(index) {
         var object_detail = $scope.tableParams.data[index];
         Fitbit.getFitbitSteps().query({'_id': object_detail._id}, function(data){
-            console.log('Steps data == ', data);
+            //console.log('Steps data == ', data);
             if (typeof data[0] != 'undefined') {
                 var hrText = ''
                 hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Date</th><th style='text-align:center;border:1px solid #f3f3f3;'>Steps</th></tr>";
