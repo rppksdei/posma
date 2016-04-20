@@ -279,20 +279,24 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
         var object_detail = $scope.tableParams.data[index];
         Fitbit.getFitbitData().query({'_id': object_detail._id}, function(data){
             console.log('data == ', data);
-            
             if (typeof data[0] != 'undefined') {
                 var hrText = '';
-                hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Time range</th><th style='text-align:center;border:1px solid #f3f3f3;'>HR value(avg.)</th></tr>";
+                hrText += "<table style='width:100%;border:1px solid #f3f3f3;'><tr><th style='text-align:center;border:1px solid #f3f3f3;'>Date</th><th style='text-align:center;border:1px solid #f3f3f3;'>Resting Heart rate value</th></tr>";
                 for (var dat in data) {
                     //console.log('\ndat--', data[dat]);
                     if (! isNaN(dat)) {
-                        hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].start_time+' - '+data[dat].end_time+'</td><td style="border:1px solid #f3f3f3;">'+data[dat].avg_heart_rate+'</td></tr>';
+                        var ahr = 0;
+                        if (data[dat].avg_heart_rate == 'undefined') {
+                            ahr = data[dat].avg_heart_rate;
+                        }
+                        hrText += '<tr><td style="border:1px solid #f3f3f3;">'+data[dat].date+'</td><td style="border:1px solid #f3f3f3;">'+ahr+'</td></tr>';
                     }
                 }
                 hrText += "<tr><td colspan='2'><a href='/#/patients/history/"+data[0].patient._id+"' title='See HR history'>See HR history</a></td></tr></table>";
             
                 SweetAlert.swal({
-                    title: "Heart Rate for "+moment.unix(data[0].created).format('MM/DD/YYYY'),
+                    //title: "Heart Rate for "+moment.unix(data[0].created).format('MM/DD/YYYY'),
+                    title: "Heart Rate ",
                     text: hrText,
                     html: true,
                     allowEscapeKey : true, allowOutsideClick : true

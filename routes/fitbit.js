@@ -23,7 +23,6 @@ module.exports = function(app,express,supportCrossOriginScript){
     router.post('/authorize',supportCrossOriginScript,function(req, res, next) {
 	//console.log('in authorize... = ', req.body, req.params, req.query);
 	//res.json({'data': 'Working'});
-	console.log('-post request-')
 	fitObj.authorize(req, res, next);
     });
     

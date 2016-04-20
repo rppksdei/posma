@@ -93,7 +93,7 @@ myapp.controller('surgeonCtrl', function($scope, $route, Admin, Surgery, $locati
                 status = 1;
             }
             var update_object = {'_id':object_detail._id, 'is_active':status};
-            console.log(update_object);
+            //console.log(update_object);
             Admin.update().save(update_object, function(data){
                 if (data.success) {
                     $scope.tableParams.data[index].is_active = status;
