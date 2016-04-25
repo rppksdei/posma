@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var fitbitSchema = new Schema({
-    patient :               {type:Schema.Types.ObjectId, ref:'Patient'},
+    patient :               {type:String, ref:'Patient'},
     /* Data from profile.json */
     avatar150:              {type:String},
     average_daily_steps:    {type:Number},
