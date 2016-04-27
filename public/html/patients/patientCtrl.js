@@ -52,7 +52,7 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
             $scope.patient.neoadjuvant_chemotherapy = 'na';
             $scope.patient.tumor_laterality = 'na';
             //$scope.patient.timezone = '-7';
-            $scope.patient.timezoneText = '(UTC-08:00) Pacific Time (US & Canada)';
+            //$scope.patient.timezoneText = '(UTC-08:00) Pacific Time (US & Canada)';
             $scope.surgeries = data;
         });
     }
@@ -142,8 +142,10 @@ myapp.controller('patientCtrl', function($scope, $route, Patient,Fitbit, Surgery
                 $scope.patient = data;
                 $scope.patient.date_of_birth    = moment.unix(data.date_of_birth).format('MM/DD/YYYY');
                 $scope.patient.dos              = moment.unix(data.dos).format('MM/DD/YYYY');
-                $scope.patient.timezoneText     = data.timezone.text;
-                $scope.patient.timezone         = JSON.stringify(data.timezone);
+            console.log('=>',$scope.patient.timezone);
+                //$scope.patient.timezone         = JSON.stringify(data.timezone);
+                $scope.patient.timezoneText     = $scope.patient.timezone.text;
+            console.log('=>',$scope.patient);
             }
         });
     }

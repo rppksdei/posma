@@ -93,10 +93,11 @@
                                     <label class="control-label" ng-show="add_patient_form.address1.$dirty && (add_patient_form.address1.$error.required || errordetail.address1)">Address is required.</label>
                                 </div>
                                 <div class="form-group" ng-class="{'has-error':add_patient_form.timezone.$dirty && (add_patient_form.timezone.$error.required)}">
+                                    
                                     <label>Timezone <span class="required">*</span></label>
                                     <select ng-model="patient.timezone" class="form-control" name="timezone" id="timezone" required>
                                         <option value="">--Select a timezone--</option>
-                                        <option ng-repeat="tz in timezones" value ="{{tz}}" ng-selected="(tz.text == patient.timezoneText)">{{tz.abbr}} - {{tz.value}} - {{tz.text}}</option>
+                                        <option ng-repeat="tz in timezones" value ="{{tz}}" ng-selected="(tz.text == patient.timezone.text)">{{tz.abbr}} - {{tz.value}} - {{tz.text}}</option>
                                     </select>
                                     <label class="control-label" ng-show="add_patient_form.timezone.$dirty && (add_patient_form.timezone.$error.required)">Timezone is required.</label>
                                 </div>
